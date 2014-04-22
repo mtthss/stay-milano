@@ -14,7 +14,12 @@ public class FirstAccessActivity extends ActionBarActivity {
 	}
 
 	public void createNew(View view){
-		Intent intent = new Intent(this, AreaSelection.class);
+		Intent intent = new Intent(this, AreaSelectionActivity.class);
+		startActivity(intent);
+	}
+	
+	public void showMyItineraries(View view){
+		Intent intent = new Intent(this, ShowItinerariesActivity.class);
 		startActivity(intent);
 	}
 

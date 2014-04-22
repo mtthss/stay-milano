@@ -8,5 +8,7 @@
     <string name="title_activity_first_access">FirstAccessActivity</string>
     <string name="new_button_label">Create New</string>
     <string name="title_activity_area_selection">AreaSelection</string>
+    <string name="title_activity_show_itineraries">ShowItinerariesActivity</string>
+    <string name="show_button_label">Show My Itineraries</string>
 
 </resources>

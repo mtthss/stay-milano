@@ -1,11 +1,14 @@
 package com.staymilano.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class UserInfo {
+public class UserInfo implements Serializable{
 
+	private static final long serialVersionUID = 8354095811783356274L;
+	
 	private List<Trip> travel;
 	private static UserInfo user;	
 	

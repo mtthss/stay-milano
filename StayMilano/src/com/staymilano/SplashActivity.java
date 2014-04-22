@@ -5,6 +5,7 @@ import java.lang.ref.WeakReference;
 import com.staymilano.model.UserInfo;
 
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,7 +21,9 @@ public class SplashActivity extends ActionBarActivity {
 	private long mStartTime;
 	private boolean mIsDone;
 	
-	private UiHandler mHandler;	
+	private UiHandler mHandler;
+	
+	private static final String TAG_LOG=SplashActivity.class.getName();	
 	
 	//classe interna, gestisce solo un caso (reindirizzamento a firstAccessActivity)
 	//ottimizzata per evitare il memory leak
@@ -55,6 +58,7 @@ public class SplashActivity extends ActionBarActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.w(TAG_LOG, "SONO IN Splash on create");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
 		mHandler=new UiHandler(this);
@@ -70,6 +74,7 @@ public class SplashActivity extends ActionBarActivity {
 	
 
 	protected void goAhead() {
+		Log.w(TAG_LOG, "SONO IN Splash goAhead");
 		UserInfo user=UserInfo.getUser();
 		if(user.getTravelsize()==0){
 			final Intent firstAccessIntent=new Intent(this,FirstAccessActivity.class);

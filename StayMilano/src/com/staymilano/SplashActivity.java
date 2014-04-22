@@ -76,6 +76,9 @@ public class SplashActivity extends ActionBarActivity {
 	protected void goAhead() {
 		Log.w(TAG_LOG, "SONO IN Splash goAhead");
 		UserInfo user=UserInfo.getUser();
+		if(user==null){
+			Log.w(TAG_LOG, "user null");
+		}
 		if(user.getTravelsize()==0){
 			final Intent firstAccessIntent=new Intent(this,FirstAccessActivity.class);
 			startActivity(firstAccessIntent);

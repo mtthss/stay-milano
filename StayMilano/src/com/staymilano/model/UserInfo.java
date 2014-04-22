@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import android.util.Log;
+
 public class UserInfo implements Serializable{
 
 	private static final long serialVersionUID = 8354095811783356274L;
 	
 	private List<Trip> travel;
-	private static UserInfo user;	
+	private static UserInfo user;
+	
 	
 	private UserInfo(){
 		travel=fillTravel();

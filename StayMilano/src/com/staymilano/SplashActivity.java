@@ -79,10 +79,14 @@ public class SplashActivity extends ActionBarActivity {
 		if(user==null){
 			Log.w(TAG_LOG, "user null");
 		}
-		if(user.getTravelsize()==0){
+	/*	if(user.getTravelsize()==0){
 			final Intent firstAccessIntent=new Intent(this,FirstAccessActivity.class);
 			startActivity(firstAccessIntent);
-			finish();
+			finish(); */
+		if(user==null){
+			final Intent firstAccessIntent=new Intent(this,FirstAccessActivity.class);
+			startActivity(firstAccessIntent);
+			finish(); 
 		}	
 	}
 

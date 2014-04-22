@@ -7,5 +7,6 @@
     <string name="title_activity_splash">SplashActivity</string>
     <string name="title_activity_first_access">FirstAccessActivity</string>
     <string name="new_button_label">Create New</string>
+    <string name="title_activity_area_selection">AreaSelection</string>
 
 </resources>

@@ -10,6 +10,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/new_button_label"
-        android:id="@+id/create_new_button_label"/>
+        android:id="@+id/create_new_button_label"
+        android:onClick="createNew"/>
+    
 </FrameLayout>
 

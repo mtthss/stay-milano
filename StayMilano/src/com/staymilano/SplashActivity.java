@@ -86,6 +86,21 @@ public class SplashActivity extends ActionBarActivity {
         
         Date date= new Date();
         Cursor cur=ItineraryAdapter.getItineraryByDate(db,date.toString());
+        
+        final Intent intent;
+        if(cur!=null){
+        	intent= new Intent(this,MainActivity.class);
+        	startActivity(intent);
+        }else{
+        	cur=ItineraryAdapter.getAllItinerary(db);
+        	if(cur!=null){
+        		intent= new Intent(this,FirstAccessActivity.class);
+        		startActivity(intent);
+        	}else{
+        		//TODO activity di creazione itinerario
+        	}
+        }
+        finish();
 	}
 
 }

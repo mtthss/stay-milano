@@ -1,6 +1,9 @@
 package com.staymilano.database;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -27,7 +30,7 @@ public class DBHelper extends SQLiteOpenHelper {
     						+ ItineraryAdapter.START_TIME+" text not null);";
     
     private static final String SELECTED_POI = "create table selectedpoi "
-    		+ "(_itinerary_id primary key, _poi_id primary key, visited boolean);";
+    		+ "(_itinerary_id primary key, _poi_id, visited boolean);";
 
     // Costruttore
     public DBHelper(Context context) {
@@ -40,8 +43,14 @@ public class DBHelper extends SQLiteOpenHelper {
     	database.execSQL(POINTOFINTEREST_CREATE);
     	database.execSQL(ITINERARY_CREATE);
     	database.execSQL(SELECTED_POI);
-    	load(database,new InputStreamReader(this.getClass().getResourceAsStream("poi.csv")));
-    	//TODO creare il file poi.csv
+    	File file = new File("assets/poi.csv");
+    	try {
+			FileInputStream is = new FileInputStream(file);
+			load(database,new InputStreamReader(is));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
     }
 
 	// Questo metodo viene chiamato durante l'upgrade del database, ad esempio quando viene incrementato il numero di versione
@@ -49,7 +58,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
     	database.execSQL("DROP TABLE IF EXISTS pointofinterest");
     	database.execSQL(POINTOFINTEREST_CREATE);
-    	load(database,new InputStreamReader(this.getClass().getResourceAsStream("poi.csv")));             
+    	load(database,new InputStreamReader(System.in));             
     }  
     
 	private void load(SQLiteDatabase database, InputStreamReader inputStreamReader) {

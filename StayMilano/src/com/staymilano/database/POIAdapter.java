@@ -21,7 +21,6 @@ public class POIAdapter {
 	public static ContentValues getContentValues(String line) {
 		 ContentValues result = new ContentValues();
 	        StringTokenizer stringTokenizer = new StringTokenizer(line, ",");
-	        result.put(ID, stringTokenizer.nextToken());
 	        result.put(NAME, stringTokenizer.nextToken());
 	        result.put(DESCRIPTION, stringTokenizer.nextToken());
 	        result.put(TYPE, stringTokenizer.nextToken());

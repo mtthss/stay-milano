@@ -1,7 +1,5 @@
 package com.staymilano.model;
 
-import android.database.sqlite.SQLiteDatabase;
-
 public class PointOfInterest {
 	
 	private static final String MONUMENT="monument";

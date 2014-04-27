@@ -1,12 +1,11 @@
 package com.staymilano;
 
 import java.lang.ref.WeakReference;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.staymilano.database.DBHelper;
 import com.staymilano.database.ItineraryAdapter;
-import com.staymilano.model.UserInfo;
-
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.content.Intent;
@@ -79,26 +78,28 @@ public class SplashActivity extends ActionBarActivity {
 	
 
 	protected void goAhead() {
-		 //creo l'helper per aprire il DB
+		//creo l'helper per aprire il DB
         DBHelper databaseHelper = new DBHelper(this);
         //apro il DB sia in lettura che in scrittura
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date date= new Date();
-        Cursor cur=ItineraryAdapter.getItineraryByDate(db,date.toString());
+        
+        Cursor cur=ItineraryAdapter.getItineraryByDate(db,sdf.format(date));
         
         final Intent intent;
-        if(cur!=null){
+        if(cur.getCount()==0){
         	intent= new Intent(this,MainActivity.class);
         	startActivity(intent);
         }else{
-        	cur=ItineraryAdapter.getAllItinerary(db);
+        	/*cur=ItineraryAdapter.getAllItinerary(db);
         	if(cur!=null){
         		intent= new Intent(this,FirstAccessActivity.class);
         		startActivity(intent);
         	}else{
         		//TODO activity di creazione itinerario
-        	}
+        	}*/
         }
         finish();
 	}

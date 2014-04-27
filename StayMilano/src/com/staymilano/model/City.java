@@ -20,8 +20,8 @@ public class City {
 	private List<Area> fillAreas() {
 		this.areas=new ArrayList<Area>();
 		for(AreasName nm: AreasName.values()){
-			Area area=new Area(nm);
-			areas.add(area);
+			//Area area=new Area(nm);
+			//areas.add(area);
 		}
 		return areas;
 	}

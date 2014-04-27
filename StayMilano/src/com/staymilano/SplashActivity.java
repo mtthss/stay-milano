@@ -1,12 +1,17 @@
 package com.staymilano;
 
 import java.lang.ref.WeakReference;
+import java.util.Date;
 
+import com.staymilano.database.DBHelper;
+import com.staymilano.database.ItineraryAdapter;
 import com.staymilano.model.UserInfo;
 
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -74,20 +79,13 @@ public class SplashActivity extends ActionBarActivity {
 	
 
 	protected void goAhead() {
-		Log.w(TAG_LOG, "SONO IN Splash goAhead");
-		UserInfo user=UserInfo.getUser();
-		if(user==null){
-			Log.w(TAG_LOG, "user null");
-		}
-	/*	if(user.getTravelsize()==0){
-			final Intent firstAccessIntent=new Intent(this,FirstAccessActivity.class);
-			startActivity(firstAccessIntent);
-			finish(); */
-		if(user==null){
-			final Intent firstAccessIntent=new Intent(this,FirstAccessActivity.class);
-			startActivity(firstAccessIntent);
-			finish(); 
-		}	
+		 //creo l'helper per aprire il DB
+        DBHelper databaseHelper = new DBHelper(this);
+        //apro il DB sia in lettura che in scrittura
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        
+        Date date= new Date();
+        Cursor cur=ItineraryAdapter.getItineraryByDate(db,date.toString());
 	}
 
 }

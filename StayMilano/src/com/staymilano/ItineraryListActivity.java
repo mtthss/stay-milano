@@ -1,5 +1,6 @@
 package com.staymilano;
 
+import com.staymilano.database.DBHelper;
 import com.staymilano.database.ItineraryAdapter;
 
 import android.app.ListActivity;
@@ -13,7 +14,7 @@ public class ItineraryListActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_itinerary_list);
 		
-		mCursor= ItineraryAdapter.getAllItinerary(db);
+		Cursor mCursor= ItineraryAdapter.getAllItinerary(DBHelper.getInstance(this).getReadableDatabase());
 	}
 
 }

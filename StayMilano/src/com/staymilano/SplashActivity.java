@@ -78,15 +78,12 @@ public class SplashActivity extends ActionBarActivity {
 	
 
 	protected void goAhead() {
-		//creo l'helper per aprire il DB
-        DBHelper databaseHelper = new DBHelper(this);
         //apro il DB sia in lettura che in scrittura
-        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        SQLiteDatabase db = DBHelper.getInstance(this).getReadableDatabase();
         
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date date= new Date();
         
-        Cursor cur=ItineraryAdapter.getItineraryByDate(db,sdf.format(date));
+        Cursor cur=ItineraryAdapter.getItineraryByDate(db,new SimpleDateFormat("yyyy-MM-dd").format(date));
         
         final Intent intent;
         if(cur.getCount()==0){

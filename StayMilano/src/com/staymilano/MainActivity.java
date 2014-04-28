@@ -16,7 +16,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MainActivity extends Activity implements OnMapLoadedCallback {
   static final LatLng HAMBURG = new LatLng(53.558, 9.927);
   static final LatLng KIEL = new LatLng(53.551, 9.993);
-  static final LatLng MILAN = new LatLng(45.27, 9.11);
+  static final LatLng MILAN = new LatLng(45.4773, 9.1815);
   private GoogleMap map;
 
   @Override

@@ -12,6 +12,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
+	
+	private static DBHelper mInstance;
     
     private static final String DATABASE_NAME = "staymilano.db";
     private static final int DATABASE_VERSION = 1;
@@ -36,6 +38,14 @@ public class DBHelper extends SQLiteOpenHelper {
     public DBHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
+    
+    public static DBHelper getInstance(Context context) {
+        if (mInstance == null) {
+          mInstance = new DBHelper(context.getApplicationContext());
+        }
+        return mInstance;
+      }
+
 
     // Questo metodo viene chiamato durante la creazione del database
     @Override

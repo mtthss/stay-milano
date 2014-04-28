@@ -81,7 +81,7 @@ public class SplashActivity extends ActionBarActivity {
 		//creo l'helper per aprire il DB
         DBHelper databaseHelper = new DBHelper(this);
         //apro il DB sia in lettura che in scrittura
-        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
         
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date date= new Date();

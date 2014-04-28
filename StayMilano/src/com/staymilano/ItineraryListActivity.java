@@ -9,12 +9,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class ShowItinerariesActivity extends ActionBarActivity {
+public class ItineraryListActivity extends ActionBarActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_show_itineraries);
+		setContentView(R.layout.activity_itinerary_list);
 
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
@@ -54,7 +54,7 @@ public class ShowItinerariesActivity extends ActionBarActivity {
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(
-					R.layout.fragment_show_itineraries, container, false);
+					R.layout.fragment_itinerary_list, container, false);
 			return rootView;
 		}
 	}

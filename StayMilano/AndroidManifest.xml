@@ -62,7 +62,7 @@
             android:label="@string/title_activity_area_selection" >
         </activity>
         <activity
-            android:name="com.staymilano.ShowItinerariesActivity"
+            android:name="com.staymilano.ItineraryListActivity"
             android:label="@string/title_activity_show_itineraries" >
         </activity>
     </application>

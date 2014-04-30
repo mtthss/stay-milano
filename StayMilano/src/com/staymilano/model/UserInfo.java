@@ -2,45 +2,33 @@ package com.staymilano.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+import com.staymilano.database.ItineraryDAO;
+
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
 public class UserInfo implements Serializable{
 
 	private static final long serialVersionUID = 8354095811783356274L;
 	
-	private List<Trip> travel;
-	private static UserInfo user;
-	
-	
-	private UserInfo(){
-		travel=fillTravel();
+	private List<Itinerary> itineraries;
+
+	public void setItineraries(SQLiteDatabase db) {
+		itineraries=new ArrayList<Itinerary>();
+		Cursor cursor=ItineraryDAO.getAllItinerary(db);
+		while(cursor.moveToNext()){
+			Itinerary it= new Itinerary();
+			it.setID(cursor.getString(0));
+			it.setDate(cursor.getString(1));
+			it.setHour(cursor.getString(2));
+			itineraries.add(it);
+		}
 	}
 
-	private List<Trip> fillTravel() {
-		travel=new ArrayList<Trip>();
-		return travel;
+	public List<Itinerary> getItineraries() {
+		return itineraries;
 	}
 	
-	private static UserInfo create(){
-		return new UserInfo();
-	}
-	
-	public static UserInfo getUser(){
-		if(user==null){
-			create();
-		}
-		return user;
-	}
-	
-	public int getTravelsize(){
-		return travel.size();
-	}
-	
-	public boolean isThereAnItinerary(Date today){
-		for(Trip tr:travel){
-			return tr.findItineraryByDate(today);
-		}
-		return false;
-	}
 }

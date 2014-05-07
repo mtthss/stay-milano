@@ -7,7 +7,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-public class POIAdapter {
+public class PointOfInterestDAO {
 	
 	public static final String ID = "_id";
 	public static final String NAME = "name";

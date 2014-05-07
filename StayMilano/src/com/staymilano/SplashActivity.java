@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.staymilano.database.DBHelper;
-import com.staymilano.database.ItineraryAdapter;
+import com.staymilano.database.ItineraryDAO;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.content.Intent;
@@ -83,7 +83,7 @@ public class SplashActivity extends ActionBarActivity {
         
         Date date= new Date();
         
-        Cursor cur=ItineraryAdapter.getItineraryByDate(db,new SimpleDateFormat("yyyy-MM-dd").format(date));
+        Cursor cur=ItineraryDAO.getItineraryByDate(db,new SimpleDateFormat("yyyy-MM-dd").format(date));
         
         final Intent intent;
         if(cur.getCount()==0){

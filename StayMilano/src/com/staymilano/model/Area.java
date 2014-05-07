@@ -6,7 +6,7 @@ import java.util.List;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.staymilano.database.POIAdapter;
+import com.staymilano.database.PointOfInterestDAO;
 
 public class Area {
 
@@ -20,7 +20,7 @@ public class Area {
 	
 	private List<PointOfInterest> fillPois(SQLiteDatabase db, AreasName nm) {
 		pois=new ArrayList<PointOfInterest>();
-		Cursor cur= POIAdapter.getPOIByArea(db, nm.toString());
+		Cursor cur= PointOfInterestDAO.getPOIByArea(db, nm.toString());
 		while(cur.moveToNext()){
 			PointOfInterest poi=new PointOfInterest();
 			poi.setName(cur.getString(1));

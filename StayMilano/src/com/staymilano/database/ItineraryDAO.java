@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-public class ItineraryAdapter {
+public class ItineraryDAO {
 	
 	public static final String ID = "_id";
 	public static final String DATA = "data";
@@ -43,7 +43,7 @@ public class ItineraryAdapter {
     }
 	
     public static boolean deleteItinerary(SQLiteDatabase db, String id) {
-    	SelectedPOIAdapter.deleteSelectedPOIByItinerary(db, id);
+    	SelectedPOIDAO.deleteSelectedPOIByItinerary(db, id);
         return db.delete(TABELLA, ID + "=" + id, null) > 0;
     }
 

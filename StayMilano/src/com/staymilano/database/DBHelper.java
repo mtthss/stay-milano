@@ -19,17 +19,17 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     // Lo statement SQL di creazione del database
-    private static final String POINTOFINTEREST_CREATE = "create table "+ POIAdapter.TABELLA
-    		+ "("+POIAdapter.ID+" integer primary key autoincrement,"
-    				+ POIAdapter.NAME+" text not null, "
-    						+ POIAdapter.DESCRIPTION+" text not null, "
-    								+ POIAdapter.TYPE+" text not null, "
-    										+ POIAdapter.AREA+" text not null);";
+    private static final String POINTOFINTEREST_CREATE = "create table "+ PointOfInterestDAO.TABELLA
+    		+ "("+PointOfInterestDAO.ID+" integer primary key autoincrement,"
+    				+ PointOfInterestDAO.NAME+" text not null, "
+    						+ PointOfInterestDAO.DESCRIPTION+" text not null, "
+    								+ PointOfInterestDAO.TYPE+" text not null, "
+    										+ PointOfInterestDAO.AREA+" text not null);";
     
-    private static final String ITINERARY_CREATE = "create table "+ItineraryAdapter.TABELLA
-    		+ "("+ItineraryAdapter.ID+" integer primary key autoincrement, "
-    				+ ItineraryAdapter.DATA+" text not null, "
-    						+ ItineraryAdapter.START_TIME+" text not null);";
+    private static final String ITINERARY_CREATE = "create table "+ItineraryDAO.TABELLA
+    		+ "("+ItineraryDAO.ID+" integer primary key autoincrement, "
+    				+ ItineraryDAO.DATA+" text not null, "
+    						+ ItineraryDAO.START_TIME+" text not null);";
     
     private static final String SELECTED_POI = "create table selectedpoi "
     		+ "(_itinerary_id primary key, _poi_id, visited boolean);";
@@ -76,7 +76,7 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
                 String line = null;
                 while ( (line = reader.readLine()) != null ) {
-                        database.insert(POIAdapter.TABELLA, null, POIAdapter.getContentValues(line));
+                        database.insert(PointOfInterestDAO.TABELLA, null, PointOfInterestDAO.getContentValues(line));
                 } 
                 reader.close();
         } catch (IOException e) {

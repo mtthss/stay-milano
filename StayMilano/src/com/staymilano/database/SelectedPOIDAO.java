@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-public class SelectedPOIAdapter {
+public class SelectedPOIDAO {
 
 	public static final String ITINERARY_ID = "_itinerary_id";
 	public static final String POI_ID = "_poi_id";

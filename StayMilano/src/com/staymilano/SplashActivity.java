@@ -28,7 +28,6 @@ public class SplashActivity extends ActionBarActivity {
 	private boolean mIsDone;
 	
 	private UiHandler mHandler;
-	private String CITY_EXTRA;
 	
 	private static final String TAG_LOG=SplashActivity.class.getName();	
 	

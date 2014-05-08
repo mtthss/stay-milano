@@ -33,7 +33,7 @@ public class PointOfInterestDAO {
     }
 	
 	public static Cursor getPOIByArea(SQLiteDatabase db, String area) throws SQLException {
-        Cursor c = db.query(true, TABELLA, COLONNE, AREA + "=" + area, null, null, null, null, null);
+        Cursor c = db.query(true, TABELLA, COLONNE, AREA + "=" + "'"+area+"'", null, null, null, null, null);
         if (c != null) {
             c.moveToFirst();
         }
@@ -41,7 +41,7 @@ public class PointOfInterestDAO {
     }
 	
 	public static Cursor getPOIById(SQLiteDatabase db, String id) throws SQLException {
-        Cursor c = db.query(true, TABELLA, COLONNE, ID + "=" + id, null, null, null, null, null);
+        Cursor c = db.query(true, TABELLA, COLONNE, ID + "=" + "'"+id+"'", null, null, null, null, null);
         if (c != null) {
             c.moveToFirst();
         }

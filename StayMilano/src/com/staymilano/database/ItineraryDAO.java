@@ -27,7 +27,7 @@ public class ItineraryDAO {
     }
 	
 	public static Cursor getItineraryByDate(SQLiteDatabase db, String date) throws SQLException {
-		Cursor c = db.query(true, TABELLA, COLONNE, DATA + "=" + date, null, null, null, null, null);
+		Cursor c = db.query(true, TABELLA, COLONNE, DATA + "=" +"'"+date+"'", null, null, null, null, null);
 		if (c != null) {
 			c.moveToFirst();
 		}
@@ -39,12 +39,12 @@ public class ItineraryDAO {
         v.put(DATA, data);
         v.put(START_TIME, starttime);
  
-        return db.update(TABELLA, v, ID + "=" + id, null) >0; 
+        return db.update(TABELLA, v, ID + "=" + "'"+id+"'", null) >0; 
     }
 	
     public static boolean deleteItinerary(SQLiteDatabase db, String id) {
     	SelectedPOIDAO.deleteSelectedPOIByItinerary(db, id);
-        return db.delete(TABELLA, ID + "=" + id, null) > 0;
+        return db.delete(TABELLA, ID + "=" + "'"+id+"'", null) > 0;
     }
 
 }

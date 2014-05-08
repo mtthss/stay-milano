@@ -1,5 +1,6 @@
 package com.staymilano.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,8 +9,10 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.staymilano.database.PointOfInterestDAO;
 
-public class Area {
+public class Area implements Serializable{
 
+
+	private static final long serialVersionUID = 3577242940737875282L;
 	private String name;
 	private List<PointOfInterest> pois;
 
@@ -20,7 +23,7 @@ public class Area {
 	
 	private List<PointOfInterest> fillPois(SQLiteDatabase db, AreasName nm) {
 		pois=new ArrayList<PointOfInterest>();
-		Cursor cur= PointOfInterestDAO.getPOIByArea(db, nm.toString());
+		Cursor cur= PointOfInterestDAO.getPOIByArea(db, nm.toString().toLowerCase());
 		while(cur.moveToNext()){
 			PointOfInterest poi=new PointOfInterest();
 			poi.setName(cur.getString(1));

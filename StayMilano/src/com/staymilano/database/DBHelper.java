@@ -16,7 +16,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	private static DBHelper mInstance;
     
     private static final String DATABASE_NAME = "staymilano.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
 
     // Lo statement SQL di creazione del database
     private static final String POINTOFINTEREST_CREATE = "create table "+ PointOfInterestDAO.TABELLA
@@ -71,25 +71,27 @@ public class DBHelper extends SQLiteOpenHelper {
     	load(database,new InputStreamReader(System.in));             
     }  
     
-	private void load(SQLiteDatabase database, InputStreamReader inputStreamReader) {
+	private void load(SQLiteDatabase database,
+			InputStreamReader inputStreamReader) {
 		BufferedReader reader = new BufferedReader(inputStreamReader);
-        try {
-                String line = null;
-                while ( (line = reader.readLine()) != null ) {
-                        database.insert(PointOfInterestDAO.TABELLA, null, PointOfInterestDAO.getContentValues(line));
-                } 
-                reader.close();
-        } catch (IOException e) {
-                e.printStackTrace();
-        } finally {
-                if (inputStreamReader != null) {
-                        try {
-                                inputStreamReader.close();
-                        } catch (IOException e) {
-                        }
-                }
-        }
-		
+		try {
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				database.insert(PointOfInterestDAO.TABELLA, null,
+						PointOfInterestDAO.getContentValues(line));
+			}
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (inputStreamReader != null) {
+				try {
+					inputStreamReader.close();
+				} catch (IOException e) {
+				}
+			}
+		}
+
 	}
 
 }

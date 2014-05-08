@@ -1,40 +1,52 @@
 package com.staymilano.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class City {
+import android.database.sqlite.SQLiteDatabase;
+
+public class City implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1875465241467662415L;
+
 	private static String MILANO="Milano";
 	
 	private String name;
 	private List<Area> areas;
 	
 	private static City city;
-	
-	private City(){
-		this.name=MILANO;
-		this.areas=fillAreas();
+
+	private City(SQLiteDatabase db) {
+		this.areas=new ArrayList<Area>();
+		fillAreas(db);
 	}
 	
-	private List<Area> fillAreas() {
-		this.areas=new ArrayList<Area>();
+	public static City getCity(SQLiteDatabase db){
+		if(city==null){
+			city=new City(db);
+		}
+		return city;
+	}
+
+	private List<Area> fillAreas(SQLiteDatabase db) {
 		for(AreasName nm: AreasName.values()){
-			//Area area=new Area(nm);
-			//areas.add(area);
+			Area area=new Area(db, nm);
+			areas.add(area);
 		}
 		return areas;
 	}
-
-	public static City getCity(){
-		if(city== null){
-			city=new City();
+	
+	public List<PointOfInterest> getPOIbyArea(String area){
+		for(Area a : areas){
+			if(a.getName().equalsIgnoreCase(area)){
+				return a.getPois();
+			}
 		}
-		return city;
-	} 
-
-	public List<Area> getAreas() {
-		return this.areas;
+		return null;
 	}
 	
 	public String getName(){

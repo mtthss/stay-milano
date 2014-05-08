@@ -6,6 +6,8 @@ import java.util.Date;
 
 import com.staymilano.database.DBHelper;
 import com.staymilano.database.ItineraryDAO;
+import com.staymilano.model.City;
+
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.content.Intent;
@@ -26,6 +28,7 @@ public class SplashActivity extends ActionBarActivity {
 	private boolean mIsDone;
 	
 	private UiHandler mHandler;
+	private String CITY_EXTRA;
 	
 	private static final String TAG_LOG=SplashActivity.class.getName();	
 	
@@ -78,25 +81,26 @@ public class SplashActivity extends ActionBarActivity {
 	
 
 	protected void goAhead() {
-        //apro il DB sia in lettura che in scrittura
-        SQLiteDatabase db = DBHelper.getInstance(this).getReadableDatabase();
+        //apro il DB in lettura
+        SQLiteDatabase db = DBHelper.getInstance(this).getWritableDatabase();
         
         Date date= new Date();
         
         Cursor cur=ItineraryDAO.getItineraryByDate(db,new SimpleDateFormat("yyyy-MM-dd").format(date));
         
         final Intent intent;
-        if(cur.getCount()==0){
+        if(cur.getCount()!=0){
         	intent= new Intent(this,MainActivity.class);
         	startActivity(intent);
         }else{
-        	/*cur=ItineraryAdapter.getAllItinerary(db);
-        	if(cur!=null){
-        		intent= new Intent(this,FirstAccessActivity.class);
-        		startActivity(intent);
+        	cur=ItineraryDAO.getAllItinerary(db);
+        	if(cur.getCount()==0){
+	        	intent=new Intent(this,AreaSelectionActivity.class);
+	        	startActivity(intent);
         	}else{
-        		//TODO activity di creazione itinerario
-        	}*/
+        		intent=new Intent(this,ItineraryListActivity.class);
+        		startActivity(intent);
+        	}
         }
         finish();
 	}

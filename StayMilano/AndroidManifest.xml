@@ -14,7 +14,7 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <!--
      The following two permissions are not required to use
-     Google Maps Android API v2, but are recommended.
+     Google Maps Android API v2, but are recommended.
     -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -28,7 +28,6 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-
         <activity android:name="com.staymilano.MainActivity" />
         <activity
             android:name="com.staymilano.SplashActivity"
@@ -61,6 +60,10 @@
         <activity
             android:name="com.staymilano.ItineraryListActivity"
             android:label="@string/title_activity_show_itineraries" >
+        </activity>
+        <activity
+            android:name="com.staymilano.POIListActivity"
+            android:label="@string/title_activity_poilist" >
         </activity>
     </application>
 

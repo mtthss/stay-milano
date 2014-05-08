@@ -10,5 +10,12 @@
     <string name="title_activity_area_selection">AreaSelection</string>
     <string name="title_activity_show_itineraries">ShowItinerariesActivity</string>
     <string name="show_button_label">Show My Itineraries</string>
+    <string name="duomo">Duomo</string>
+    <string name="castello">Castello</string>
+    <string name="porta_ticinese">Porta Ticinese</string>
+    <string name="porta_romana">Porta Romana</string>
+    <string name="palestro">Palestro</string>
+    <string name="expo2015">EXPO2015</string>
+    <string name="title_activity_poilist">POIListActivity</string>
 
 </resources>

@@ -21,8 +21,8 @@ public class ItineraryCustomAdapter extends ArrayAdapter<Itinerary>{
 	
 	public View getView(int position,View convertView,ViewGroup parent){
 		LayoutInflater inflater=(LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		convertView=inflater.inflate(R.layout.rowitinerary, null);
-		TextView date=(TextView) convertView.findViewById(R.id.textViewDate);
+		convertView=inflater.inflate(0, null);
+		TextView date=(TextView) convertView.findViewById(position);
 		Itinerary it=getItem(position);
 		date.setText(it.getDate().toString());
 		return convertView;

@@ -1,6 +1,5 @@
 package com.staymilano;
 
-import com.staymilano.adapter.ItineraryCustomAdapter;
 import com.staymilano.database.DBHelper;
 import com.staymilano.database.ItineraryDAO;
 import com.staymilano.model.UserInfo;

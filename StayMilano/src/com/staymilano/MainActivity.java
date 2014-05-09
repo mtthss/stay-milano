@@ -3,12 +3,13 @@ package com.staymilano;
 import java.util.ArrayList;
 import java.util.List;
 
+import visualization.MapLook;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-
 import communications.layer.*;
 import model.Direction;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
@@ -69,7 +70,7 @@ public class MainActivity extends Activity implements OnMapLoadedCallback, CallB
 
   @Override
   public void onDirectionLoaded(List<Direction> directions) {
-	  GoogleMapsUtils.drawDirection(directions, map);
+	  MapLook.drawDirection(directions, map);
   }
 
 

@@ -5,7 +5,7 @@
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/User/Desktop/workspace/libproject/google-play-services_lib/libs/google-play-services.jar"/>
 	<classpathentry kind="src" path="/appcompat_v7"/>
+	<classpathentry kind="lib" path="C:/Users/chiara/Desktop/adt-bundle-windows-x86-20140321 (1)/adt-bundle-windows-x86-20140321/sdk/extras/google/google_play_services/libproject/google-play-services_lib/bin/google-play-services_lib.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

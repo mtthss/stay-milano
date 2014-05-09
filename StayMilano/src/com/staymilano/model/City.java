@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.android.gms.maps.model.Polygon;
+
 import android.database.sqlite.SQLiteDatabase;
 
 public class City implements Serializable{
@@ -51,6 +53,14 @@ public class City implements Serializable{
 	
 	public String getName(){
 		return this.name;
+	}
+	
+	public List<Polygon> getPolygons(){
+		List<Polygon> pols=new ArrayList<Polygon>();
+		for(Area a:areas){
+			pols.add(a.getPolygon());
+		}
+		return pols;
 	}
 		
 }

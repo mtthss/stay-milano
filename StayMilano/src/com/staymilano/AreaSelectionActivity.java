@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 import visualization.MapLook;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.MapFragment;
 import com.staymilano.database.DBHelper;
 import com.staymilano.model.Area;
@@ -36,15 +38,16 @@ public class AreaSelectionActivity extends Activity implements OnMapLoadedCallba
 	private Intent intent;
 	
 	private GoogleMap map;
-
+	static final LatLng MILAN = new LatLng(45.4773, 9.1815);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_area_selection);
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-		
-		
+		map.setOnMapLoadedCallback(this);
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(MILAN, 10));
+		map.animateCamera(CameraUpdateFactory.zoomTo(12), 1000, null);
 
 	/*	intent = new Intent(this, POIListActivity.class);
 		mButton1 = (Button) findViewById(R.id.button);

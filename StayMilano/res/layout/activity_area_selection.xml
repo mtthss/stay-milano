@@ -3,8 +3,14 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
+    
+    <fragment
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="com.google.android.gms.maps.MapFragment" />
 
-    <Button
+    <!--<Button
         android:id="@+id/button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -38,7 +44,7 @@
         android:id="@+id/button6"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/expo2015" />
+        android:text="@string/expo2015" />-->
     
 
 </LinearLayout>

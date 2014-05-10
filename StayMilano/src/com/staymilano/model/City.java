@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
 
 import android.database.sqlite.SQLiteDatabase;
 
@@ -55,8 +56,8 @@ public class City implements Serializable{
 		return this.name;
 	}
 	
-	public List<Polygon> getPolygons(){
-		List<Polygon> pols=new ArrayList<Polygon>();
+	public List<PolygonOptions> getPolygons(){
+		List<PolygonOptions> pols=new ArrayList<PolygonOptions>();
 		for(Area a:areas){
 			pols.add(a.getPolygon());
 		}

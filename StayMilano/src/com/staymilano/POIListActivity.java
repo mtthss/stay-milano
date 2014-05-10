@@ -6,7 +6,8 @@ import com.staymilano.model.UserInfo;
 
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
+
+import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.os.Build;
 
-public class POIListActivity extends ActionBarActivity {
+public class POIListActivity extends Activity {
 
 	static final String AREA_EXTRA="area_extra";
 

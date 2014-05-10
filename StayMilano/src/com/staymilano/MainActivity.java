@@ -6,7 +6,6 @@ import java.util.List;
 import visualization.MapLook;
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import communications.layer.*;
 import model.Direction;
 
@@ -15,7 +14,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MainActivity extends Activity implements OnMapLoadedCallback, CallBack {
@@ -28,26 +26,18 @@ public class MainActivity extends Activity implements OnMapLoadedCallback, CallB
   protected void onCreate(Bundle savedInstanceState) {
 	  
     super.onCreate(savedInstanceState);
-    // initialize map
     setContentView(R.layout.activity_main);
     map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-    // create classic red marker with a title and a description
-    Marker milan = map.addMarker(new MarkerOptions()
-        .position(MILAN)
-        .title("Milan")
-        .snippet("Ciao"));
-    // center on milan coordinates
+    
+    map.addMarker(new MarkerOptions().position(MILAN).title("Milan").snippet("Ciao"));
 	map.moveCamera(CameraUpdateFactory.newLatLngZoom(MILAN, 10));
-	// zoom when loaded
     map.setOnMapLoadedCallback(this);
-    // set control
     map.getUiSettings().setZoomControlsEnabled(false);
   }
 
   @Override
   public void onMapLoaded() {
 	  
-	  // Zoom in, animating the camera.
 	  map.animateCamera(CameraUpdateFactory.zoomTo(12), 1000, null);
 	  getDirections();
   }

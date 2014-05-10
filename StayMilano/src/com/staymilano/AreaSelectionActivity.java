@@ -17,12 +17,13 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.app.Activity;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 
-public class AreaSelectionActivity extends ActionBarActivity implements OnMapLoadedCallback{
+public class AreaSelectionActivity extends Activity implements OnMapLoadedCallback{
 	
 	
 	/*private Button mButton1;

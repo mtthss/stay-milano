@@ -10,6 +10,7 @@ import com.staymilano.model.City;
 
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,7 +19,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 
-public class SplashActivity extends ActionBarActivity {
+public class SplashActivity extends Activity {
 	
 	private static final long MIN_WAIT_INTERVAL= 1500L;
 	private static final long MAX_WAIT_INTERVAL= 3000L;

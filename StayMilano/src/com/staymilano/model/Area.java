@@ -14,6 +14,7 @@ import java.util.StringTokenizer;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
@@ -26,6 +27,7 @@ public class Area implements Serializable {
 	private String name;
 	private List<PointOfInterest> pois;
 	private PolygonOptions pol;
+	private LatLng center;
 
 	public Area(SQLiteDatabase db, AreasName nm) {
 		this.name = nm.toString();
@@ -49,10 +51,21 @@ public class Area implements Serializable {
 							",");
 
 					if (stringTokenizer.nextToken().equalsIgnoreCase(name)) {
-						LatLng latlng = new LatLng(
-								Float.parseFloat(stringTokenizer.nextToken()),
-								Float.parseFloat(stringTokenizer.nextToken()));
-						points.add(latlng);
+						if (stringTokenizer.nextToken().equalsIgnoreCase(
+								"center")) {
+							center = new LatLng(
+									Float.parseFloat(stringTokenizer
+											.nextToken()),
+									Float.parseFloat(stringTokenizer
+											.nextToken()));
+						} else {
+							LatLng latlng = new LatLng(
+									Float.parseFloat(stringTokenizer
+											.nextToken()),
+									Float.parseFloat(stringTokenizer
+											.nextToken()));
+							points.add(latlng);
+						}
 					} else {
 						return;
 					}
@@ -99,6 +112,10 @@ public class Area implements Serializable {
 
 	public PolygonOptions getPolygon() {
 		return pol;
+	}
+	
+	public LatLng getCenter(){
+		return center;
 	}
 
 }

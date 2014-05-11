@@ -56,6 +56,10 @@ public class City implements Serializable{
 		return this.name;
 	}
 	
+	public List<Area> getAllAreas(){
+		return areas;
+	}
+	
 	public List<PolygonOptions> getPolygons(){
 		List<PolygonOptions> pols=new ArrayList<PolygonOptions>();
 		for(Area a:areas){

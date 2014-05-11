@@ -1,13 +1,19 @@
 package com.staymilano;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 import visualization.MapLook;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.MapFragment;
 import com.staymilano.database.DBHelper;
 import com.staymilano.model.Area;
@@ -35,19 +41,26 @@ public class AreaSelectionActivity extends Activity implements OnMapLoadedCallba
 	private Button mButton5;
 	private Button mButton6;*/
 	
-	private Intent intent;
+	//private Intent intent;
+	
+	private Boolean detail;
 	
 	private GoogleMap map;
+	List<Marker> markers;
+
+	private SQLiteDatabase db=DBHelper.getInstance(this).getWritableDatabase();
 	static final LatLng MILAN = new LatLng(45.4773, 9.1815);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_area_selection);
+		detail=false;
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 		map.setOnMapLoadedCallback(this);
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(MILAN, 10));
 		map.animateCamera(CameraUpdateFactory.zoomTo(12), 1000, null);
+		map.setOnMapClickListener(listener);
 
 	/*	intent = new Intent(this, POIListActivity.class);
 		mButton1 = (Button) findViewById(R.id.button);
@@ -68,11 +81,67 @@ public class AreaSelectionActivity extends Activity implements OnMapLoadedCallba
 
 	@Override
 	public void onMapLoaded() {
-		MapLook.drawAreas(
-				City.getCity(DBHelper.getInstance(this).getWritableDatabase())
-						.getPolygons(), map);
+		MapLook.drawAreas(City.getCity(db).getPolygons(), map);
 
 	}
+	
+	private final OnMapClickListener listener = new OnMapClickListener() {
+
+		@Override
+		public void onMapClick(LatLng point) {
+			if (detail) {
+				MapLook.removePOI();
+				map.animateCamera(CameraUpdateFactory.zoomTo(12), 1000, null);
+				MapLook.drawAreas(City.getCity(db).getPolygons(), map);
+
+				detail = false;
+			} else {
+				detail = true;
+				List<Area> areas = City.getCity(db).getAllAreas();
+				for (Area a : areas) {
+					if (PointInPolygon(point, a.getPolygon())) {
+						map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+								a.getCenter(), 10));
+						map.animateCamera(CameraUpdateFactory.zoomTo(15), 1000,
+								null);
+						markers=MapLook.drawPOI(a.getPois());
+						map.setOnMarkerClickListener(markerListener);
+					}
+				}
+
+			}
+
+		}
+
+		private boolean PointInPolygon(LatLng point, PolygonOptions polygon) {
+			List<LatLng> points = polygon.getPoints();
+			int i, j, nvert = points.size();
+			boolean c = false;
+
+			for (i = 0, j = nvert - 1; i < nvert; j = i++) {
+				if ((((points.get(i).latitude) >= point.longitude) != (points
+						.get(j).longitude >= point.longitude))
+						&& (point.latitude <= (points.get(j).latitude - points
+								.get(i).latitude)
+								* (point.longitude - points.get(i).longitude)
+								/ (points.get(j).longitude - points.get(i).longitude)
+								+ points.get(i).latitude))
+					c = !c;
+			}
+
+			return c;
+		}
+	};
+	
+	
+	private OnMarkerClickListener markerListener=new OnMarkerClickListener() {
+		
+		@Override
+		public boolean onMarkerClick(Marker marker) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+	};
 	
 	/*private final OnClickListener mOnClickListener=new OnClickListener() {
 		

@@ -91,6 +91,7 @@ public class AreaSelectionActivity extends Activity implements OnMapLoadedCallba
 		@Override
 		public void onMapClick(LatLng point) {
 			if (detail) {
+				//TODO
 				//MapLook.removePOI();
 				map.animateCamera(CameraUpdateFactory.zoomTo(12), 1000, null);
 				MapLook.drawAreas(City.getCity(db).getPolygons(), map);
@@ -109,8 +110,8 @@ public class AreaSelectionActivity extends Activity implements OnMapLoadedCallba
 							markers.add(marker);
 						}
 						MapLook.drawPOI(markers, map);
-						map.moveCamera(CameraUpdateFactory.newLatLngZoom(
-								a.getCenter(), 10));
+						//TODO gestire centro della zona
+						//map.moveCamera(CameraUpdateFactory.newLatLngZoom(a.getCenter(), 10));
 						map.animateCamera(CameraUpdateFactory.zoomTo(15), 1000,
 								null);
 						map.setOnMarkerClickListener(markerListener);

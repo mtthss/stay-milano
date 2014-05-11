@@ -14,6 +14,8 @@ public class PointOfInterestDAO {
 	public static final String DESCRIPTION = "description";
 	public static final String TYPE = "type";
 	public static final String AREA = "area";
+	public static final String LATITUDE= "latitude";
+	public static final String LONGITUDE= "longitude";
 	    
 	public static final String TABELLA = "pointofinterest";
 	public static final String[] COLONNE = new String[]{ID, NAME, DESCRIPTION, TYPE, AREA};
@@ -25,6 +27,8 @@ public class PointOfInterestDAO {
 	        result.put(DESCRIPTION, stringTokenizer.nextToken());
 	        result.put(TYPE, stringTokenizer.nextToken());
 	        result.put(AREA, stringTokenizer.nextToken());
+	        result.put(LATITUDE, stringTokenizer.nextToken());
+	        result.put(LONGITUDE, stringTokenizer.nextToken());
 	        return result;
 	}
 

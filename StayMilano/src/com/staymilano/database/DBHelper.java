@@ -19,12 +19,14 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 3;
 
     // Lo statement SQL di creazione del database
-    private static final String POINTOFINTEREST_CREATE = "create table "+ PointOfInterestDAO.TABELLA
-    		+ "("+PointOfInterestDAO.ID+" integer primary key autoincrement,"
-    				+ PointOfInterestDAO.NAME+" text not null, "
-    						+ PointOfInterestDAO.DESCRIPTION+" text not null, "
-    								+ PointOfInterestDAO.TYPE+" text not null, "
-    										+ PointOfInterestDAO.AREA+" text not null);";
+	private static final String POINTOFINTEREST_CREATE = "create table "
+			+ PointOfInterestDAO.TABELLA + "(" + PointOfInterestDAO.ID
+			+ " integer primary key autoincrement," + PointOfInterestDAO.NAME
+			+ " text not null, " + PointOfInterestDAO.DESCRIPTION
+			+ " text not null, " + PointOfInterestDAO.TYPE + " text not null, "
+			+ PointOfInterestDAO.AREA + " text not null,"
+			+ PointOfInterestDAO.LATITUDE + " text not null,"
+			+ PointOfInterestDAO.LONGITUDE + " text not null);";
     
     private static final String ITINERARY_CREATE = "create table "+ItineraryDAO.TABELLA
     		+ "("+ItineraryDAO.ID+" integer primary key autoincrement, "

@@ -24,11 +24,13 @@ public class MainActivity extends Activity implements OnMapLoadedCallback, CallB
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-	  
+	
+	// initialize
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
     
+    // set camera options
     map.addMarker(new MarkerOptions().position(MILAN).title("Milan").snippet("Ciao"));
 	map.moveCamera(CameraUpdateFactory.newLatLngZoom(MILAN, 10));
     map.setOnMapLoadedCallback(this);
@@ -38,7 +40,10 @@ public class MainActivity extends Activity implements OnMapLoadedCallback, CallB
   @Override
   public void onMapLoaded() {
 	  
+	  // once map is loaded zoom on the city center
 	  map.animateCamera(CameraUpdateFactory.zoomTo(12), 1000, null);
+	  
+	  // retrieve directions from google server
 	  getDirections();
   }
   
@@ -54,12 +59,13 @@ public class MainActivity extends Activity implements OnMapLoadedCallback, CallB
 	  POIsequence.add(end);
 	  
 	  // get directions for the specified itinerary
-	  GoogleMapsUtils.getDirection(this, start, intermediate, GoogleMapsUtils.MODE_WALKING);  
-	  GoogleMapsUtils.getDirection(this, intermediate, end, GoogleMapsUtils.MODE_WALKING);	  
+	  GoogleMapsUtils.getDirection(this, POIsequence, GoogleMapsUtils.MODE_WALKING);    
   }
 
   @Override
   public void onDirectionLoaded(List<Direction> directions) {
+	  
+	  // once the google server provides the directions, draw them on the map
 	  MapLook.drawDirection(directions, map);
   }
 

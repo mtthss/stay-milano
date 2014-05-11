@@ -13,6 +13,7 @@ import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.MapFragment;
 import com.staymilano.database.DBHelper;
@@ -46,7 +47,7 @@ public class AreaSelectionActivity extends Activity implements OnMapLoadedCallba
 	private Boolean detail;
 	
 	private GoogleMap map;
-	List<Marker> markers;
+	List<MarkerOptions> markers;
 
 	private SQLiteDatabase db=DBHelper.getInstance(this).getWritableDatabase();
 	static final LatLng MILAN = new LatLng(45.4773, 9.1815);
@@ -90,7 +91,7 @@ public class AreaSelectionActivity extends Activity implements OnMapLoadedCallba
 		@Override
 		public void onMapClick(LatLng point) {
 			if (detail) {
-				MapLook.removePOI();
+				//MapLook.removePOI();
 				map.animateCamera(CameraUpdateFactory.zoomTo(12), 1000, null);
 				MapLook.drawAreas(City.getCity(db).getPolygons(), map);
 
@@ -100,12 +101,20 @@ public class AreaSelectionActivity extends Activity implements OnMapLoadedCallba
 				List<Area> areas = City.getCity(db).getAllAreas();
 				for (Area a : areas) {
 					if (PointInPolygon(point, a.getPolygon())) {
+						markers = new ArrayList<MarkerOptions>();
+						for (PointOfInterest poi : a.getPois()) {
+							MarkerOptions marker = new MarkerOptions();
+							marker.title(poi.getName());
+							marker.position(poi.getPosition());
+							markers.add(marker);
+						}
+						MapLook.drawPOI(markers, map);
 						map.moveCamera(CameraUpdateFactory.newLatLngZoom(
 								a.getCenter(), 10));
 						map.animateCamera(CameraUpdateFactory.zoomTo(15), 1000,
 								null);
-						markers=MapLook.drawPOI(a.getPois());
 						map.setOnMarkerClickListener(markerListener);
+
 					}
 				}
 

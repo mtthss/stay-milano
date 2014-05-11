@@ -7,8 +7,14 @@
     <fragment
         android:id="@+id/map"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp"
         class="com.google.android.gms.maps.MapFragment" />
+    
+    <fragment 
+        android:id="@+id/fragment_area_selection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <!--<Button
         android:id="@+id/button"

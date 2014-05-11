@@ -1,5 +1,7 @@
 package com.staymilano.model;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class PointOfInterest {
 	
 	private static final String MONUMENT="monument";
@@ -8,6 +10,7 @@ public class PointOfInterest {
 	private String name;
 	private String type;
 	private String description;
+	private LatLng position;
 	
 	public String getName(){
 		return this.name;
@@ -35,5 +38,13 @@ public class PointOfInterest {
 		}else if(type.equalsIgnoreCase(MUSEUM)){
 			this.type=MUSEUM;
 		}
+	}
+	
+	public void setPosition(String lat,String lng){
+		position=new LatLng(Float.parseFloat(lat), Float.parseFloat(lng));
+	}
+	
+	public LatLng getPosition() {
+		return position;
 	}
 }

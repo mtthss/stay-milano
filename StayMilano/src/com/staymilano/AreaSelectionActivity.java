@@ -2,7 +2,6 @@ package com.staymilano;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import visualization.MapLook;
 
@@ -18,36 +17,27 @@ import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.MapFragment;
 import com.staymilano.database.DBHelper;
 import com.staymilano.model.Area;
-import com.staymilano.model.AreasName;
 import com.staymilano.model.City;
 import com.staymilano.model.PointOfInterest;
 
-import android.support.v7.app.ActionBarActivity;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.app.Activity;
-import android.content.Intent;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 
-public class AreaSelectionActivity extends Activity implements OnMapLoadedCallback{
-	
-	
-	/*private Button mButton1;
-	private Button mButton2;
-	private Button mButton3;
-	private Button mButton4;
-	private Button mButton5;
-	private Button mButton6;*/
-	
-	//private Intent intent;
+public class AreaSelectionActivity extends FragmentActivity implements OnMapLoadedCallback{
 	
 	private Boolean detail;
 	
 	private GoogleMap map;
 	List<MarkerOptions> markers;
+	
+	ListView listView;
+	CustomAdapter adapter;
+	List<PointOfInterest> selectedPOI=new ArrayList<PointOfInterest>();
 
 	private SQLiteDatabase db=DBHelper.getInstance(this).getWritableDatabase();
 	static final LatLng MILAN = new LatLng(45.4773, 9.1815);
@@ -56,27 +46,18 @@ public class AreaSelectionActivity extends Activity implements OnMapLoadedCallba
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_area_selection);
+		//detail mode set to false
 		detail=false;
+		//creation of the map object and set up
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 		map.setOnMapLoadedCallback(this);
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(MILAN, 10));
 		map.animateCamera(CameraUpdateFactory.zoomTo(12), 1000, null);
 		map.setOnMapClickListener(listener);
-
-	/*	intent = new Intent(this, POIListActivity.class);
-		mButton1 = (Button) findViewById(R.id.button);
-		mButton2 = (Button) findViewById(R.id.button2);
-		mButton3 = (Button) findViewById(R.id.button3);
-		mButton4 = (Button) findViewById(R.id.button4);
-		mButton5 = (Button) findViewById(R.id.button5);
-		mButton6 = (Button) findViewById(R.id.button6);
-		mButton1.setOnClickListener(mOnClickListener);
-		mButton2.setOnClickListener(mOnClickListener);
-		mButton3.setOnClickListener(mOnClickListener);
-		mButton4.setOnClickListener(mOnClickListener);
-		mButton5.setOnClickListener(mOnClickListener);
-		mButton6.setOnClickListener(mOnClickListener);*/
-
+		//set up list view
+		listView=(ListView)findViewById(R.id.selected_poi_listview);
+		adapter=new CustomAdapter(this, R.layout.band_layout, selectedPOI);
+		listView.setAdapter(adapter);
 	}
 
 
@@ -91,7 +72,9 @@ public class AreaSelectionActivity extends Activity implements OnMapLoadedCallba
 		@Override
 		public void onMapClick(LatLng point) {
 			if (detail) {
-				//TODO
+
+				//TODO implement remove poi in MapLook
+
 				//MapLook.removePOI();
 				map.animateCamera(CameraUpdateFactory.zoomTo(12), 1000, null);
 				MapLook.drawAreas(City.getCity(db).getPolygons(), map);
@@ -148,44 +131,25 @@ public class AreaSelectionActivity extends Activity implements OnMapLoadedCallba
 		
 		@Override
 		public boolean onMarkerClick(Marker marker) {
-			// TODO Auto-generated method stub
+			PointOfInterest poi=new PointOfInterest();
+			poi=City.getCity(db).getPOIbyName(marker.getTitle());
+			selectedPOI.add(poi);
+			//TODO notifica l'adapter per l'aggiunta
+			adapter.add(poi);
+			adapter.notifyDataSetChanged();
 			return false;
 		}
 	};
 	
-	/*private final OnClickListener mOnClickListener=new OnClickListener() {
-		
+	private class CustomAdapter extends ArrayAdapter<PointOfInterest>{
 
-		@Override
-		public void onClick(View v) {
-			String mArea;
-			final int buttonId=v.getId();
-			switch (buttonId) {
-			case R.id.button:
-				mArea=AreasName.DUOMO.toString();
-				break;
-			case R.id.button2:
-				mArea = AreasName.CASTELLO.toString();
-				break;
-			case R.id.button3:
-				mArea = AreasName.PORTATICINESE.toString();
-				break;
-			case R.id.button4:
-				mArea = AreasName.PORTAROMANA.toString();
-				break;
-			case R.id.button5:
-				mArea = AreasName.PALESTRO.toString();
-				break;
-			default:
-				mArea = AreasName.EXPO15.toString();
-				break;
-			}
-			
-			intent.putExtra(POIListActivity.AREA_EXTRA, mArea);
-			startActivity(intent);
+		public CustomAdapter(Context context, int resource,
+				List<PointOfInterest> objects) {
+			super(context, resource, objects);
 		}
-	};*/
+		
+		//TODO getView
+		
+	}
 	
-
-
 }

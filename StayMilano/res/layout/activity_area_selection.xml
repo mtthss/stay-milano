@@ -11,10 +11,16 @@
         android:layout_height="0dp"
         class="com.google.android.gms.maps.MapFragment" />
     
-    <fragment 
-        android:id="@+id/fragment_area_selection"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+
+      <com.staymilano.HorizontalListView
+          style="@style/HorizontalListView"
+          android:id="@+id/selected_poi_listview"
+          android:layout_height="wrap_content"
+          android:layout_width="wrap_content"/>
+
+    
+   
+   
 
     <!--<Button
         android:id="@+id/button"

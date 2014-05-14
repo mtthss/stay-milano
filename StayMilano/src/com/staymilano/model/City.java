@@ -67,5 +67,16 @@ public class City implements Serializable{
 		}
 		return pols;
 	}
+
+	public PointOfInterest getPOIbyName(String title) {
+		PointOfInterest result = new PointOfInterest();
+		for(Area a:areas){
+			for(PointOfInterest poi:a.getPois()){
+				if(poi.getName().equals(title))
+					result=poi;
+			}
+		}
+		return result;
+	}
 		
 }

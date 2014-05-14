@@ -20,11 +20,16 @@ import com.staymilano.model.Area;
 import com.staymilano.model.City;
 import com.staymilano.model.PointOfInterest;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 
@@ -142,13 +147,26 @@ public class AreaSelectionActivity extends FragmentActivity implements OnMapLoad
 	};
 	
 	private class CustomAdapter extends ArrayAdapter<PointOfInterest>{
+		
+		private Activity context;
 
-		public CustomAdapter(Context context, int resource,
+		public CustomAdapter(Activity context, int resource,
 				List<PointOfInterest> objects) {
 			super(context, resource, objects);
+			this.context=context;
 		}
 		
-		//TODO getView
+
+	  @Override
+	  public View getView(int position, View convertView, ViewGroup parent) {
+	      LayoutInflater inflater = context.getLayoutInflater();
+	      View rowView = inflater.inflate(R.layout.band_layout, null);
+	      // configure view holder
+	      ImageView view = (ImageView) convertView.findViewById(R.id.icon);
+	      view.setImageResource(R.drawable.ic_launcher);
+
+	    return rowView;
+	  }
 		
 	}
 	

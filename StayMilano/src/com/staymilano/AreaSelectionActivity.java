@@ -35,7 +35,7 @@ import android.widget.ListView;
 
 public class AreaSelectionActivity extends FragmentActivity implements OnMapLoadedCallback{
 	
-	private Boolean detail;
+	private Boolean detail=false;
 	
 	private GoogleMap map;
 	List<MarkerOptions> markers;
@@ -51,13 +51,13 @@ public class AreaSelectionActivity extends FragmentActivity implements OnMapLoad
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_area_selection);
-		//detail mode set to false
+		
 		detail=false;
 		//creation of the map object and set up
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 		map.setOnMapLoadedCallback(this);
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(MILAN, 10));
-		map.animateCamera(CameraUpdateFactory.zoomTo(12), 1000, null);
+		map.animateCamera(CameraUpdateFactory.zoomTo((float) 12.5), 1000, null);
 		map.setOnMapClickListener(listener);
 		//set up list view
 		listView=(ListView)findViewById(R.id.selected_poi_listview);
@@ -77,57 +77,62 @@ public class AreaSelectionActivity extends FragmentActivity implements OnMapLoad
 		@Override
 		public void onMapClick(LatLng point) {
 			if (detail) {
-
-				//TODO implement remove poi in MapLook
-
-				//MapLook.removePOI();
-				map.animateCamera(CameraUpdateFactory.zoomTo(12), 1000, null);
+				// TODO implement remove poi in MapLook
+				// MapLook.removePOI();
+				map.clear();
+				map.animateCamera(CameraUpdateFactory.zoomTo((float) 12.5), 1000, null);
 				MapLook.drawAreas(City.getCity(db).getPolygons(), map);
-
 				detail = false;
 			} else {
-				detail = true;
 				List<Area> areas = City.getCity(db).getAllAreas();
-				for (Area a : areas) {
-					if (PointInPolygon(point, a.getPolygon())) {
-						markers = new ArrayList<MarkerOptions>();
-						for (PointOfInterest poi : a.getPois()) {
-							MarkerOptions marker = new MarkerOptions();
-							marker.title(poi.getName());
-							marker.position(poi.getPosition());
-							markers.add(marker);
-						}
-						MapLook.drawPOI(markers, map);
-						//TODO gestire centro della zona
-						//map.moveCamera(CameraUpdateFactory.newLatLngZoom(a.getCenter(), 10));
-						map.animateCamera(CameraUpdateFactory.zoomTo(15), 1000,
-								null);
-						map.setOnMarkerClickListener(markerListener);
-
+				Area a = PointInPolygon(point, areas);
+				if (a != null) {
+					detail = true;
+					markers = new ArrayList<MarkerOptions>();
+					for (PointOfInterest poi : a.getPois()) {
+						MarkerOptions marker = new MarkerOptions();
+						marker.title(poi.getName());
+						marker.position(poi.getPosition());
+						markers.add(marker);
 					}
+					MapLook.drawPOI(markers, map);
+					map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+							a.getCenter(), (float) 12.5));
+					map.animateCamera(CameraUpdateFactory.zoomTo((float) 15.5), 1000,
+							null);
+					map.setOnMarkerClickListener(markerListener);
+				}else{
+					map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+							point, (float) 12.5));
 				}
 
 			}
 
 		}
 
-		private boolean PointInPolygon(LatLng point, PolygonOptions polygon) {
-			List<LatLng> points = polygon.getPoints();
-			int i, j, nvert = points.size();
-			boolean c = false;
+		private Area PointInPolygon(LatLng point, List<Area> areas) {
+			for(Area a:areas){
+				List<LatLng> points = a.getPolygon().getPoints();
+				int i, j, nvert = points.size();
+				boolean c = false;
 
-			for (i = 0, j = nvert - 1; i < nvert; j = i++) {
-				if ((((points.get(i).latitude) >= point.longitude) != (points
-						.get(j).longitude >= point.longitude))
-						&& (point.latitude <= (points.get(j).latitude - points
-								.get(i).latitude)
-								* (point.longitude - points.get(i).longitude)
-								/ (points.get(j).longitude - points.get(i).longitude)
-								+ points.get(i).latitude))
-					c = !c;
+				for (i = 0, j = nvert - 1; i < nvert; j = i++) {
+					if ((((points.get(i).longitude) >= point.longitude) != (points
+							.get(j).longitude >= point.longitude))
+							&& (point.latitude <= (points.get(j).latitude - points
+									.get(i).latitude)
+									* (point.longitude - points.get(i).longitude)
+									/ (points.get(j).longitude - points.get(i).longitude)
+									+ points.get(i).latitude))
+						c = !c;
+				}
+
+				if(c)
+					return a;
+				
 			}
-
-			return c;
+			return null;
+			
 		}
 	};
 	

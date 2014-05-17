@@ -19,7 +19,7 @@ public class PointOfInterestDAO {
     public static final String LONGITUDE= "longitude"; 
           
     public static final String TABELLA = "pointofinterest"; 
-    public static final String[] COLONNE = new String[]{ID, NAME, DESCRIPTION, TYPE, AREA}; 
+    public static final String[] COLONNE = new String[]{ID, NAME, DESCRIPTION, TYPE, AREA, LATITUDE, LONGITUDE}; 
           
     public static ContentValues getContentValues(String line) { 
          ContentValues result = new ContentValues(); 
@@ -55,7 +55,7 @@ public class PointOfInterestDAO {
   
     public static String getInsertQuery(String line) { 
         StringTokenizer stringTokenizer = new StringTokenizer(line, ","); 
-        String result="'"+stringTokenizer.nextToken()+"','"+stringTokenizer.nextToken()+"','"+stringTokenizer.nextToken()+"','"+stringTokenizer.nextToken()+"',0,0"; 
+        String result="'"+stringTokenizer.nextToken()+"','"+stringTokenizer.nextToken()+"','"+stringTokenizer.nextToken()+"','"+stringTokenizer.nextToken()+"','"+stringTokenizer.nextToken()+"','"+stringTokenizer.nextToken()+"'"; 
         return result; 
     } 
 }

@@ -12,7 +12,7 @@
         class="com.google.android.gms.maps.MapFragment" />
     
 
-      <com.staymilano.HorizontalListView
+      <ListView
           style="@style/HorizontalListView"
           android:id="@+id/selected_poi_listview"
           android:layout_height="wrap_content"

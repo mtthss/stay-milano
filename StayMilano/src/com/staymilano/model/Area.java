@@ -18,6 +18,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
+import com.staymilano.database.AreaDAO;
 import com.staymilano.database.PointOfInterestDAO;
 
 public class Area implements Serializable {
@@ -30,75 +31,48 @@ public class Area implements Serializable {
 	private LatLng center;
 
 	public Area(SQLiteDatabase db, AreasName nm) {
-		this.name = nm.toString();
+		this.name = nm.toString().toLowerCase();
 		pois = new ArrayList<PointOfInterest>();
-		this.pois = fillPois(db, nm);
-		pol = new PolygonOptions();
-		createPolygon();
+		this.pois = fillPois(db);
+		createPolygon(db);
+		//setCenter(db);
 	}
 
-	private void createPolygon() {
-		InputStreamReader stream;
-		try {
-			stream = new InputStreamReader(new FileInputStream(new File(
-					"areas_points.csv")));
-			BufferedReader reader = new BufferedReader(stream);
-			List<LatLng> points = new ArrayList<LatLng>();
-			try {
-				String line = null;
-				while ((line = reader.readLine()) != null) {
-					StringTokenizer stringTokenizer = new StringTokenizer(line,
-							",");
-
-					if (stringTokenizer.nextToken().equalsIgnoreCase(name)) {
-						if (stringTokenizer.nextToken().equalsIgnoreCase(
-								"center")) {
-							center = new LatLng(
-									Float.parseFloat(stringTokenizer
-											.nextToken()),
-									Float.parseFloat(stringTokenizer
-											.nextToken()));
-						} else {
-							LatLng latlng = new LatLng(
-									Float.parseFloat(stringTokenizer
-											.nextToken()),
-									Float.parseFloat(stringTokenizer
-											.nextToken()));
-							points.add(latlng);
-						}
-					} else {
-						return;
-					}
-
-				}
-				reader.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} finally {
-				if (stream != null) {
-					try {
-						stream.close();
-					} catch (IOException e) {
-					}
-				}
-			}
-
-		} catch (FileNotFoundException e1) {
-			return;
+	/*private void setCenter(SQLiteDatabase db) {
+		Cursor cur=AreaDAO.getCenterByArea(db, name);
+		if(cur.getCount()!=0){
+			Double d1=Double.valueOf(cur.getString(2));
+			Double d2=Double.valueOf(cur.getString(3));
+			center=new LatLng(d1,d2);
 		}
+	}*/
 
+	private void createPolygon(SQLiteDatabase db) {
+		pol = new PolygonOptions();
+		Cursor cur = AreaDAO.getPointsByArea(db, name);
+		do{
+			Double d1=Double.valueOf(cur.getString(2));
+			Double d2=Double.valueOf(cur.getString(3));
+			
+			if (cur.getString(4).equalsIgnoreCase("false")) {
+				LatLng latlng = new LatLng(d1, d2);
+				pol.add(latlng);
+			} else {
+				center = new LatLng(d1, d2);
+			}
+		}while (cur.moveToNext());
 	}
 
-	private List<PointOfInterest> fillPois(SQLiteDatabase db, AreasName nm) {
-		Cursor cur = PointOfInterestDAO.getPOIByArea(db, nm.toString()
-				.toLowerCase());
-		while (cur.moveToNext()) {
+	private List<PointOfInterest> fillPois(SQLiteDatabase db) {
+		Cursor cur = PointOfInterestDAO.getPOIByArea(db, name);
+		do{
 			PointOfInterest poi = new PointOfInterest();
 			poi.setName(cur.getString(1));
 			poi.setDescription(cur.getString(2));
 			poi.setType(cur.getString(3));
+			poi.setPosition(cur.getString(5), cur.getString(6));
 			pois.add(poi);
-		}
+		}while (cur.moveToNext());
 		return pois;
 	}
 

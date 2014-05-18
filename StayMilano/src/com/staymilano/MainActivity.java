@@ -6,7 +6,7 @@ import java.util.List;
 import visualization.MapLook;
 import android.app.Activity;
 import android.os.Bundle;
-import communications.layer.*;
+import communications.*;
 import model.Direction;
 
 import com.google.android.gms.maps.CameraUpdateFactory;

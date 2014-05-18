@@ -89,7 +89,7 @@ public class SplashActivity extends Activity {
         Cursor cur=ItineraryDAO.getItineraryByDate(db,new SimpleDateFormat("yyyy-MM-dd").format(date));
         
         final Intent intent;
-        if(cur.getCount()!=0){
+        if(cur.getCount()!=0||true){
         	intent= new Intent(this,MainActivity.class);
         	startActivity(intent);
         }else{

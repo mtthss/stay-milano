@@ -13,7 +13,6 @@ import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.MapFragment;
 import com.staymilano.database.DBHelper;
 import com.staymilano.model.Area;
@@ -21,13 +20,14 @@ import com.staymilano.model.City;
 import com.staymilano.model.PointOfInterest;
 
 import android.app.Activity;
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -60,16 +60,23 @@ public class AreaSelectionActivity extends FragmentActivity implements OnMapLoad
 		map.animateCamera(CameraUpdateFactory.zoomTo((float) 12.5), 1000, null);
 		map.setOnMapClickListener(listener);
 		//set up list view
-		listView=(ListView)findViewById(R.id.selected_poi_listview);
+		listView=(ListView)findViewById(R.id.poi_gallery);
 		adapter=new CustomAdapter(this, R.layout.band_layout, selectedPOI);
 		listView.setAdapter(adapter);
-	}
+		listView.setOnItemClickListener(new OnItemClickListener() {
 
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
 
 	@Override
 	public void onMapLoaded() {
 		MapLook.drawAreas(City.getCity(db).getPolygons(), map);
-
 	}
 	
 	private final OnMapClickListener listener = new OnMapClickListener() {
@@ -105,9 +112,7 @@ public class AreaSelectionActivity extends FragmentActivity implements OnMapLoad
 					map.moveCamera(CameraUpdateFactory.newLatLngZoom(
 							point, (float) 12.5));
 				}
-
 			}
-
 		}
 
 		private Area PointInPolygon(LatLng point, List<Area> areas) {

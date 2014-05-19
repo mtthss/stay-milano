@@ -17,5 +17,8 @@
     <string name="palestro">Palestro</string>
     <string name="expo2015">EXPO2015</string>
     <string name="title_activity_poilist">POIListActivity</string>
+    <string name="welcome_mex">Welcome! Create your itinerary</string>
+    <string name="download_button">Download</string>
+    <string name="create_button">Create</string>
 
 </resources>

@@ -1,8 +1,5 @@
 package com.staymilano;
 
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -16,12 +13,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.os.Build;
 
-public class FirstAccessActivity extends ActionBarActivity {
+public class FirstAccessActivity extends Activity {
 
 	private Button createButton;
 	private Button downloadButton;
 	
 	private Context ctx;
+	Intent intent;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +41,7 @@ public class FirstAccessActivity extends ActionBarActivity {
 		public void onClick(View v) {
 			final int buttonId=v.getId();
 			if(buttonId==R.id.button2){
-				final Intent intent=new Intent(ctx, AreaSelectionActivity.class);
+				intent=new Intent(ctx, AreaSelectionActivity.class);
 	        	startActivity(intent);
 			}
 			

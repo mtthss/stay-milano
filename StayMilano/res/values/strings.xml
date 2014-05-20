@@ -20,5 +20,7 @@
     <string name="welcome_mex">Welcome! Create your itinerary</string>
     <string name="download_button">Download</string>
     <string name="create_button">Create</string>
+    <color name="green">#B2FF66</color>
+    <color name="grey">#EEF0EF</color>
 
 </resources>

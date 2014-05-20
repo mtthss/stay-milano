@@ -8,7 +8,6 @@ import com.staymilano.database.DBHelper;
 import com.staymilano.database.ItineraryDAO;
 import com.staymilano.model.City;
 
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.app.Activity;
 import android.content.Intent;

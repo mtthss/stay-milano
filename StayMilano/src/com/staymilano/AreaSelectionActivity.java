@@ -33,6 +33,7 @@ import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -51,7 +52,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 
-public class AreaSelectionActivity extends Activity implements OnMapLoadedCallback{
+public class AreaSelectionActivity extends ActionBarActivity implements OnMapLoadedCallback{
 	
 	private Boolean detail=false;
 	
@@ -94,7 +95,6 @@ public class AreaSelectionActivity extends Activity implements OnMapLoadedCallba
 		});*/
 		
 		ActionBar actionBar = getActionBar();
-		actionBar.hide();
 		myGallery=(LinearLayout)findViewById(R.id.mygallery);
 		
 		
@@ -217,8 +217,6 @@ public class AreaSelectionActivity extends Activity implements OnMapLoadedCallba
 			PointOfInterest poi=new PointOfInterest();
 			poi=City.getCity(db).getPOIbyName(marker.getTitle());
 			selectedPOI.add(poi);
-			if(selectedPOI.size()>0)
-				getActionBar().show();
 			//TODO notifica l'adapter per l'aggiunta
 			//adapter.add(poi);
 			//adapter.notifyDataSetChanged();

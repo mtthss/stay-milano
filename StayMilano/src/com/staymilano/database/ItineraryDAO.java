@@ -9,17 +9,16 @@ public class ItineraryDAO {
 	
 	public static final String ID = "_id";
 	public static final String DATA = "data";
-	public static final String START_TIME = "starttime";
 	
 	public static final String TABELLA = "itinerary";
-	public static final String[] COLONNE = new String[]{ID, DATA, START_TIME};
+	public static final String[] COLONNE = new String[]{ID, DATA};
 	
-	public static void insertItinerary(SQLiteDatabase db, String data, String start){
-		ContentValues v = new ContentValues();
-		v.put(DATA, data);
-		v.put(START_TIME, start);
-		
-		db.insert(TABELLA, null, v);
+	public static void insertItinerary(SQLiteDatabase db, String data){
+		Cursor cur=getAllItinerary(db);
+		int i=cur.getCount();
+		String insert_data = "INSERT INTO " + TABELLA
+				+ " VALUES(" + i + "," + data+ ")";
+		db.execSQL(insert_data);
 	}
 	
 	public static Cursor getAllItinerary(SQLiteDatabase db){
@@ -37,7 +36,6 @@ public class ItineraryDAO {
 	public static boolean updateItinerary(SQLiteDatabase db, long id, String data, String starttime){
         ContentValues v = new ContentValues();
         v.put(DATA, data);
-        v.put(START_TIME, starttime);
  
         return db.update(TABELLA, v, ID + "=" + "'"+id+"'", null) >0; 
     }

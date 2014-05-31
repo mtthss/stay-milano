@@ -67,6 +67,7 @@ public class Area implements Serializable {
 		Cursor cur = PointOfInterestDAO.getPOIByArea(db, name);
 		do{
 			PointOfInterest poi = new PointOfInterest();
+			poi.setId(cur.getString(0));
 			poi.setName(cur.getString(1));
 			poi.setDescription(cur.getString(2));
 			poi.setType(cur.getString(3));

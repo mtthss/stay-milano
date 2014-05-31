@@ -20,8 +20,12 @@
     <string name="welcome_mex">Welcome! Create your itinerary</string>
     <string name="download_button">Download</string>
     <string name="create_button">Create</string>
+    <string name="actionok">OK</string>
+
     <color name="green">#00FF00</color>
     <color name="grey">#EEF0EF</color>
     <color name="white">#FFFFFF</color>
+
+    <string name="title_activity_starting_point">StartingPointActivity</string>
 
 </resources>

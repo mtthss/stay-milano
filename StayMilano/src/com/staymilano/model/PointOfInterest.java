@@ -1,5 +1,7 @@
 package com.staymilano.model;
 
+import android.graphics.Bitmap;
+
 import com.google.android.gms.maps.model.LatLng;
 
 public class PointOfInterest {
@@ -7,10 +9,12 @@ public class PointOfInterest {
 	private static final String MONUMENT="monument";
 	private static final String MUSEUM="museum";
 	
+	private String id;
 	private String name;
 	private String type;
 	private String description;
 	private LatLng position;
+	private Bitmap icon;
 	
 	public String getName(){
 		return this.name;
@@ -46,5 +50,13 @@ public class PointOfInterest {
 	
 	public LatLng getPosition() {
 		return position;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 }

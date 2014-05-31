@@ -32,10 +32,10 @@ public class DBHelper extends SQLiteOpenHelper {
 	private static final String ITINERARY_CREATE = "create table "
 			+ ItineraryDAO.TABELLA + "(" + ItineraryDAO.ID
 			+ " integer primary key autoincrement, " + ItineraryDAO.DATA
-			+ " text not null, " + ItineraryDAO.START_TIME + " text not null);";
+			+ " text not null);";
 
 	private static final String SELECTED_POI = "create table selectedpoi "
-			+ "(_itinerary_id primary key, _poi_id, visited boolean);";
+			+ "(_itinerary_id , _poi_id, visited boolean);";
 
 	private static final String AREA_CREATE = "create table " + AreaDAO.TABELLA
 			+ "(" + AreaDAO.ID + " integer primary key autoincrement, "

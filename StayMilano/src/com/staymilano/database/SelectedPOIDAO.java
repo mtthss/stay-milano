@@ -15,12 +15,9 @@ public class SelectedPOIDAO {
 	public static final String[] COLONNE = new String[]{ITINERARY_ID, POI_ID, VISITED};
 	
 	public static void insertItinerary(SQLiteDatabase db, String poi_id, String itinerary_id){
-		ContentValues v = new ContentValues();
-		v.put(ITINERARY_ID, itinerary_id);
-		v.put(POI_ID, poi_id);
-		v.put(VISITED, false);
-		
-		db.insert(TABELLA, null, v);
+		String insert_data = "INSERT INTO " + TABELLA
+				+ " VALUES(" + poi_id+ ", " + itinerary_id+ ", false)";
+		db.execSQL(insert_data);
 	}
 
 	public static void updateSelectedPOIState(SQLiteDatabase db, String poi_id, String itinerary_id){

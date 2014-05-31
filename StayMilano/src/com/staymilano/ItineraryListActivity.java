@@ -10,6 +10,7 @@ import com.staymilano.model.UserInfo;
 import android.app.ListActivity;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,14 +26,14 @@ public class ItineraryListActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_itinerary_list);
 		
-		UserInfo user=new UserInfo();
-		user.setItineraries(DBHelper.getInstance(this).getReadableDatabase());
+		UserInfo user=UserInfo.getUserInfo(DBHelper.getInstance(this).getReadableDatabase());
 		
 		ListView listView=(ListView)findViewById(R.id.listViewItinerary);
-		ItineraryCustomAdapter adapter=new ItineraryCustomAdapter(this, R.layout.rowitinerary, user.getItineraries());
-		listView.setAdapter(adapter);
+		//ItineraryCustomAdapter adapter=new ItineraryCustomAdapter(this, R.layout.rowitinerary, user.getItineraries());
+		//listView.setAdapter(adapter);
 	}
 	
+
 	private class ItineraryCustomAdapter extends ArrayAdapter<Itinerary>{
 
 		public ItineraryCustomAdapter(Context context, int resource,

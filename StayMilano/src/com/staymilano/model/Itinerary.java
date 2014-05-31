@@ -1,30 +1,39 @@
 package com.staymilano.model;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class Itinerary {
+public class Itinerary implements Serializable{
 
+	private static final long serialVersionUID = -9024000010811787150L;
+	
 	private Integer id;
-	private Date date;
-	private Date hour;
-	private List<PointOfInterest> selectedPois;
+	private Calendar date;
+	private List<PointOfInterest> selectedPois=new ArrayList<PointOfInterest>();
 	private StartingPoint start;
 
-	public Date getDate() {
+	public Calendar getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-		try {
-			this.date = sdf.parse(date);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public void setData(Calendar date) {
+		this.date=date;
+	}	
+	
+	public void setPois(List<PointOfInterest> pois){
+		for(PointOfInterest poi:pois){
+			selectedPois.add(poi);
 		}
+		
+	}
+	
+	public List<PointOfInterest> getPois(){
+		return selectedPois;
 	}
 
 	public String getID() {
@@ -33,20 +42,6 @@ public class Itinerary {
 
 	public void setID(String id) {
 		this.id = Integer.parseInt(id);
-	}
-
-	public Date getHour() {
-		return hour;
-	}
-
-	public void setHour(String hour) {
-		SimpleDateFormat sdf=new SimpleDateFormat("hh:mm");
-		try {
-			this.hour = sdf.parse(hour);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 }

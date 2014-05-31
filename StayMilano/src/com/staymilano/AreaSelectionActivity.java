@@ -21,11 +21,13 @@ import com.staymilano.model.Area;
 import com.staymilano.model.City;
 import com.staymilano.model.Itinerary;
 import com.staymilano.model.PointOfInterest;
+import com.staymilano.model.StartingPoint;
 
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -114,8 +116,6 @@ public class AreaSelectionActivity extends ActionBarActivity implements OnMapLoa
 			it =new Itinerary();
 			showDialog(0);
 			it.setPois(selectedPOI);
-			Intent intent = new Intent(this, StartingPointActivity.class);
-			startActivity(intent);
 			break;
 		default:
 			break;
@@ -128,6 +128,11 @@ public class AreaSelectionActivity extends ActionBarActivity implements OnMapLoa
 
 		return new DatePickerDialog(this,mDateSetListener,Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH);
 	}
+	
+	protected void onClick(DialogInterface dialog, int which){
+		Intent intent=new Intent(this, StartingPointActivity.class);
+		startActivity(intent);
+	}
 
 	protected DatePickerDialog.OnDateSetListener mDateSetListener =new DatePickerDialog.OnDateSetListener() {
 
@@ -138,6 +143,7 @@ public class AreaSelectionActivity extends ActionBarActivity implements OnMapLoa
 		}
 
 	};
+	
 
 
 

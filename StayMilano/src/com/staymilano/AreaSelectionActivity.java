@@ -45,7 +45,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,6 +70,7 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
     
     public static FragmentManager manager;
     public static Context ctx;
+    public static MyPOIAdapter adapter;
     
     static List<PointOfInterest> selectedPOI=new ArrayList<PointOfInterest>();
 	Itinerary it;
@@ -322,6 +326,9 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
     				selectedPOI.remove(poi);
     			}else{
     				selectedPOI.add(poi);
+    				adapter.add(poi);
+    				adapter.notifyDataSetChanged();
+    				
     			}
     			return false;
     		}
@@ -333,13 +340,22 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
      * A dummy fragment representing a section of the app, but that simply displays dummy text.
      */
     public static class ListFragment extends Fragment {
+    	
+    	@Override
+    	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    			Bundle savedInstanceState) {
+    		// TODO Auto-generated method stub
+    		View rootView = inflater.inflate(R.layout.fragment_poilist, container, false);
+    		return rootView;
+    	}
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_poilist, container, false);
-            Bundle args = getArguments();
-            return rootView;
+        public void onActivityCreated(Bundle savedInstanceState) {
+          super.onActivityCreated(savedInstanceState);
+          
+          ListView listView=(ListView) getActivity().findViewById(R.id.listViewPOI);
+          adapter = new MyPOIAdapter(getActivity(), selectedPOI);
+          listView.setAdapter(adapter);
         }
     }
 }

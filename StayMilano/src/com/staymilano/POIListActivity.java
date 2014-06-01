@@ -16,21 +16,5 @@ public class POIListActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_poilist);
-		
-		SQLiteDatabase db = DBHelper.getInstance(this).getWritableDatabase();
-		City city=City.getCity(db);
-		Bundle extras=getIntent().getExtras();
-		
-		if (extras != null) {
-			if (extras.containsKey(AREA_EXTRA)) {
-				String area = (String) extras.getString(AREA_EXTRA);
-
-				ListView listView = (ListView) findViewById(R.id.listViewPOI);
-				POICustomAdapter adapter = new POICustomAdapter(this,
-						R.layout.row_point, city.getPOIbyArea(area));
-				listView.setAdapter(adapter);
-			}
-		}
-	
 	}
 }

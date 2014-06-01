@@ -1,6 +1,5 @@
 package com.staymilano;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -9,99 +8,115 @@ import visualization.MapLook;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.MapFragment;
+import com.staymilano.R;
+import com.staymilano.StartingPointActivity;
 import com.staymilano.database.DBHelper;
 import com.staymilano.model.Area;
 import com.staymilano.model.City;
 import com.staymilano.model.Itinerary;
 import com.staymilano.model.PointOfInterest;
-import com.staymilano.model.StartingPoint;
 
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.view.Gravity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+public class AreaSelectionActivity extends FragmentActivity implements ActionBar.TabListener {
 
-public class AreaSelectionActivity extends ActionBarActivity implements OnMapLoadedCallback{
-	
-	private Boolean detail=false;
-	
-	private GoogleMap map;
-	List<MarkerOptions> markers;
-	
-	ListView listView;
-	LinearLayout myGallery;
-	//CustomAdapter adapter;
-	List<PointOfInterest> selectedPOI=new ArrayList<PointOfInterest>();
+    /**
+     * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the
+     * three primary sections of the app. We use a {@link android.support.v4.app.FragmentPagerAdapter}
+     * derivative, which will keep every loaded fragment in memory. If this becomes too memory
+     * intensive, it may be best to switch to a {@link android.support.v4.app.FragmentStatePagerAdapter}.
+     */
+    AppSectionsPagerAdapter mAppSectionsPagerAdapter;
+
+    /**
+     * The {@link ViewPager} that will display the three primary sections of the app, one at a
+     * time.
+     */
+    ViewPager mViewPager;
+    
+    public static FragmentManager manager;
+    public static Context ctx;
+    
+    static List<PointOfInterest> selectedPOI=new ArrayList<PointOfInterest>();
 	Itinerary it;
-
-	private SQLiteDatabase db=DBHelper.getInstance(this).getWritableDatabase();
+	static boolean detail;
+	static List<MarkerOptions> markers;
 	static final LatLng MILAN = new LatLng(45.4773, 9.1815);
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_area_selection);
-		
-		detail=false;
-		//creation of the map object and set up
-		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-		map.setOnMapLoadedCallback(this);
-		map.moveCamera(CameraUpdateFactory.newLatLngZoom(MILAN, 10));
-		map.animateCamera(CameraUpdateFactory.zoomTo((float) 12.5), 1000, null);
-		map.setOnMapClickListener(listener);
-		//set up list view
-		//listView=(ListView)findViewById(R.id.poi_gallery);
-		//adapter=new CustomAdapter(this, R.layout.band_layout, selectedPOI);
-		//listView.setAdapter(adapter);
-		/*listView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				// TODO Auto-generated method stub
-				
-			}
-		});*/
-		
-		ActionBar actionBar = getActionBar();
-		myGallery=(LinearLayout)findViewById(R.id.mygallery);
-		
-		
-	}
 	
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_area_selection);
+        // Create the adapter that will return a fragment for each of the three primary sections
+        // of the app.
+        manager=getSupportFragmentManager();
+        ctx=AreaSelectionActivity.this;
+        
+        mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
+
+        // Set up the action bar.
+        final ActionBar actionBar = getActionBar();
+
+        // Specify that we will be displaying tabs in the action bar.
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        // Set up the ViewPager, attaching the adapter and setting up a listener for when the
+        // user swipes between sections.
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager.setAdapter(mAppSectionsPagerAdapter);
+        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                // When swiping between different app sections, select the corresponding tab.
+                // We can also use ActionBar.Tab#select() to do this if we have a reference to the
+                // Tab.
+                actionBar.setSelectedNavigationItem(position);
+            }
+        });
+
+        // For each of the sections in the app, add a tab to the action bar.
+        for (int i = 0; i < mAppSectionsPagerAdapter.getCount(); i++) {
+            // Create a tab with text corresponding to the page title defined by the adapter.
+            // Also specify this Activity object, which implements the TabListener interface, as the
+            // listener for when this tab is selected.
+            actionBar.addTab(
+                    actionBar.newTab()
+                            .setText(mAppSectionsPagerAdapter.getPageTitle(i))
+                            .setTabListener(this));
+        }
+    }
+    
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.area_selection, menu);
@@ -125,7 +140,6 @@ public class AreaSelectionActivity extends ActionBarActivity implements OnMapLoa
 	}
 	
 	protected Dialog onCreateDialog(int id) {
-
 		return new DatePickerDialog(this,mDateSetListener,Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH);
 	}
 	
@@ -135,7 +149,6 @@ public class AreaSelectionActivity extends ActionBarActivity implements OnMapLoa
 	}
 
 	protected DatePickerDialog.OnDateSetListener mDateSetListener =new DatePickerDialog.OnDateSetListener() {
-
 		public void onDateSet(DatePicker view, int year,int monthOfYear, int dayOfMonth) {
 			Calendar c=Calendar.getInstance();
 			c.set(year, monthOfYear, dayOfMonth);
@@ -143,133 +156,190 @@ public class AreaSelectionActivity extends ActionBarActivity implements OnMapLoa
 		}
 
 	};
-	
 
+    @Override
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    }
 
+    @Override
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+        // When the given tab is selected, switch to the corresponding page in the ViewPager.
+        mViewPager.setCurrentItem(tab.getPosition());
+    }
 
-	@Override
-	public void onMapLoaded() {
-		MapLook.drawAreas(City.getCity(db).getPolygons(), map);
-	}
-	
-	private final OnMapClickListener listener = new OnMapClickListener() {
+    @Override
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    }
 
-		@Override
-		public void onMapClick(LatLng point) {
-			if (detail) {
-				// TODO implement remove poi in MapLook
-				// MapLook.removePOI();
-				map.clear();
-				map.animateCamera(CameraUpdateFactory.zoomTo((float) 12.5), 1000, null);
-				MapLook.drawAreas(City.getCity(db).getPolygons(), map);
-				detail = false;
-			} else {
-				List<Area> areas = City.getCity(db).getAllAreas();
-				Area a = PointInPolygon(point, areas);
-				if (a != null) {
-					detail = true;
-					markers = new ArrayList<MarkerOptions>();
-					for (PointOfInterest poi : a.getPois()) {
-						MarkerOptions marker = new MarkerOptions();
-						marker.title(poi.getName());
-						marker.position(poi.getPosition());
-						markers.add(marker);
-						
-					}
-					MapLook.drawPOI(markers, map);
-					map.moveCamera(CameraUpdateFactory.newLatLngZoom(
-							a.getCenter(), (float) 12.5));
-					map.animateCamera(CameraUpdateFactory.zoomTo((float) 15.5), 1000,
-							null);
-					map.setOnMarkerClickListener(markerListener);
-				}else{
-					map.moveCamera(CameraUpdateFactory.newLatLngZoom(
-							point, (float) 12.5));
-				}
+    /**
+     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to one of the primary
+     * sections of the app.
+     */
+    
+
+    
+    public static class AppSectionsPagerAdapter extends FragmentPagerAdapter {
+
+        public AppSectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int i) {
+            switch (i) {
+                case 0:
+                    // The first section of the app is the most interesting -- it offers
+                    // a launchpad into the other demonstrations in this example application.
+                    return new MapPOIFragment();
+
+                default:
+                    // The other sections of the app are dummy placeholders.
+                    Fragment fragment = new ListFragment();
+                    Bundle args = new Bundle();
+                    return fragment;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return "Section " + (position + 1);
+        }
+    }
+
+    /**
+     * A fragment that launches other parts of the demo application.
+     */
+    public static class MapPOIFragment extends Fragment implements OnMapLoadedCallback{
+    	
+    	GoogleMap map;
+    	SQLiteDatabase db;
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_map, container, false);
+            
+            db = DBHelper.getInstance(AreaSelectionActivity.ctx).getWritableDatabase();
+            setUpMapIfIneed();
+            return rootView;
+        }
+        
+    	private void setUpMapIfIneed() {
+			if(map==null){
+				map=((SupportMapFragment)AreaSelectionActivity.manager.findFragmentById(R.id.map)).getMap();
 			}
+			if(map!=null){
+				setupMap();
+			}	
 		}
 
-		private Area PointInPolygon(LatLng point, List<Area> areas) {
-			for(Area a:areas){
-				List<LatLng> points = a.getPolygon().getPoints();
-				int i, j, nvert = points.size();
-				boolean c = false;
-
-				for (i = 0, j = nvert - 1; i < nvert; j = i++) {
-					if ((((points.get(i).longitude) >= point.longitude) != (points
-							.get(j).longitude >= point.longitude))
-							&& (point.latitude <= (points.get(j).latitude - points
-									.get(i).latitude)
-									* (point.longitude - points.get(i).longitude)
-									/ (points.get(j).longitude - points.get(i).longitude)
-									+ points.get(i).latitude))
-						c = !c;
-				}
-
-				if(c)
-					return a;
-				
-			}
-			return null;
-			
-		}
-	};
-	
-	
-	private OnMarkerClickListener markerListener=new OnMarkerClickListener() {
-		
-		@Override
-		public boolean onMarkerClick(Marker marker) {
-			PointOfInterest poi=new PointOfInterest();
-			poi=City.getCity(db).getPOIbyName(marker.getTitle());
-			selectedPOI.add(poi);
-			//TODO notifica l'adapter per l'aggiunta
-			//adapter.add(poi);
-			//adapter.notifyDataSetChanged();
-			
-			myGallery.addView(insertPhoto(poi.getName()));
-			return false;
+		private void setupMap() {
+			map.setOnMapLoadedCallback(this);
+    		map.moveCamera(CameraUpdateFactory.newLatLngZoom(MILAN, 10));
+    		map.animateCamera(CameraUpdateFactory.zoomTo((float) 12.5), 1000, null);
+    		map.setOnMapClickListener(listener);			
 		}
 
-	};
-	
-	/*private class CustomAdapter extends ArrayAdapter<PointOfInterest>{
-		
-		private Activity context;
+		public void onMapLoaded() {
+    		MapLook.drawAreas(City.getCity(db).getPolygons(), map);
+    	}
+    	
+    	private final OnMapClickListener listener = new OnMapClickListener() {
 
-		public CustomAdapter(Activity context, int resource,
-				List<PointOfInterest> objects) {
-			super(context, resource, objects);
-			this.context=context;
-		}
-		
+    		@Override
+    		public void onMapClick(LatLng point) {
+    			if (detail) {
+    				// TODO implement remove poi in MapLook
+    				// MapLook.removePOI();
+    				map.clear();
+    				map.animateCamera(CameraUpdateFactory.zoomTo((float) 12.5), 1000, null);
+    				MapLook.drawAreas(City.getCity(db).getPolygons(), map);
+    				detail = false;
+    			} else {
+    				List<Area> areas = City.getCity(db).getAllAreas();
+    				Area a = PointInPolygon(point, areas);
+    				if (a != null) {
+    					detail = true;
+    					markers = new ArrayList<MarkerOptions>();
+    					for (PointOfInterest poi : a.getPois()) {
+    						MarkerOptions marker = new MarkerOptions();
+    						marker.title(poi.getName());
+    						marker.position(poi.getPosition());
+    						markers.add(marker);
+    						
+    					}
+    					MapLook.drawPOI(markers, map);
+    					map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+    							a.getCenter(), (float) 12.5));
+    					map.animateCamera(CameraUpdateFactory.zoomTo((float) 15.5), 1000,
+    							null);
+    					map.setOnMarkerClickListener(markerListener);
+    				}else{
+    					map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+    							point, (float) 12.5));
+    				}
+    			}
+    		}
 
-	  @Override
-	  public View getView(int position, View convertView, ViewGroup parent) {
-	      LayoutInflater inflater = context.getLayoutInflater();
-	      View rowView = inflater.inflate(R.layout.band_layout, null);
-	      // configure view holder
-	      ImageView view = (ImageView) convertView.findViewById(R.id.icon);
-	      view.setImageResource(R.drawable.ic_launcher);
+    		private Area PointInPolygon(LatLng point, List<Area> areas) {
+    			for(Area a:areas){
+    				List<LatLng> points = a.getPolygon().getPoints();
+    				int i, j, nvert = points.size();
+    				boolean c = false;
 
-	    return rowView;
-	  }
-		
-	}*/
-	
-	public View insertPhoto(String name) {
+    				for (i = 0, j = nvert - 1; i < nvert; j = i++) {
+    					if ((((points.get(i).longitude) >= point.longitude) != (points
+    							.get(j).longitude >= point.longitude))
+    							&& (point.latitude <= (points.get(j).latitude - points
+    									.get(i).latitude)
+    									* (point.longitude - points.get(i).longitude)
+    									/ (points.get(j).longitude - points.get(i).longitude)
+    									+ points.get(i).latitude))
+    						c = !c;
+    				}
 
-		LinearLayout layout = new LinearLayout(getApplicationContext());
-		layout.setLayoutParams(new LayoutParams(250, 250));
-		layout.setGravity(Gravity.CENTER);
+    				if(c)
+    					return a;
+    				
+    			}
+    			return null;
+    			
+    		}
+    	};
+    	
+    	private OnMarkerClickListener markerListener=new OnMarkerClickListener() {
+    		
+    		@Override
+    		public boolean onMarkerClick(Marker marker) {
+    			PointOfInterest poi=new PointOfInterest();
+    			poi=City.getCity(db).getPOIbyName(marker.getTitle());
+    			if(selectedPOI.contains(poi)){
+    				selectedPOI.remove(poi);
+    			}else{
+    				selectedPOI.add(poi);
+    			}
+    			return false;
+    		}
 
-		ImageView imageView = new ImageView(getApplicationContext());
-		imageView.setLayoutParams(new LayoutParams(220, 220));
-		imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-		imageView.setBackgroundColor(1);
-		
-		layout.addView(imageView);
-		return layout;
-	}
-	
+    	};
+    }
+
+    /**
+     * A dummy fragment representing a section of the app, but that simply displays dummy text.
+     */
+    public static class ListFragment extends Fragment {
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_poilist, container, false);
+            Bundle args = getArguments();
+            return rootView;
+        }
+    }
 }

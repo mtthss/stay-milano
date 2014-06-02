@@ -10,13 +10,11 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.staymilano.R;
 import com.staymilano.StartingPointActivity;
 import com.staymilano.database.DBHelper;
 import com.staymilano.model.Area;
@@ -25,7 +23,6 @@ import com.staymilano.model.Itinerary;
 import com.staymilano.model.PointOfInterest;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.FragmentTransaction;
@@ -45,11 +42,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
-import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class AreaSelectionActivity extends FragmentActivity implements ActionBar.TabListener {
@@ -124,6 +118,8 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.area_selection, menu);
+		MenuItem m=menu.findItem(R.id.actionok);
+		m.setVisible(true);
 		return true;
 	}
 	
@@ -187,6 +183,7 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
         public AppSectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
+        
 
         @Override
         public Fragment getItem(int i) {
@@ -211,7 +208,12 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return "Section " + (position + 1);
+			if (position == 0) {
+				return "map";
+			} else {
+				return "list";
+			}
+            
         }
     }
 

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,6 +33,7 @@ public class MyPOIAdapter extends ArrayAdapter<PointOfInterest>{
 		TextView first = (TextView) rowView.findViewById(R.id.firstLine);
 		TextView second = (TextView) rowView.findViewById(R.id.secondLine);
 		ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
+		ImageButton imageButton = (ImageButton) rowView.findViewById(R.id.imageButton);
 		
 		first.setText((values.get(position)).getName());
 		second.setText((values.get(position)).getName());

@@ -6,7 +6,6 @@ import java.util.Date;
 
 import com.staymilano.database.DBHelper;
 import com.staymilano.database.ItineraryDAO;
-import com.staymilano.model.City;
 
 import android.util.Log;
 import android.app.Activity;
@@ -88,20 +87,27 @@ public class SplashActivity extends Activity {
         Cursor cur=ItineraryDAO.getItineraryByDate(db,new SimpleDateFormat("yyyy-MM-dd").format(date));
         
         final Intent intent;
-        if(cur.getCount()!=0){
-        	intent= new Intent(this,MainActivity.class);
+        
+        //test wi-fi direct
+        if(false){
+        	intent= new Intent(this,WiFiActivity.class);
         	startActivity(intent);
         }else{
-        	cur=ItineraryDAO.getAllItinerary(db);
-        	if(cur.getCount()==0){
-	        	intent=new Intent(this,FirstAccessActivity.class);
-	        	startActivity(intent);
-        	}else{
-        		intent=new Intent(this,ItineraryListActivity.class);
+        	if(cur.getCount()!=0){
+        		intent= new Intent(this,MainActivity.class);
         		startActivity(intent);
+        	}else{
+        		cur=ItineraryDAO.getAllItineraries(db);
+        		if(cur.getCount()==0){
+        			intent=new Intent(this,FirstAccessActivity.class);
+        			startActivity(intent);
+        		}else{
+        			intent=new Intent(this,ItineraryListActivity.class);
+        			startActivity(intent);
+        		}
         	}
+        	finish();
         }
-        finish();
 	}
 
 }

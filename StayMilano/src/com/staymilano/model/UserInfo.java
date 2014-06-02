@@ -21,19 +21,21 @@ public class UserInfo implements Serializable{
 	private static UserInfo user;
 
 	private UserInfo(SQLiteDatabase readableDatabase) {
-		Cursor cur=ItineraryDAO.getAllItinerary(readableDatabase);
-		do{
-			Itinerary it=new Itinerary();
-			it.setID(cur.getString(0));
-			Calendar cal=Calendar.getInstance();
-			SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
-			try {
-				cal.setTime(sdf.parse(cur.getString(1)));
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}while(cur.moveToNext());
+		Cursor cur=ItineraryDAO.getAllItineraries(readableDatabase);
+		if(cur.getCount()>0){
+			do {
+				Itinerary it = new Itinerary();
+				it.setID(cur.getString(0));
+				Calendar cal = Calendar.getInstance();
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+				try {
+					cal.setTime(sdf.parse(cur.getString(1)));
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} while (cur.moveToNext());
+		}
 		
 	}
 	

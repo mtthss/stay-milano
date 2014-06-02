@@ -14,14 +14,14 @@ public class ItineraryDAO {
 	public static final String[] COLONNE = new String[]{ID, DATA};
 	
 	public static void insertItinerary(SQLiteDatabase db, String data){
-		Cursor cur=getAllItinerary(db);
+		Cursor cur=getAllItineraries(db);
 		int i=cur.getCount();
 		String insert_data = "INSERT INTO " + TABELLA
 				+ " VALUES(" + i + "," + data+ ")";
 		db.execSQL(insert_data);
 	}
 	
-	public static Cursor getAllItinerary(SQLiteDatabase db){
+	public static Cursor getAllItineraries(SQLiteDatabase db){
         return db.query(TABELLA, COLONNE, null, null, null, null, null);
     }
 	

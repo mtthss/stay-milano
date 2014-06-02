@@ -44,6 +44,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class AreaSelectionActivity extends FragmentActivity implements ActionBar.TabListener {
@@ -88,7 +89,9 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
 
         // Specify that we will be displaying tabs in the action bar.
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
+        actionBar.setDisplayShowHomeEnabled(false);              
+        actionBar.setDisplayShowTitleEnabled(false);
+        
         // Set up the ViewPager, attaching the adapter and setting up a listener for when the
         // user swipes between sections.
         mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -326,9 +329,9 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
     			poi=City.getCity(db).getPOIbyName(marker.getTitle());
     			if(selectedPOI.contains(poi)){
     				selectedPOI.remove(poi);
+    				adapter.notifyDataSetChanged();
     			}else{
     				selectedPOI.add(poi);
-    				adapter.add(poi);
     				adapter.notifyDataSetChanged();
     				
     			}
@@ -356,8 +359,11 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
           super.onActivityCreated(savedInstanceState);
           
           ListView listView=(ListView) getActivity().findViewById(R.id.listViewPOI);
+          View empty = getActivity().findViewById(R.id.emptyList);
+          listView.setEmptyView(empty);
           adapter = new MyPOIAdapter(getActivity(), selectedPOI);
           listView.setAdapter(adapter);
         }
     }
 }
+

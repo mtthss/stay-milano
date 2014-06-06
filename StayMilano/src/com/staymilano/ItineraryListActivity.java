@@ -7,6 +7,7 @@ import com.staymilano.database.ItineraryDAO;
 import com.staymilano.model.Itinerary;
 import com.staymilano.model.UserInfo;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.database.Cursor;
@@ -16,38 +17,50 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class ItineraryListActivity extends ListActivity {
+public class ItineraryListActivity extends Activity {
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+		// TODO Auto-generated method stub
 		setContentView(R.layout.activity_itinerary_list);
 		
-		UserInfo user=UserInfo.getUserInfo(DBHelper.getInstance(this).getReadableDatabase());
+		SQLiteDatabase db = DBHelper.getInstance(this).getWritableDatabase();
+		UserInfo user=UserInfo.getUserInfo(db);
+		List<Itinerary> its=user.getItineraries();
 		
-		ListView listView=(ListView)findViewById(R.id.listViewItinerary);
-		//ItineraryCustomAdapter adapter=new ItineraryCustomAdapter(this, R.layout.rowitinerary, user.getItineraries());
-		//listView.setAdapter(adapter);
+		ListView listView = (ListView) findViewById(R.id.list);
+		ItineraryCustomAdapter adapter = new ItineraryCustomAdapter(this,its);
+		listView.setAdapter(adapter);
 	}
-	
 
-	private class ItineraryCustomAdapter extends ArrayAdapter<Itinerary>{
+	private class ItineraryCustomAdapter extends ArrayAdapter<Itinerary> {
 
-		public ItineraryCustomAdapter(Context context, int resource,
-				List<Itinerary> objects) {
-			super(context, resource, objects);
-			// TODO Auto-generated constructor stub
+		private final Context context;
+		private final List<Itinerary> itineraries;
+
+		public ItineraryCustomAdapter(Context context, List<Itinerary> objects) {
+			super(context, R.layout.rowitinerary, objects);
+			this.context = context;
+			this.itineraries = objects;
 		}
-		
-		public View getView(int position,View convertView,ViewGroup parent){
-			LayoutInflater inflater=(LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView=inflater.inflate(R.layout.rowitinerary, null);
-			TextView date=(TextView) convertView.findViewById(R.id.textViewDate);
-			Itinerary it=getItem(position);
+
+		public View getView(int position, View convertView, ViewGroup parent) {
+			LayoutInflater inflater = (LayoutInflater) getContext()
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			convertView = inflater.inflate(R.layout.rowitinerary, null);
+
+			ImageView imageView = (ImageView) convertView
+					.findViewById(R.id.icon);
+			TextView date = (TextView) convertView
+					.findViewById(R.id.textViewDate);
+			Itinerary it = itineraries.get(position);
 			date.setText(it.getDate().toString());
+
 			return convertView;
 		}
 

@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 public class SelectedPOIDAO {
 
 	public static final String ITINERARY_ID = "_itinerary_id";
-	public static final String POI_ID = "_poi_id";
+	public static final String POI_ID = "poi_id";
 	public static final String VISITED = "visited";
 	
 	public static final String TABELLA = "selectedpoi";
@@ -16,7 +16,7 @@ public class SelectedPOIDAO {
 	
 	public static void insertItinerary(SQLiteDatabase db, String poi_id, String itinerary_id){
 		String insert_data = "INSERT INTO " + TABELLA
-				+ " VALUES(" + poi_id+ ", " + itinerary_id+ ", false)";
+				+ " VALUES (" + itinerary_id+ ", " + poi_id+ ", 'false')";
 		db.execSQL(insert_data);
 	}
 

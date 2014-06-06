@@ -46,8 +46,6 @@ public class SplashActivity extends Activity {
 			if(srcActivity==null){
 				return;
 			}
-			//TODO aggiungere i casi di reindirizzamento a menu (crea/i tuoi itinerari) e a
-			//mappa dell'itinerario odierno
 			switch(msg.what){
 			case GO_AHEAD_WHAT:
 				long elapsedTime = SystemClock.uptimeMillis()-srcActivity.mStartTime;

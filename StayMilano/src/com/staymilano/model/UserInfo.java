@@ -22,14 +22,18 @@ public class UserInfo implements Serializable{
 
 	private UserInfo(SQLiteDatabase readableDatabase) {
 		Cursor cur=ItineraryDAO.getAllItineraries(readableDatabase);
-		if(cur.getCount()>0){
+		int cont=cur.getCount();
+		cur.moveToFirst();
+		if(cont>0){
 			do {
 				Itinerary it = new Itinerary();
-				it.setID(cur.getString(0));
+				String s = cur.getString(0);
+				it.setID(s);
 				Calendar cal = Calendar.getInstance();
 				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 				try {
-					cal.setTime(sdf.parse(cur.getString(1)));
+					String s2=cur.getString(1);
+					cal.setTime(sdf.parse(s2));
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -47,10 +51,17 @@ public class UserInfo implements Serializable{
 	}
 	
 	public void saveItinerary(Itinerary it, SQLiteDatabase db){
-		ItineraryDAO.insertItinerary(db, it.getDate().toString());
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		String stringDate = sdf.format(it.getDate().getTime());
+		String id=ItineraryDAO.insertItinerary(db, stringDate);
+		it.setID(id);
 		for(PointOfInterest poi:it.getPois()){
 			SelectedPOIDAO.insertItinerary(db, poi.getId(), it.getID());
 		}
+	}
+
+	public List<Itinerary> getItineraries() {
+		return itineraries;
 	}
 
 }

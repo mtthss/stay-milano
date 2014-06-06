@@ -25,6 +25,7 @@ import com.staymilano.model.PointOfInterest;
 import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -36,6 +37,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -74,6 +76,7 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
 	static final LatLng MILAN = new LatLng(45.4773, 9.1815);
 
 	
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_area_selection);
@@ -142,13 +145,13 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
 		return true;
 	}
 	
-	protected Dialog onCreateDialog(int id) {
-		return new DatePickerDialog(this,mDateSetListener,Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH);
+	public void showDatePickerDialog(View v) {
+	    DialogFragment newFragment = new DatePickerFragment(this);
+	    newFragment.show(getFragmentManager(), "datePicker");
 	}
 	
-	protected void onClick(DialogInterface dialog, int which){
-		Intent intent=new Intent(this, StartingPointActivity.class);
-		startActivity(intent);
+	protected Dialog onCreateDialog(int id) {
+		return new DatePickerDialog(this,mDateSetListener,Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH);
 	}
 
 	protected DatePickerDialog.OnDateSetListener mDateSetListener =new DatePickerDialog.OnDateSetListener() {
@@ -173,14 +176,13 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
-
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to one of the primary
-     * sections of the app.
-     */
     
+    public List<PointOfInterest> getPoiList(){
+    	return selectedPOI;
+    }
 
     
+    // A {@link FragmentPagerAdapter} that returns a fragment corresponding to one of the primary sections of the app.
     public static class AppSectionsPagerAdapter extends FragmentPagerAdapter {
 
         public AppSectionsPagerAdapter(FragmentManager fm) {
@@ -220,14 +222,17 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
         }
     }
 
+    
+    
     /**
      * A fragment that launches other parts of the demo application.
      */
     public static class MapPOIFragment extends Fragment implements OnMapLoadedCallback{
-    	
+    	    	
     	GoogleMap map;
     	SQLiteDatabase db;
 
+    	
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
@@ -364,6 +369,7 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
           adapter = new MyPOIAdapter(getActivity(), selectedPOI);
           listView.setAdapter(adapter);
         }
+        
     }
 }
 

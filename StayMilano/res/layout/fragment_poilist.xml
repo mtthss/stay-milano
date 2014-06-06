@@ -1,17 +1,32 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <ListView
-        android:id="@+id/listViewPOI"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-    </ListView>
+    <LinearLayout 
+    	android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:orientation="vertical" >
+    	
+    	<ListView
+        	android:id="@+id/listViewPOI"
+        	android:layout_width="match_parent"
+        	android:layout_height="match_parent" >
+    	</ListView>
     
-    <TextView android:id="@+id/emptyList"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:text="@string/noPoiMessage" />
+    	<TextView android:id="@+id/emptyList"
+    	android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:text="@string/noPoiMessage" />
+    	
+    </LinearLayout>
+    
+    <Button
+    	android:id="@+id/saveMap"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:text="Save" 
+    	android:onClick="showDatePickerDialog"
+    	android:layout_gravity="bottom|left" />
 
-</LinearLayout>
+</FrameLayout>

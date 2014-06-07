@@ -21,6 +21,7 @@ import com.staymilano.model.Area;
 import com.staymilano.model.City;
 import com.staymilano.model.Itinerary;
 import com.staymilano.model.PointOfInterest;
+import com.staymilano.model.UserInfo;
 
 import android.app.ActionBar;
 import android.app.DatePickerDialog;
@@ -74,6 +75,8 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
 	static boolean detail;
 	static List<MarkerOptions> markers;
 	static final LatLng MILAN = new LatLng(45.4773, 9.1815);
+	
+	static Intent intent;
 
 	
 
@@ -86,6 +89,10 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
         ctx=AreaSelectionActivity.this;
         
         mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
+        
+        intent=getIntent();
+        String itineraryid=intent.getStringExtra(ItineraryListActivity.CURRENT_ITINERARY);
+        
 
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();
@@ -239,6 +246,16 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
             View rootView = inflater.inflate(R.layout.fragment_map, container, false);
             
             db = DBHelper.getInstance(AreaSelectionActivity.ctx).getWritableDatabase();
+            
+            String itinerary_id=intent.getStringExtra(ItineraryListActivity.CURRENT_ITINERARY);
+            if(itinerary_id!=null){
+            	UserInfo ui=UserInfo.getUserInfo(db);
+            	Itinerary it=ui.getItinerary(itinerary_id);
+            	if(it!=null){
+            		selectedPOI=it.getPois();
+            	}
+            }
+            
             setUpMapIfIneed();
             return rootView;
         }

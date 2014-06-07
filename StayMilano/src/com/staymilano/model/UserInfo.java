@@ -25,6 +25,7 @@ public class UserInfo implements Serializable{
 		int cont=cur.getCount();
 		cur.moveToFirst();
 		if(cont>0){
+			itineraries = new ArrayList<Itinerary>();
 			do {
 				Itinerary it = new Itinerary();
 				String s = cur.getString(0);
@@ -34,10 +35,12 @@ public class UserInfo implements Serializable{
 				try {
 					String s2=cur.getString(1);
 					cal.setTime(sdf.parse(s2));
+					it.setData(cal);
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				itineraries.add(it);
 			} while (cur.moveToNext());
 		}
 		
@@ -62,6 +65,16 @@ public class UserInfo implements Serializable{
 
 	public List<Itinerary> getItineraries() {
 		return itineraries;
+	}
+
+	public Itinerary getItinerary(String itinerary_id) {
+		Itinerary result =new Itinerary();
+		for(Itinerary it:itineraries){
+			if(itinerary_id.equals(it.getID())){
+				result=it;
+			}
+		}
+		return result;
 	}
 
 }

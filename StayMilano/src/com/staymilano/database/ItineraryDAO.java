@@ -17,7 +17,7 @@ public class ItineraryDAO {
 		Cursor cur=getAllItineraries(db);
 		int i=cur.getCount();
 		String insert_data = "INSERT INTO " + TABELLA
-				+ " VALUES(" + i + "," + data+ ")";
+				+ " VALUES(" + i + ",'" + data+ "')";
 		db.execSQL(insert_data);
 		return String.valueOf(i);
 	}

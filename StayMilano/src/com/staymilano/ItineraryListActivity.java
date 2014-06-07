@@ -1,16 +1,15 @@
 package com.staymilano;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import com.staymilano.database.DBHelper;
-import com.staymilano.database.ItineraryDAO;
 import com.staymilano.model.Itinerary;
 import com.staymilano.model.UserInfo;
 
-import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
-import android.database.Cursor;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,21 +20,34 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class ItineraryListActivity extends Activity {
-
+public class ItineraryListActivity extends ListActivity {
+	
+	Context ctx;
+	List<Itinerary> its;
+	
+	static final String CURRENT_ITINERARY="current_itinerary";
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 		// TODO Auto-generated method stub
 		setContentView(R.layout.activity_itinerary_list);
+		ctx=this;
 		
 		SQLiteDatabase db = DBHelper.getInstance(this).getWritableDatabase();
 		UserInfo user=UserInfo.getUserInfo(db);
-		List<Itinerary> its=user.getItineraries();
+		its=user.getItineraries();
 		
-		ListView listView = (ListView) findViewById(R.id.list);
 		ItineraryCustomAdapter adapter = new ItineraryCustomAdapter(this,its);
-		listView.setAdapter(adapter);
+		setListAdapter(adapter);
+	}
+	
+	@Override
+	protected void onListItemClick(ListView l,View v,int position,long id){
+		Itinerary itinerary=its.get(position);
+		Intent intent=new Intent(this, AreaSelectionActivity.class);
+		intent.putExtra(CURRENT_ITINERARY, itinerary.getID());
+		startActivity(intent);
 	}
 
 	private class ItineraryCustomAdapter extends ArrayAdapter<Itinerary> {
@@ -58,8 +70,11 @@ public class ItineraryListActivity extends Activity {
 					.findViewById(R.id.icon);
 			TextView date = (TextView) convertView
 					.findViewById(R.id.textViewDate);
+			
 			Itinerary it = itineraries.get(position);
-			date.setText(it.getDate().toString());
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			String stringDate = sdf.format(it.getDate().getTime());
+			date.setText(stringDate);
 
 			return convertView;
 		}

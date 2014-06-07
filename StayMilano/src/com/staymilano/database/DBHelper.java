@@ -17,7 +17,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	private Context context;
 
 	private static final String DATABASE_NAME = "staymilano.db";
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 3;
 
 	// Lo statement SQL di creazione del database
 	private static final String POINTOFINTEREST_CREATE = "create table "
@@ -79,6 +79,11 @@ public class DBHelper extends SQLiteOpenHelper {
 		database.execSQL("DROP TABLE IF EXISTS area");
 		database.execSQL(POINTOFINTEREST_CREATE);
 		database.execSQL(AREA_CREATE);
+		
+		database.execSQL("DROP TABLE IF EXISTS itinerary");
+		database.execSQL("DROP TABLE IF EXISTS selectedpoi");
+		database.execSQL(ITINERARY_CREATE);
+		database.execSQL(SELECTED_POI);
 		
 		loadPOI(database);
 		loadAREA(database);

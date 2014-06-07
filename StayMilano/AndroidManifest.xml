@@ -71,7 +71,7 @@
             android:label="@string/title_activity_show_itineraries" >
         </activity>
         <activity
-            android:name="com.staymilano.POIListActivity"
+            android:name="com.staymilano.POIDetail"
             android:label="@string/title_activity_poilist" >
         </activity>
         <activity

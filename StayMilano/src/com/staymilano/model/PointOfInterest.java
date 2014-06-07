@@ -1,5 +1,6 @@
 package com.staymilano.model;
 
+import android.database.Cursor;
 import android.graphics.Bitmap;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -16,6 +17,17 @@ public class PointOfInterest {
 	private LatLng position;
 	private Bitmap icon;
 	
+	public PointOfInterest(Cursor cur) {
+		this.id=cur.getString(0);
+		this.name=cur.getString(1);
+		this.description=cur.getString(2);
+		setType(cur.getString(3));
+		setPosition(cur.getString(5),cur.getString(6));
+	}
+
+	public PointOfInterest() {
+	}
+
 	public String getName(){
 		return this.name;
 	}

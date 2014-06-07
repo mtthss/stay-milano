@@ -16,6 +16,22 @@ public class Itinerary implements Serializable{
 	private Calendar date;
 	private List<PointOfInterest> selectedPois=new ArrayList<PointOfInterest>();
 	private StartingPoint start;
+	
+	public Itinerary(String id,String date){
+		this.id=Integer.parseInt(id);
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		try {
+			cal.setTime(sdf.parse(date));
+			this.date=cal;
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public Itinerary() {
+	}
 
 	public Calendar getDate() {
 		return date;

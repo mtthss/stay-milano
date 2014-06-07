@@ -34,6 +34,14 @@ public class ItineraryDAO {
 	    return c;
 	}
 	
+	public static Cursor getItineraryById(SQLiteDatabase db, String id) throws SQLException {
+		Cursor c = db.query(true, TABELLA, COLONNE, ID + "=" +"'"+id+"'", null, null, null, null, null);
+		if (c != null) {
+			c.moveToFirst();
+		}
+	    return c;
+	}
+	
 	public static boolean updateItinerary(SQLiteDatabase db, long id, String data, String starttime){
         ContentValues v = new ContentValues();
         v.put(DATA, data);

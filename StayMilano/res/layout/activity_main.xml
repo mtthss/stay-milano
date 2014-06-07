@@ -1,30 +1,5 @@
 
-<FrameLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pager"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity" >
-
-    <fragment
-        android:id="@+id/map"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        class="com.google.android.gms.maps.MapFragment" />
-
-    <Button
-        android:id="@+id/manageItineraries"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Manage" 
-        android:layout_gravity="bottom|left" />
-    
-    <Button
-        android:id="@+id/otherOptions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Other" 
-        android:layout_gravity="bottom|right" />
-    
-
-</FrameLayout>
+    android:layout_height="match_parent" />

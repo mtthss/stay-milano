@@ -45,7 +45,7 @@ public class ItineraryListActivity extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l,View v,int position,long id){
 		Itinerary itinerary=its.get(position);
-		Intent intent=new Intent(this, AreaSelectionActivity.class);
+		Intent intent=new Intent(this, MainActivity.class);
 		intent.putExtra(CURRENT_ITINERARY, itinerary.getID());
 		startActivity(intent);
 	}

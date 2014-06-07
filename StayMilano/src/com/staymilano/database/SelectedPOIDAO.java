@@ -26,11 +26,11 @@ public class SelectedPOIDAO {
 		v.put(POI_ID, poi_id);
 		v.put(VISITED, true);
 		
-		db.update(TABELLA, v, ITINERARY_ID+"="+itinerary_id+" and "+POI_ID+"="+poi_id,null);
+		db.update(TABELLA, v, ITINERARY_ID+"='"+itinerary_id+"' and "+POI_ID+"='"+poi_id+"'",null);
 	}
 	
 	public static Cursor getSelectedPOIByPOIid(SQLiteDatabase db, String id) throws SQLException {
-		Cursor c = db.query(true, TABELLA, COLONNE, POI_ID + "=" + id, null, null, null, null, null);
+		Cursor c = db.query(true, TABELLA, COLONNE, POI_ID + "= '"+id+"'", null, null, null, null, null);
 		if (c != null) {
 			c.moveToFirst();
 		}
@@ -38,7 +38,7 @@ public class SelectedPOIDAO {
 	}
 	
 	public static Cursor getSelectedPOIByItineraryId(SQLiteDatabase db, String id) throws SQLException {
-		Cursor c = db.query(true, TABELLA, COLONNE, ITINERARY_ID + "=" + id, null, null, null, null, null);
+		Cursor c = db.query(true, TABELLA, COLONNE, ITINERARY_ID + "='"+id+"'", null, null, null, null, null);
 		if (c != null) {
 			c.moveToFirst();
 		}

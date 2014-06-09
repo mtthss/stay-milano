@@ -49,6 +49,13 @@ public class ItineraryListActivity extends ListActivity {
 		intent.putExtra(CURRENT_ITINERARY, itinerary.getID());
 		startActivity(intent);
 	}
+	
+	public void createNewIt(View view){
+		
+		Intent intent=new Intent(ctx, AreaSelectionActivity.class);
+    	startActivity(intent);
+	}
+
 
 	private class ItineraryCustomAdapter extends ArrayAdapter<Itinerary> {
 
@@ -78,7 +85,7 @@ public class ItineraryListActivity extends ListActivity {
 
 			return convertView;
 		}
-
+		
 	}
 
 }

@@ -6,7 +6,6 @@ import java.util.List;
 import visualization.MapLook;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
-import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -20,7 +19,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
 import communications.*;
 import model.Direction;
 
@@ -28,20 +26,19 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.staymilano.AreaSelectionActivity.AppSectionsPagerAdapter;
 import com.staymilano.database.DBHelper;
 import com.staymilano.model.Itinerary;
 import com.staymilano.model.PointOfInterest;
 import com.staymilano.model.UserInfo;
 
-public class MainActivity extends FragmentActivity implements
-		ActionBar.TabListener {
 
+public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
+
+	public static FragmentManager manager;
 	ViewPager mViewPager;
-	AppSectionsPagerAdapter mAppSectionsPagerAdapter;
+	AppSectionsPagerAdapter mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
 
 	static List<PointOfInterest> points = new ArrayList<PointOfInterest>();
 
@@ -50,6 +47,8 @@ public class MainActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		manager=getSupportFragmentManager();
+		
 		Intent intent = getIntent();
 		String itineraryID = intent
 				.getStringExtra(ItineraryListActivity.CURRENT_ITINERARY);
@@ -65,6 +64,8 @@ public class MainActivity extends FragmentActivity implements
 
 		final ActionBar actionBar = getActionBar();
 		actionBar.setHomeButtonEnabled(false);
+        actionBar.setDisplayShowHomeEnabled(false);              
+        actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -141,10 +142,8 @@ public class MainActivity extends FragmentActivity implements
 		private List<LatLng> POIsequence;
 
 		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_main, container,
-					false);
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			View rootView = inflater.inflate(R.layout.fragment_main, container,	false);
 
 			setUpMapIfIneed();
 			return rootView;
@@ -152,8 +151,8 @@ public class MainActivity extends FragmentActivity implements
 
 		private void setUpMapIfIneed() {
 			if (map == null) {
-				map = ((SupportMapFragment) AreaSelectionActivity.manager
-						.findFragmentById(R.id.map)).getMap();
+				SupportMapFragment smf = (SupportMapFragment) MainActivity.manager.findFragmentById(R.id.mapMain); 
+				map = smf.getMap();
 			}
 			if (map != null) {
 				setupMap();
@@ -161,8 +160,7 @@ public class MainActivity extends FragmentActivity implements
 		}
 
 		private void setupMap() {
-			map.addMarker(new MarkerOptions().position(MILAN).title("Milan")
-					.snippet("Ciao"));
+			map.addMarker(new MarkerOptions().position(MILAN).title("Milan").snippet("Ciao"));
 			map.moveCamera(CameraUpdateFactory.newLatLngZoom(MILAN, 10));
 			map.setOnMapLoadedCallback(this);
 			map.getUiSettings().setZoomControlsEnabled(false);

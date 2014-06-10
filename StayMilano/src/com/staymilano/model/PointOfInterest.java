@@ -7,8 +7,11 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class PointOfInterest {
 	
-	private static final String MONUMENT="monument";
-	private static final String MUSEUM="museum";
+	static final String MONUMENT="monument";
+	static final String MUSEUM="museum";
+	static final String CHURCH="curch";
+	static final String THEATRE="theater";
+	static final String ARCHEOLOGICAL_SITE="archeological site";
 	
 	private String id;
 	private String name;
@@ -53,6 +56,10 @@ public class PointOfInterest {
 			this.type=MONUMENT;
 		}else if(type.equalsIgnoreCase(MUSEUM)){
 			this.type=MUSEUM;
+		}else if(type.equalsIgnoreCase(CHURCH)){
+			this.type=CHURCH;
+		}else{
+			this.type=ARCHEOLOGICAL_SITE;
 		}
 	}
 	

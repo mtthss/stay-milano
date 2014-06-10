@@ -34,7 +34,7 @@ public class MyPOIAdapter extends ArrayAdapter<PointOfInterest>{
 		TextView second = (TextView) rowView.findViewById(R.id.secondLine);
 		
 		first.setText((values.get(position)).getName());
-		second.setText((values.get(position)).getName());
+		second.setText((values.get(position)).getType());
 
 		return rowView;
 	}

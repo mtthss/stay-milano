@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -41,7 +42,7 @@ public class UserInfo implements Serializable{
 	
 	private void fillItinerary(Itinerary it,SQLiteDatabase readableDatabase) {
 		List<PointOfInterest> pois= new ArrayList<PointOfInterest>();
-		Cursor cur = SelectedPOIDAO.getSelectedPOIByPOIid(readableDatabase, it.getID());
+		Cursor cur = SelectedPOIDAO.getSelectedPOIByItineraryId(readableDatabase, it.getID());
 		if (cur.getCount() > 0) {
 			do {
 				Cursor c= PointOfInterestDAO.getPOIById(readableDatabase, cur.getString(1));
@@ -80,12 +81,18 @@ public class UserInfo implements Serializable{
 	}
 
 	public Itinerary getItinerary(String itinerary_id) {
-		Itinerary result =new Itinerary();
+		Itinerary result = new Itinerary();
 		for(Itinerary it:itineraries){
 			if(itinerary_id.equals(it.getID())){
 				result=it;
 			}
 		}
+		return result;
+	}
+	
+	public Itinerary getItineraryByDate(Date d){
+		Itinerary result = new Itinerary();
+		//TODO implement getItinerary by Date
 		return result;
 	}
 

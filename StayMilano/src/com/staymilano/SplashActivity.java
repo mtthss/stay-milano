@@ -81,7 +81,6 @@ public class SplashActivity extends Activity {
         SQLiteDatabase db = DBHelper.getInstance(this).getWritableDatabase();
         
         Date date= new Date();
-        
         Cursor cur=ItineraryDAO.getItineraryByDate(db,new SimpleDateFormat("yyyy-MM-dd").format(date));
         
         final Intent intent;
@@ -92,7 +91,8 @@ public class SplashActivity extends Activity {
         	startActivity(intent);
         }else{
         	if(cur.getCount()!=0){
-        		intent= new Intent(this,MainActivity.class);
+        		intent = new Intent(this,MainActivity.class);
+        		intent.putExtra("today", true);
         		startActivity(intent);
         	}else{
         		cur=ItineraryDAO.getAllItineraries(db);

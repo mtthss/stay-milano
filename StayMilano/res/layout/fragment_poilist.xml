@@ -17,6 +17,12 @@
     	<TextView android:id="@+id/emptyList"
     	android:layout_width="match_parent"
     	android:layout_height="match_parent"
+		android:layout_gravity="center"
+		android:padding="10dip"
+        android:layout_marginTop="100dp"
+        android:textStyle="italic"
+        android:textSize="14sp"
+        android:textColor="#343434"
     	android:text="@string/noPoiMessage" />
     	
     </LinearLayout>

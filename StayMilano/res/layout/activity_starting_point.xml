@@ -31,8 +31,9 @@
    android:layout_height="wrap_content"
    android:layout_alignParentLeft="true"
    android:layout_marginLeft="18dp"
-   android:text="@string/longitude" 
-   android:layout_below="explicitChoice" />
+   android:text="@string/longitude"
+   android:layout_above="@+id/saveMap" />
+
 <TextView
    android:id="@+id/lng"
    android:layout_width="wrap_content"

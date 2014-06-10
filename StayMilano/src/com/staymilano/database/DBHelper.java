@@ -17,7 +17,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	private Context context;
 
 	private static final String DATABASE_NAME = "staymilano.db";
-	private static final int DATABASE_VERSION = 3;
+	private static final int DATABASE_VERSION = 4;
 
 	// Lo statement SQL di creazione del database
 	private static final String POINTOFINTEREST_CREATE = "create table "
@@ -115,7 +115,6 @@ public class DBHelper extends SQLiteOpenHelper {
 				try {
 					reader.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -147,7 +146,6 @@ public class DBHelper extends SQLiteOpenHelper {
 				try {
 					reader.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

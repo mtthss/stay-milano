@@ -30,7 +30,6 @@ public class ItineraryListActivity extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-		// TODO Auto-generated method stub
 		setContentView(R.layout.activity_itinerary_list);
 		ctx=this;
 		
@@ -76,7 +75,7 @@ public class ItineraryListActivity extends ListActivity {
 			ImageView imageView = (ImageView) convertView
 					.findViewById(R.id.icon);
 			TextView date = (TextView) convertView
-					.findViewById(R.id.textViewDate);
+					.findViewById(R.id.date);
 			
 			Itinerary it = itineraries.get(position);
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");

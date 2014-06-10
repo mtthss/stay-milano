@@ -8,6 +8,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class Itinerary implements Serializable{
 
 	private static final long serialVersionUID = -9024000010811787150L;
@@ -25,7 +27,6 @@ public class Itinerary implements Serializable{
 			cal.setTime(sdf.parse(date));
 			this.date=cal;
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -58,6 +59,17 @@ public class Itinerary implements Serializable{
 
 	public void setID(String id) {
 		this.id = Integer.parseInt(id);
+	}
+	
+	public static List<LatLng> coordinatesOfPoiList(List<PointOfInterest> points){
+		
+		List<LatLng> listLatLng = new ArrayList<LatLng>();
+		
+		for(PointOfInterest p : points){
+			listLatLng.add(p.getPosition());
+		}
+		
+		return listLatLng;
 	}
 
 }

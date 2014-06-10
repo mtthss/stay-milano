@@ -21,6 +21,7 @@
     <string name="download_button">Download</string>
     <string name="create_button">Create</string>
     <string name="actionok">OK</string>
+    <string name="error">cannot save an empty itinerary</string>
     <string name="noPoiMessage">Please insert the monuments you want to visit by selecting the markers on the map</string>
 
     <string name="save">Save</string>

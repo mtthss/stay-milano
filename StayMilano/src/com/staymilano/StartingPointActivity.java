@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -106,11 +107,17 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 	public void takeCurrent(View view){
 		
 		//TODO implementare salvataggio della variabile latlng in database e poi chiamare mainActivity
+		//TODO aggiungere l'ID dell'itinerario appena creato come Extra dell'intent
+		Intent intent=new Intent(this, MainActivity.class);
+		startActivity(intent);
 	}
 	
 	public void setChosenAddress(View view){
 		
 		//TODO implementare chiamata a GeoCode e salvataggio del risultato in database e poi chiamare mainActivity
+		//TODO aggiungere l'ID dell'itinerario appena creato come Extra dell'intent
+		Intent intent=new Intent(this, MainActivity.class);
+		startActivity(intent);
 	}
 	
 

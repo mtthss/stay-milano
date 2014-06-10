@@ -12,6 +12,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -30,6 +32,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -125,34 +128,15 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
                             .setTabListener(this));
         }
     }
-    
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.area_selection, menu);
-		MenuItem m=menu.findItem(R.id.actionok);
-		m.setVisible(true);
-		return true;
-	}
 	
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		// action with ID action_refresh was selected
-		case R.id.actionok:
-			Toast.makeText(this, "ok selected", Toast.LENGTH_SHORT).show();
-			it =new Itinerary();
-			showDialog(0);
-			it.setPois(selectedPOI);
-			break;
-		default:
-			break;
-		}
-
-		return true;
-	}
 	
 	public void showDatePickerDialog(View v) {
-	    DialogFragment newFragment = new DatePickerFragment(this);
-	    newFragment.show(getFragmentManager(), "datePicker");
+		if (selectedPOI.size() > 0) {
+			DialogFragment newFragment = new DatePickerFragment(this);
+			newFragment.show(getFragmentManager(), "datePicker");
+		}else{
+			Toast.makeText(ctx, R.string.error, Toast.LENGTH_SHORT).show();
+		}
 	}
 	
 	protected Dialog onCreateDialog(int id) {
@@ -239,8 +223,7 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
 
     	
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_map, container, false);
             
             db = DBHelper.getInstance(AreaSelectionActivity.ctx).getWritableDatabase();
@@ -299,6 +282,7 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
     						MarkerOptions marker = new MarkerOptions();
     						marker.title(poi.getName());
     						marker.position(poi.getPosition());
+    						marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher));
     						markers.add(marker);
     						
     					}
@@ -367,9 +351,7 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
     public static class ListFragment extends Fragment {
     	
     	@Override
-    	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-    			Bundle savedInstanceState) {
-    		// TODO Auto-generated method stub
+    	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     		View rootView = inflater.inflate(R.layout.fragment_poilist, container, false);
     		return rootView;
     	}

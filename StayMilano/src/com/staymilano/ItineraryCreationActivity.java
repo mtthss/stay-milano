@@ -46,6 +46,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -76,6 +78,8 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 	static boolean detail;
 	static List<MarkerOptions> markers;
 	static final LatLng MILAN = new LatLng(45.4773, 9.1815);
+
+	public static final String POI = "poi";
 	
 	static Intent intent;
 
@@ -362,8 +366,19 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
           ListView listView=(ListView) getActivity().findViewById(R.id.listViewPOI);
           View empty = getActivity().findViewById(R.id.emptyList);
           listView.setEmptyView(empty);
+          listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				intent.putExtra(ItineraryCreationActivity.POI, selectedPOI.get(position));
+				
+			}
+		});
           adapter = new POIAdapter(getActivity(), selectedPOI);
           listView.setAdapter(adapter);
+          
+          //TODO Matteo golosone non mi lascia finire questa activity che dovrebbe permettere di selezionare un elemento della lista
         }
         
     }

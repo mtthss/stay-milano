@@ -1,12 +1,19 @@
 package com.staymilano.model;
 
+import java.io.Serializable;
+
 import android.database.Cursor;
 import android.graphics.Bitmap;
 
 import com.google.android.gms.maps.model.LatLng;
 
-public class PointOfInterest {
+public class PointOfInterest implements Serializable{
 	
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6297551948085356909L;
 	static final String MONUMENT="monument";
 	static final String MUSEUM="museum";
 	static final String CHURCH="curch";

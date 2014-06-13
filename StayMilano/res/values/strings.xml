@@ -23,7 +23,6 @@
     <string name="actionok">OK</string>
     <string name="error">cannot save an empty itinerary</string>
     <string name="noPoiMessage">Please insert the monuments you want to visit by selecting the markers on the map</string>
-
     <string name="save">Save</string>
     <string name="takeCurrent">Take current position</string>
     <string name="startPointHint">Preferred start address</string>
@@ -45,9 +44,8 @@
     <string name="group_owner_text">"Am I the Group Owner? "</string>
     <string name="label_me">ME</string>
     <string name="label_peers">PEERS</string>
-    
-
     <string name="title_activity_starting_point">StartingPointActivity</string>
     <string name="title_activity_wi_fi">WiFiActivity</string>
+    <string name="title_activity_poilist_fragment">POIListFragment</string>
 
 </resources>

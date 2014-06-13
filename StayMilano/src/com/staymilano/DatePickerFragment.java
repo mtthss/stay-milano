@@ -26,7 +26,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 	
 	
 	
-	public DatePickerFragment(AreaSelectionActivity asa) {
+	public DatePickerFragment(ItineraryCreationActivity asa) {
 		selectedPoi = asa.getPoiList();
 	}
 
@@ -39,7 +39,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 		int day = c.get(Calendar.DAY_OF_MONTH);
 
 		// Get database
-		db = DBHelper.getInstance(AreaSelectionActivity.ctx).getWritableDatabase();
+		db = DBHelper.getInstance(ItineraryCreationActivity.ctx).getWritableDatabase();
 		
 		// Create a new instance of DatePickerDialog and return it
 		return new DatePickerDialog(getActivity(), this, year, month, day);

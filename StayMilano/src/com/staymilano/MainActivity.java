@@ -8,6 +8,7 @@ import visualization.MapLook;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
+import android.app.ListFragment;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -126,7 +127,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 				return new MapSectionFragment();
 
 			default:
-				Fragment fragment = new ListFragment();
+				Fragment fragment = new MyListFragment();
 				return fragment;
 			}
 		}
@@ -156,7 +157,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			
 			View rootView = inflater.inflate(R.layout.fragment_main, container,	false);
 			POIsequence = Itinerary.coordinatesOfPoiList(points);
-			db = DBHelper.getInstance(AreaSelectionActivity.ctx).getWritableDatabase();
+			db = DBHelper.getInstance(ItineraryCreationActivity.ctx).getWritableDatabase();
 			
 			setUpMapIfIneed();
 			return rootView;
@@ -206,9 +207,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 	}
 
-	public static class ListFragment extends Fragment {
+	public static class MyListFragment extends Fragment {
 
-		MyPOIAdapter adapter;
+		POIAdapter adapter;
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -225,7 +226,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			ListView listView = (ListView) getActivity().findViewById(R.id.listViewPOI);
 			View empty = getActivity().findViewById(R.id.emptyList);
 			listView.setEmptyView(empty);
-			adapter = new MyPOIAdapter(getActivity(), points);
+			adapter = new POIAdapter(getActivity(), points);
 			listView.setAdapter(adapter);
 		}
 	}

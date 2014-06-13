@@ -51,7 +51,7 @@ public class ItineraryListActivity extends ListActivity {
 	
 	public void createNewIt(View view){
 		
-		Intent intent=new Intent(ctx, AreaSelectionActivity.class);
+		Intent intent=new Intent(ctx, ItineraryCreationActivity.class);
     	startActivity(intent);
 	}
 

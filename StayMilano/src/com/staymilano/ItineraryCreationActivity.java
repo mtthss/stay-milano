@@ -29,6 +29,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
+import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -51,7 +52,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class AreaSelectionActivity extends FragmentActivity implements ActionBar.TabListener {
+public class ItineraryCreationActivity extends FragmentActivity implements ActionBar.TabListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the
@@ -69,7 +70,7 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
     
     public static FragmentManager manager;
     public static Context ctx;
-    public static MyPOIAdapter adapter;
+    public static POIAdapter adapter;
     
     static List<PointOfInterest> selectedPOI=new ArrayList<PointOfInterest>();
 	Itinerary it;
@@ -83,11 +84,11 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_area_selection);
+        setContentView(R.layout.activity_itinerary_creation);
         // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
         manager=getSupportFragmentManager();
-        ctx=AreaSelectionActivity.this;
+        ctx=ItineraryCreationActivity.this;
         
         mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
         
@@ -189,7 +190,7 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
 
                 default:
                     // The other sections of the app are dummy placeholders.
-                    Fragment fragment = new ListFragment();
+                    Fragment fragment = new MyListFragment();
                     Bundle args = new Bundle();
                     return fragment;
             }
@@ -226,7 +227,7 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_map, container, false);
             
-            db = DBHelper.getInstance(AreaSelectionActivity.ctx).getWritableDatabase();
+            db = DBHelper.getInstance(ItineraryCreationActivity.ctx).getWritableDatabase();
             
             String itinerary_id=intent.getStringExtra(ItineraryListActivity.CURRENT_ITINERARY);
             if(itinerary_id!=null){
@@ -243,7 +244,7 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
         
     	private void setUpMapIfIneed() {
 			if(map==null){
-				map=((SupportMapFragment)AreaSelectionActivity.manager.findFragmentById(R.id.map)).getMap();
+				map=((SupportMapFragment)ItineraryCreationActivity.manager.findFragmentById(R.id.map)).getMap();
 			}
 			if(map!=null){
 				setupMap();
@@ -348,7 +349,7 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
     /**
      * A dummy fragment representing a section of the app, but that simply displays dummy text.
      */
-    public static class ListFragment extends Fragment {
+    public static class MyListFragment extends Fragment {
     	
     	@Override
     	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -363,9 +364,10 @@ public class AreaSelectionActivity extends FragmentActivity implements ActionBar
           ListView listView=(ListView) getActivity().findViewById(R.id.listViewPOI);
           View empty = getActivity().findViewById(R.id.emptyList);
           listView.setEmptyView(empty);
-          adapter = new MyPOIAdapter(getActivity(), selectedPOI);
+          adapter = new POIAdapter(getActivity(), selectedPOI);
           listView.setAdapter(adapter);
         }
+        
         
     }
 }

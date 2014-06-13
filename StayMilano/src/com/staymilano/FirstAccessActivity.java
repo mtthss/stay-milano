@@ -41,7 +41,7 @@ public class FirstAccessActivity extends Activity {
 		public void onClick(View v) {
 			final int buttonId=v.getId();
 			if(buttonId==R.id.button2){
-				intent=new Intent(ctx, AreaSelectionActivity.class);
+				intent=new Intent(ctx, ItineraryCreationActivity.class);
 	        	startActivity(intent);
 			}
 			

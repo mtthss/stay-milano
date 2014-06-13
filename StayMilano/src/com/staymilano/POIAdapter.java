@@ -13,12 +13,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MyPOIAdapter extends ArrayAdapter<PointOfInterest>{
+public class POIAdapter extends ArrayAdapter<PointOfInterest>{
 	
 	private final Context context;
 	private final List<PointOfInterest> values;
 
-	public MyPOIAdapter(Context context, List<PointOfInterest> values) {
+	public POIAdapter(Context context, List<PointOfInterest> values) {
 		super(context, R.layout.row_point,values);
 		this.context = context;
 		this.values = values;

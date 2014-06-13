@@ -372,7 +372,7 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				intent=new Intent(ctx, POIDetail.class);
-				intent.putExtra(ItineraryCreationActivity.POI, selectedPOI.get(position));
+				intent.putExtra(ItineraryCreationActivity.POI, selectedPOI.get(position).getId());
 				startActivity(intent);
 				
 				

@@ -62,7 +62,7 @@
             android:value="AIzaSyDzbCl4ziud2A9H1ub6gLmIi-gkHT9RLUY" />
 
         <activity
-            android:name="com.staymilano.AreaSelectionActivity"
+            android:name="com.staymilano.ItineraryCreationActivity"
             android:label="@string/title_activity_area_selection"
             android:theme="@style/Theme.Example" >
         </activity>

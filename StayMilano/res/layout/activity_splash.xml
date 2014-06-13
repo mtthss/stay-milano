@@ -5,9 +5,9 @@
 
     <ImageView
         android:id="@+id/splash_imageview"
-        android:layout_width="@dimen/splash_size"
-        android:layout_height="@dimen/splash_size"
-        android:src="@drawable/ic_launcher" 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/splash_image" 
         android:layout_gravity="center" />
     
 </FrameLayout>

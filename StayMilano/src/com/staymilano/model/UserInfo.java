@@ -66,7 +66,7 @@ public class UserInfo implements Serializable{
 		return user;
 	}
 	
-	public void saveItinerary(Itinerary it, SQLiteDatabase db){
+	public String saveItinerary(Itinerary it, SQLiteDatabase db){
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		String stringDate = sdf.format(it.getDate().getTime());
 		String id=ItineraryDAO.insertItinerary(db, stringDate);
@@ -74,6 +74,7 @@ public class UserInfo implements Serializable{
 		for(PointOfInterest poi:it.getPois()){
 			SelectedPOIDAO.insertItinerary(db, poi.getId(), it.getID());
 		}
+		return id;
 	}
 
 	public List<Itinerary> getItineraries() {
@@ -92,7 +93,17 @@ public class UserInfo implements Serializable{
 	
 	public Itinerary getItineraryByDate(Date d){
 		Itinerary result = new Itinerary();
-		//TODO implement getItinerary by Date
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		String dateToFind = sdf.format(d);
+		
+		for(Itinerary it : itineraries){
+			if(sdf.format(it.getDate()).equals(dateToFind)){
+				return it;
+			}
+		}
+		
+		
+		//TODO CHIARA implement getItinerary by Date
 		return result;
 	}
 

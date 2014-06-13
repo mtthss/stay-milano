@@ -25,7 +25,6 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 	List<PointOfInterest> selectedPoi;
 	
 	
-	
 	public DatePickerFragment(ItineraryCreationActivity asa) {
 		selectedPoi = asa.getPoiList();
 	}
@@ -47,14 +46,14 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
 	@Override
 	public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-		// create itinerary with given points of interest and date
+		// Create itinerary with given points of interest and date
 		UserInfo ui = UserInfo.getUserInfo(db);
 		Itinerary it = new Itinerary();
 		
-		// set point of interests
+		// Set point of interests
 		it.setPois(selectedPoi);
 		
-		// set date
+		// Set date
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		String s = dayOfMonth + "-" + monthOfYear + "-" + year;
@@ -65,11 +64,12 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 		}
 		it.setData(cal);
 		
-		// save itinerary in database
-		ui.saveItinerary(it, db);
+		// Save itinerary in database
+		String id = ui.saveItinerary(it, db);
 		
-		// start next activity
+		// Start next activity
 		Intent intent=new Intent(getActivity(), StartingPointActivity.class);
+		intent.putExtra("id", id);
 		startActivity(intent);
 	}
 }

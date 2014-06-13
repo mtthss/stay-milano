@@ -8,7 +8,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase; 
   
 public class AreaDAO { 
-    //TODO nomi in inglese 
+
     public static final String ID = "_id"; 
     public static final String NAME = "name"; 
     public static final String LATITUDE = "latitude"; 

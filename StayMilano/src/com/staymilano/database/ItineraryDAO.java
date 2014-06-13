@@ -1,5 +1,7 @@
 package com.staymilano.database;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -53,5 +55,13 @@ public class ItineraryDAO {
     	SelectedPOIDAO.deleteSelectedPOIByItinerary(db, id);
         return db.delete(TABELLA, ID + "=" + "'"+id+"'", null) > 0;
     }
-
+    
+    public static void setStartingPoint(LatLng startingCoord){
+    	
+    	//TODO CHIARA implementa salvataggio in db dello starting point
+    }
+    
+    
 }
+
+

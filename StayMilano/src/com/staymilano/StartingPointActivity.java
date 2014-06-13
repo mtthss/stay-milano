@@ -1,12 +1,16 @@
 package com.staymilano;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.staymilano.database.DBHelper;
+import com.staymilano.database.ItineraryDAO;
 
+import communications.GoogleMapsUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -17,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.os.Build;
 
@@ -27,27 +32,35 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 	  String provider;
 	  Location l;
 	  LatLng latlng;
-	
+	  String itineraryId;
+  	  SQLiteDatabase db;
+	  
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		   super.onCreate(savedInstanceState);
 		   setContentView(R.layout.activity_starting_point);
-		   ln=(TextView)findViewById(R.id.lng);
-		   lt=(TextView)findViewById(R.id.lat);
+		   ln = (TextView)findViewById(R.id.lng);
+		   lt = (TextView)findViewById(R.id.lat);
+		   
+	       Intent intent = getIntent();
+	       itineraryId = intent.getStringExtra(ItineraryListActivity.CURRENT_ITINERARY);
+		   
 		   //get location service
-		   lm=(LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
-		   Criteria c=new Criteria();
+		   lm = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
+		   Criteria c = new Criteria();
+		   
 		   //criteria object will select best service based on Accuracy, power consumption, response, 
 		   //bearing and monetary cost, set false to use best service 
-		   provider=lm.getBestProvider(c, false);
-		   l=lm.getLastKnownLocation(provider);
+		   provider = lm.getBestProvider(c, false);
+		   l = lm.getLastKnownLocation(provider);
 		   if(l!=null)
 		   {
 		       //get latitude and longitude of the location
-		       double lng=l.getLongitude();
-		       double lat=l.getLatitude();
+		       double lng = l.getLongitude();
+		       double lat = l.getLatitude();
 		       latlng = new LatLng(lat, lng);
+		       
 		       //display on text view
 		       ln.setText(""+lng);
 		       lt.setText(""+lat);
@@ -62,8 +75,8 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 	@Override
 	public void onLocationChanged(Location arg0)
 	{
-		double lng=l.getLongitude();
-	    double lat=l.getLatitude();
+		double lng = l.getLongitude();
+	    double lat = l.getLatitude();
 	    latlng = new LatLng(lat, lng);
 	    ln.setText(""+lng);
 	    lt.setText(""+lat);
@@ -106,18 +119,30 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 	
 	public void takeCurrent(View view){
 		
-		//TODO implementare salvataggio della variabile latlng in database e poi chiamare mainActivity
-		//TODO aggiungere l'ID dell'itinerario appena creato come Extra dell'intent
-		Intent intent=new Intent(this, MainActivity.class);
+		saveCoordinates(latlng);
+		
+		Intent intent = new Intent(this, MainActivity.class);
+		intent.putExtra("id", itineraryId);
 		startActivity(intent);
 	}
 	
 	public void setChosenAddress(View view){
 		
-		//TODO implementare chiamata a GeoCode e salvataggio del risultato in database e poi chiamare mainActivity
-		//TODO aggiungere l'ID dell'itinerario appena creato come Extra dell'intent
-		Intent intent=new Intent(this, MainActivity.class);
+		EditText editText = (EditText) view.findViewById(R.id.edit_message);
+		String message = editText.getText().toString();
+		LatLng startCoord = GoogleMapsUtils.getGeoCode(message);
+		saveCoordinates(startCoord);
+		
+		Intent intent = new Intent(this, MainActivity.class);
+		intent.putExtra("id", itineraryId);
 		startActivity(intent);
+	}
+	
+	private void saveCoordinates(LatLng startCoord){
+		
+		db = DBHelper.getInstance(ItineraryCreationActivity.ctx).getWritableDatabase();
+		ItineraryDAO.setStartingPoint(startCoord);
+		
 	}
 	
 

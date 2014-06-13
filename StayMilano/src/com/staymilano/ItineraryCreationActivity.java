@@ -29,7 +29,6 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
-import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -190,7 +189,7 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 
                 default:
                     // The other sections of the app are dummy placeholders.
-                    Fragment fragment = new MyListFragment();
+                    Fragment fragment = new ListFragment();
                     Bundle args = new Bundle();
                     return fragment;
             }
@@ -267,8 +266,7 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
     		@Override
     		public void onMapClick(LatLng point) {
     			if (detail) {
-    				// TODO implement remove poi in MapLook
-    				// MapLook.removePOI();
+    				// TODO MATTEO implement removePoi in MapLook MapLook.removePOI();
     				map.clear();
     				map.animateCamera(CameraUpdateFactory.zoomTo((float) 12.5), 1000, null);
     				MapLook.drawAreas(City.getCity(db).getPolygons(), map);
@@ -349,7 +347,7 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
     /**
      * A dummy fragment representing a section of the app, but that simply displays dummy text.
      */
-    public static class MyListFragment extends Fragment {
+    public static class ListFragment extends Fragment {
     	
     	@Override
     	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -367,7 +365,6 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
           adapter = new POIAdapter(getActivity(), selectedPOI);
           listView.setAdapter(adapter);
         }
-        
         
     }
 }

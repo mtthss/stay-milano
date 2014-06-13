@@ -97,7 +97,6 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
         
         intent=getIntent();
         String itineraryid=intent.getStringExtra(ItineraryListActivity.CURRENT_ITINERARY);
-        
 
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();

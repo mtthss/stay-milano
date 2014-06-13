@@ -1,72 +1,72 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-   xmlns:tools="http://schemas.android.com/tools"
-   android:layout_width="match_parent"
-   android:layout_height="match_parent"
-   android:background="#89b" >
-   
-<LinearLayout 
-    android:id="@+id/explicitChoice"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:layout_alignParentTop="true" >
-    
-   <EditText android:id="@+id/edit_message"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/startPointHint" />
-     
-   <Button
+    android:background="#89b" >
+
+    <LinearLayout
+        android:id="@+id/explicitChoice"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/edit_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/startPointHint" />
+
+        <Button
+            android:id="@+id/saveMap"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:onClick="takeCurrent"
+            android:text="@string/takeCurrent" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="setChosenAddress"
+            android:text="@string/setSP" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/setSP"
-        android:onClick="setChosenAddress" />
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="18dp"
+        android:text="@string/longitude" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/lng"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="14dp"
+        android:layout_toRightOf="@+id/textView1"
+        android:text=""
+        android:textSize="30sp" />
 
-<TextView
-   android:id="@+id/textView1"
-   android:layout_width="wrap_content"
-   android:layout_height="wrap_content"
-   android:layout_alignParentLeft="true"
-   android:layout_marginLeft="18dp"
-   android:text="@string/longitude"
-   android:layout_above="@+id/saveMap" />
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/textView1"
+        android:layout_below="@+id/lng"
+        android:layout_marginTop="53dp"
+        android:text="@string/latitude" />
 
-<TextView
-   android:id="@+id/lng"
-   android:layout_width="wrap_content"
-   android:layout_height="wrap_content"
-   android:layout_below="@+id/textView1"
-   android:layout_marginLeft="60dp"
-   android:layout_marginTop="14dp"
-   android:layout_toRightOf="@+id/textView1"
-   android:text=""
-   android:textSize="30sp" />
-<TextView
-   android:id="@+id/textView3"
-   android:layout_width="wrap_content"
-   android:layout_height="wrap_content"
-   android:layout_alignRight="@+id/textView1"
-   android:layout_below="@+id/lng"
-   android:layout_marginTop="53dp"
-   android:text="@string/latitude" />
-<TextView
-   android:id="@+id/lat"
-   android:layout_width="wrap_content"
-   android:layout_height="wrap_content"
-   android:layout_alignLeft="@+id/lng"
-   android:layout_below="@+id/textView3"
-   android:text=""
-   android:textSize="30sp" />
-
-    <Button
-    	android:id="@+id/saveMap"
-    	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:text="@string/takeCurrent" 
-    	android:onClick="takeCurrent"
-    	android:layout_gravity="bottom" />    
+    <TextView
+        android:id="@+id/lat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/lng"
+        android:layout_below="@+id/textView3"
+        android:text=""
+        android:textSize="30sp" />
 
 </RelativeLayout>

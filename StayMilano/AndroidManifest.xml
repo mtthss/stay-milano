@@ -82,9 +82,16 @@
             android:name="com.staymilano.WiFiActivity"
             android:label="@string/title_activity_wi_fi" >
         </activity>
-        
+
         <!-- Used for transferring files  after a successful connection -->
-        <service android:enabled="true" android:name=".FileTransferService" />
+        <service
+            android:name="com.staymilano.FileTransferService"
+            android:enabled="true" />
+
+        <activity
+            android:name="com.staymilano.POIListFragment"
+            android:label="@string/title_activity_poilist_fragment" >
+        </activity>
     </application>
 
 </manifest>

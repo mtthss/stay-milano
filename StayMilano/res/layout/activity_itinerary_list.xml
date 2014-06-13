@@ -1,13 +1,18 @@
-
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-<LinearLayout 
+<LinearLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
+
+	<fragment
+       class="MyFragment"
+       android:id="@+id/myfragment"
+       android:layout_width="fill_parent"
+       android:layout_height="wrap_content"/>
 
     <ListView
         android:id="@android:id/list"
@@ -15,15 +20,10 @@
         android:layout_height="wrap_content"
         android:listSelector="@drawable/list_selector" >
     </ListView>
-
 </LinearLayout>
     
-    <Button
-    	android:id="@+id/newItinerary"
-    	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:text="@string/newItineraryButton" 
-    	android:layout_gravity="bottom" 
-    	android:onClick="createNewIt" />
+
+
+
 
 </FrameLayout>

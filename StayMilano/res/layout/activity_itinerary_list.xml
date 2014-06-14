@@ -9,7 +9,7 @@
     android:orientation="vertical" >
 
 	<fragment
-       class="MyFragment"
+       class="com.staymilano.MyFragment"
        android:id="@+id/myfragment"
        android:layout_width="fill_parent"
        android:layout_height="wrap_content"/>

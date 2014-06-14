@@ -16,8 +16,8 @@
 
         <ImageView
             android:id="@+id/icon"
-            android:layout_width="75dip"
-            android:layout_height="75dip"
+            android:layout_width="50dip"
+            android:layout_height="50dip"
             android:src="@drawable/ic_launcher" />
         
     </LinearLayout>

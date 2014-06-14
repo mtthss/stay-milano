@@ -1,9 +1,6 @@
 package com.staymilano.database;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -71,7 +68,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	}
 
 	// Questo metodo viene chiamato durante l'upgrade del database, ad esempio
-	// quando viene incrementato il numero di versione
+	// Quando viene incrementato il numero di versione
 	@Override
 	public void onUpgrade(SQLiteDatabase database, int oldVersion,
 			int newVersion) {
@@ -133,9 +130,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			while ((line = reader.readLine()) != null) {
 				// database.insert(AreaDAO.TABELLA,
 				// null,AreaDAO.getContentValues(line));
-				String insert_data = "INSERT INTO " + AreaDAO.TABELLA
-						+ " VALUES(" + i + "," + AreaDAO.getInsertQuery(line)
-						+ ")";
+				String insert_data = "INSERT INTO " + AreaDAO.TABELLA + " VALUES(" + i + "," + AreaDAO.getInsertQuery(line)	+ ")";
 				i++;
 				database.execSQL(insert_data);
 			}

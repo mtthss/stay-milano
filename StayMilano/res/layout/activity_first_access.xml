@@ -2,30 +2,43 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/duomogrigio">
-
+    
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/text1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:gravity="right"
-		android:layout_marginTop="120dp"
-		android:layout_marginLeft="40dip"
-		android:layout_marginRight="10dip"
-		android:layout_marginBottom="20dip"
+		android:paddingTop="40dip"
+		android:paddingRight="10dip"
         android:textStyle="italic"
-        android:textSize="18sp"
+        android:textSize="22sp"
         android:textColor="#ffffff"
-        android:text="@string/welcome_mex" />
+        android:text="@string/welcome_msg" />
+    
+
+    <TextView
+        android:id="@+id/text2"
+        android:layout_width="120dip"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:paddingRight="10dip"
+        android:gravity="right"
+        android:layout_below="@+id/text1"
+        android:textStyle="italic"
+        android:textSize="20sp"
+        android:textColor="#ffffff"
+        android:text="@string/init_msg" />
 
 
     <Button
         android:id="@+id/button2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textView1"
         android:layout_alignParentBottom="true"
         android:shadowColor="#ff8800"
         android:background="#ff8800"
+        android:textStyle="bold"
         android:text="@string/create_button"/>
 
 </RelativeLayout>

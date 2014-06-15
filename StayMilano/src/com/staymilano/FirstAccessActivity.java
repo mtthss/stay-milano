@@ -16,7 +16,6 @@ import android.os.Build;
 public class FirstAccessActivity extends Activity {
 
 	private Button createButton;
-	private Button downloadButton;
 	
 	private Context ctx;
 	Intent intent;

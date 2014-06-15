@@ -29,10 +29,8 @@ public class FirstAccessActivity extends Activity {
 		ctx=this;
 		
 		createButton=(Button) findViewById(R.id.button2);
-		downloadButton=(Button) findViewById(R.id.button1);
 		
 		createButton.setOnClickListener(listener);
-		downloadButton.setOnClickListener(listener);
 	}
 
 	OnClickListener listener= new OnClickListener() {

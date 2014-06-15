@@ -54,6 +54,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		Intent intent = getIntent();
 		today = intent.getBooleanExtra("today", false);
 		String itineraryID = intent.getStringExtra(ItineraryListActivity.CURRENT_ITINERARY);
+		
 		Itinerary it = null;
 		
 		if(today){
@@ -94,6 +95,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 	}
 
+	@Override
+	public void onBackPressed() {
+		Intent intent=new Intent(this, ItineraryListActivity.class);
+		startActivity(intent);
+	}
+	
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
 		mViewPager.setCurrentItem(tab.getPosition());
@@ -193,7 +200,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		}
 
 		private void getDirections() {
-
+			
+			// fetch poi-sequence
+			POIsequence = Itinerary.coordinatesOfPoiList(points);
+			
 			// get directions for the specified itinerary
 			GoogleMapsUtils.getDirection(this, POIsequence,	GoogleMapsUtils.MODE_WALKING);
 		}

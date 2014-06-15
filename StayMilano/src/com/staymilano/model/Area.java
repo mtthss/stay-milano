@@ -50,25 +50,29 @@ public class Area implements Serializable {
 	private void createPolygon(SQLiteDatabase db) {
 		pol = new PolygonOptions();
 		Cursor cur = AreaDAO.getPointsByArea(db, name);
-		do{
-			Double d1=Double.valueOf(cur.getString(2));
-			Double d2=Double.valueOf(cur.getString(3));
-			
-			if (cur.getString(4).equalsIgnoreCase("false")) {
-				LatLng latlng = new LatLng(d1, d2);
-				pol.add(latlng);
-			} else {
-				center = new LatLng(d1, d2);
-			}
-		}while (cur.moveToNext());
+		if (cur.getCount() > 0) {
+			do {
+				Double d1 = Double.valueOf(cur.getString(2));
+				Double d2 = Double.valueOf(cur.getString(3));
+
+				if (cur.getString(4).equalsIgnoreCase("false")) {
+					LatLng latlng = new LatLng(d1, d2);
+					pol.add(latlng);
+				} else {
+					center = new LatLng(d1, d2);
+				}
+			} while (cur.moveToNext());
+		}
 	}
 
 	private List<PointOfInterest> fillPois(SQLiteDatabase db) {
 		Cursor cur = PointOfInterestDAO.getPOIByArea(db, name);
-		do{
-			PointOfInterest poi = new PointOfInterest(cur);
-			pois.add(poi);
-		}while (cur.moveToNext());
+		if (cur.getCount() > 0) {
+			do {
+				PointOfInterest poi = new PointOfInterest(cur);
+				pois.add(poi);
+			} while (cur.moveToNext());
+		}
 		return pois;
 	}
 

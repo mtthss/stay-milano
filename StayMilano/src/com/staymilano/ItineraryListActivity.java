@@ -32,6 +32,11 @@ public class ItineraryListActivity extends ListActivity {
         super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_itinerary_list);
 		ctx=this;
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume(); 
 		
 		SQLiteDatabase db = DBHelper.getInstance(this).getWritableDatabase();
 		UserInfo user=UserInfo.getUserInfo(db);
@@ -39,6 +44,7 @@ public class ItineraryListActivity extends ListActivity {
 		
 		ItineraryCustomAdapter adapter = new ItineraryCustomAdapter(this,its);
 		setListAdapter(adapter);
+		adapter.notifyDataSetChanged();
 	}
 	
 	@Override
@@ -47,6 +53,11 @@ public class ItineraryListActivity extends ListActivity {
 		Intent intent=new Intent(this, MainActivity.class);
 		intent.putExtra(CURRENT_ITINERARY, itinerary.getID());
 		startActivity(intent);
+	}
+
+	@Override
+	public void onBackPressed() {
+		this.finish();
 	}
 	
 	public void createNewIt(View view){

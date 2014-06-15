@@ -1,13 +1,11 @@
-duomo,questo è il duomo,church,DUOMO_BRERA_MONTENAPOLEONE,45.463952, 9.192035
-museo del '900, arte e altro,DUOMO_BRERA_MONTENAPOLEONE,45.463260, 9.190232
-pinacoteca di brera,arte e altro,museum,DUOMO_BRERA_MONTENAPOLEONE,45.472033, 9.187958
+duomo,questo è il duomo,church,duomo_brera_montenapoleone,45.463952, 9.192035
+museo del 900, arte e altro,museum,duomo_brera_montenapoleone,45.463260, 9.190232
+pinacoteca di brera,arte e altro,museum,duomo_brera_montenapoleone,45.472033, 9.187958
 piazza degli affari e palazzo mezzanotte,sede della borsa,palace,duomo_brera_montenapoleone,45.464780, 9.183237
 via monte napoleone,via dello shopping di lusso,other,duomo_brera_montenapoleone,45.468273, 9.195162
 galleria vittorio emanuele II,questa è la galleria,monument,duomo_brera_montenapoleone,45.465616,9.189932
-teatro alla scala, questo è il teatro alla scala,theater,DUOMO_BRERA_MONTENAPOLEONE,45.467414, 9.189546
-palazzp reale,royal palace,palace,duomo_brera_montenapoleone,45.463140, 9.191112
-
+teatro alla scala, questo è il teatro alla scala,theater,duomo_brera_montenapoleone,45.467414, 9.189546
+palazzo reale,royal palace,palace,duomo_brera_montenapoleone,45.463140, 9.191112
 castello sforzesco,questo è il castello sforzesco,archeological site,castello,45.470502, 9.179300
-arco della pace, questo è l'arco,monument,castello,45.476238, 9.171730
-parco sempione,il parco dei milanesi,castello,45.473138, 9.176965
-
+arco della pace, questo è l arco,monument,castello,45.476238, 9.171730
+parco sempione,il parco dei milanesi,park,castello,45.473138, 9.176965

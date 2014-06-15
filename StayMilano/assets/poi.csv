@@ -5,7 +5,40 @@ piazza degli affari e palazzo mezzanotte,sede della borsa,palace,duomo_brera_mon
 via monte napoleone,via dello shopping di lusso,other,duomo_brera_montenapoleone,45.468273, 9.195162
 galleria vittorio emanuele II,questa è la galleria,monument,duomo_brera_montenapoleone,45.465616,9.189932
 teatro alla scala, questo è il teatro alla scala,theater,duomo_brera_montenapoleone,45.467414, 9.189546
+parrocchia di san satiro, parrocchia,church,duomo_brera_montenapoleone,45.462842, 9.187733
 palazzo reale,royal palace,palace,duomo_brera_montenapoleone,45.463140, 9.191112
+via torino, via dello shopping,other,duomo_brera_montenapoleone,45.462470, 9.186753
 castello sforzesco,questo è il castello sforzesco,archeological site,castello,45.470502, 9.179300
 arco della pace, questo è l arco,monument,castello,45.476238, 9.171730
 parco sempione,il parco dei milanesi,park,castello,45.473138, 9.176965
+la triennale di milano, triennale,museum,castello,45.466025, 9.170824
+arena civica,arena,archeological site,castello,45.475355, 9.178334
+santa maria delle grazie,viva,church,sant_ambrogio,45.465912, 9.171017
+basilica di sant ambrogio,santo patrono,church,sant_ambrogio,45.462233, 9.175609
+museo nazionale della scienza e della tecnica,museo,museum,sant_ambrogio,45.462865, 9.170781
+cenacolo vinciano, l ultima cena,museum,sant_ambrogio,45.466025, 9.170824
+san maurizio al monastero, monastero, church,sant_ambrogio,45.465592, 9.178946
+parco delle basiliche,parco,park,colonne_navigli,45.455865, 9.182231
+colonne di san lorenzo,colonne,archeological site,colonne_navigli,45.458273, 9.181072
+basilica san lorenzo maggiore, basilica, church,colonne_navigli,colonne_navigli
+basilica sant eustorgio,basilica,church,colonne_navigli,45.453968, 9.181072
+porta ticinese,porta,archeological site,colonne_navigli,45.452504, 9.180197
+naviglio pavese,naviglio,other,colonne_navigli,45.452248, 9.178116
+naviglio grande,naviglio,other,colonne_navigli,45.452369, 9.176989
+san bernardino alle ossa, ossario, church,porta_romana,45.462771, 9.196398
+san nazaro maggiore, chiesa, church,porta_romana,45.458512, 9.192493
+università degli studi di milano,università,archeological site,porta_romana,45.460153, 9.194617
+rotonda della besana,via besana, archeological site,porta_romana,45.459743, 9.205186
+palazzo di giustizia, tribunale, other,porta_romana,45.462160, 9.201253
+museo civico di storia naturale, museo,museum,porta_venezia_palestro,45.472689, 9.202380
+giardini pubblici indro montanelli, giardini, park,porta_venezia_palestro,45.474284, 9.200105
+planetario,civico planetario ulrico hoepli, museum, porta_venezia_palestro,45.473772, 9.203625
+pac,padiglione arte contemporanea, museum,porta_venezia_palestro,45.472824, 9.199290
+bastioni di porta venezia, porta, monument,porta_venezia_palestro,45.474355, 9.205175
+corso buenos aires,shopping, other,porta_venezia_palestro,45.474758, 9.205347
+basilica san simpliciano, basilica, church,moscova_garibaldi,45.473924, 9.184468
+chiesa santa maria incoronata, chiesa,church,moscova_garibaldi,45.479867, 9.186528
+monumento di porta garibaldi, porta garibaldi, monument,moscova_garibaldi,45.480823, 9.186989
+eataly,food shopping,other,moscova_garibaldi,45.480454, 9.187698
+corso como,night life, other,moscova_garibaldi,45.481041, 9.187032
+piazza gae aulenti, sky line,other,moscova_garibaldi,45.483553, 9.189436

@@ -337,9 +337,11 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
     			poi=City.getCity(db).getPOIbyName(marker.getTitle());
     			if(selectedPOI.contains(poi)){
     				selectedPOI.remove(poi);
+    				marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher));
     				adapter.notifyDataSetChanged();
     			}else{
     				selectedPOI.add(poi);
+    				marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.check));
     				adapter.notifyDataSetChanged();
     				
     			}

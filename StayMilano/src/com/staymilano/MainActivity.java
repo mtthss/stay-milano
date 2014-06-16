@@ -48,8 +48,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	static List<PointOfInterest> points = new ArrayList<PointOfInterest>();
 	static LatLng startLatLng;
 	static Intent intent;
-	static Context ctx;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -254,7 +253,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
-					intent=new Intent(ctx, POIDetail.class);
+					intent=new Intent(getActivity(), POIDetail.class);
 					intent.putExtra(ItineraryCreationActivity.POI, points.get(position).getId());
 					startActivity(intent);
 					

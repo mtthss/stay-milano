@@ -48,6 +48,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -137,6 +138,7 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 		if (selectedPOI.size() > 0) {
 			DialogFragment newFragment = new DatePickerFragment(this);
 			newFragment.show(getFragmentManager(), "datePicker");
+			newFragment.setRetainInstance(true);
 		}else{
 			Toast.makeText(ctx, R.string.error, Toast.LENGTH_SHORT).show();
 		}
@@ -365,6 +367,8 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
           ListView listView=(ListView) getActivity().findViewById(R.id.listViewPOI);
           View empty = getActivity().findViewById(R.id.emptyList);
           listView.setEmptyView(empty);
+          Button button=(Button) getActivity().findViewById(R.id.saveMap);
+          button.setText(R.string.save);
           listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override

@@ -8,6 +8,7 @@ import visualization.MapLook;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -19,7 +20,10 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 import communications.*;
 import model.Direction;
 
@@ -43,6 +47,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	AppSectionsPagerAdapter mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
 	static List<PointOfInterest> points = new ArrayList<PointOfInterest>();
 	static LatLng startLatLng;
+	static Intent intent;
+	static Context ctx;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -240,6 +246,21 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			ListView listView = (ListView) getActivity().findViewById(R.id.listViewPOI);
 			View empty = getActivity().findViewById(R.id.emptyList);
 			listView.setEmptyView(empty);
+			Button button=(Button) getActivity().findViewById(R.id.saveMap);
+			button.setText(R.string.modify);
+			
+			listView.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+					intent=new Intent(ctx, POIDetail.class);
+					intent.putExtra(ItineraryCreationActivity.POI, points.get(position).getId());
+					startActivity(intent);
+					
+					
+				}
+			});
 			adapter = new POIAdapter(getActivity(), points);
 			listView.setAdapter(adapter);
 		}

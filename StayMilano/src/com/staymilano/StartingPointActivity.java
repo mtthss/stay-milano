@@ -129,8 +129,8 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 		
 		EditText editText = (EditText) view.findViewById(R.id.edit_message);
 		String message = editText.getText().toString();
-		LatLng startCoord = GoogleMapsUtils.getGeoCode(message);
-		saveCoordinates(startCoord);
+		//LatLng startCoord = GoogleMapsUtils.getGeoCode(message);
+		//saveCoordinates(startCoord);
 		
 		Intent intent = new Intent(this, MainActivity.class);
 		intent.putExtra("id", itineraryId);

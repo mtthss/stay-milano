@@ -14,7 +14,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	private Context context;
 
 	private static final String DATABASE_NAME = "staymilano.db";
-	private static final int DATABASE_VERSION = 13;
+	private static final int DATABASE_VERSION = 11;
 
 	// Lo statement SQL di creazione del database
 	private static final String POINTOFINTEREST_CREATE = "create table "
@@ -39,7 +39,13 @@ public class DBHelper extends SQLiteOpenHelper {
 			+ AreaDAO.NAME + " text not null, " + AreaDAO.CENTER
 			+ " text not null," + AreaDAO.LATITUDE + " text not null, "
 			+ AreaDAO.LONGITUDE + " text not null);";
-
+	
+	private static final String START_POINTS = "create table " 
+			+ StartPointDAO.TABELLA
+			+ "(" + StartPointDAO.START_LAT + " text not null, " 
+			+ StartPointDAO.START_LONG + " text not null, "
+			+ SelectedPOIDAO.ITINERARY_ID + " integer );";
+			
 
 	// Costruttore
 	public DBHelper(Context context) {
@@ -61,6 +67,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		database.execSQL(ITINERARY_CREATE);
 		database.execSQL(AREA_CREATE);
 		database.execSQL(SELECTED_POI);
+		database.execSQL(START_POINTS);
 
 		loadPOI(database);
 		loadAREA(database);
@@ -70,8 +77,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	// Questo metodo viene chiamato durante l'upgrade del database, ad esempio
 	// Quando viene incrementato il numero di versione
 	@Override
-	public void onUpgrade(SQLiteDatabase database, int oldVersion,
-			int newVersion) {
+	public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
 		database.execSQL("DROP TABLE IF EXISTS pointofinterest");
 		database.execSQL("DROP TABLE IF EXISTS area");
 		database.execSQL(POINTOFINTEREST_CREATE);
@@ -81,6 +87,9 @@ public class DBHelper extends SQLiteOpenHelper {
 		database.execSQL("DROP TABLE IF EXISTS selectedpoi");
 		database.execSQL(ITINERARY_CREATE);
 		database.execSQL(SELECTED_POI);
+		
+		database.execSQL("DROP TABLE IF EXISTS start_points");
+		database.execSQL(START_POINTS);
 		
 		loadPOI(database);
 		loadAREA(database);

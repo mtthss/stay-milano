@@ -3,11 +3,10 @@ package com.staymilano;
 import com.google.android.gms.maps.model.LatLng;
 import com.staymilano.database.DBHelper;
 import com.staymilano.database.ItineraryDAO;
+import com.staymilano.database.StartPointDAO;
 
 import communications.GoogleMapsUtils;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,14 +15,12 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.os.Build;
+
 
 public class StartingPointActivity extends ActionBarActivity implements LocationListener{
 
@@ -44,7 +41,7 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 		   lt = (TextView)findViewById(R.id.lat);
 		   
 	       Intent intent = getIntent();
-	       itineraryId = intent.getStringExtra(ItineraryListActivity.CURRENT_ITINERARY);
+	       itineraryId = intent.getStringExtra("id");	       
 		   
 		   //get location service
 		   lm = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
@@ -75,6 +72,7 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 	@Override
 	public void onLocationChanged(Location arg0)
 	{
+		
 		double lng = l.getLongitude();
 	    double lat = l.getLatitude();
 	    latlng = new LatLng(lat, lng);
@@ -92,6 +90,7 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
@@ -140,8 +139,11 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 	
 	private void saveCoordinates(LatLng startCoord){
 		
+		//TODO passo 1
 		db = DBHelper.getInstance(ItineraryCreationActivity.ctx).getWritableDatabase();
-		ItineraryDAO.setStartingPoint(startCoord);
+		String startLat = "" + startCoord.latitude;
+		String startLong = "" + startCoord.longitude;
+		StartPointDAO.insertStartingPoint(db, itineraryId, startLat , startLong);
 		
 	}
 	

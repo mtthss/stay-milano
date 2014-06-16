@@ -49,6 +49,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 		// Create itinerary with given points of interest and date
 		UserInfo ui = UserInfo.getUserInfo(db);
 		Itinerary it = new Itinerary();
+		int correctMonth = monthOfYear+1;
 		
 		// Set point of interests
 		it.setPois(selectedPoi);
@@ -56,7 +57,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 		// Set date
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-		String s = dayOfMonth + "-" + monthOfYear + "-" + year;
+		String s = dayOfMonth + "-" + correctMonth + "-" + year;
 		try {
 			cal.setTime(sdf.parse(s));
 		} catch (ParseException e) {

@@ -1,6 +1,7 @@
 package com.staymilano;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import com.staymilano.database.DBHelper;
@@ -39,8 +40,8 @@ public class ItineraryListActivity extends ListActivity {
 		super.onResume(); 
 		
 		SQLiteDatabase db = DBHelper.getInstance(this).getWritableDatabase();
-		UserInfo user=UserInfo.getUserInfo(db);
-		its=user.getItineraries();
+		UserInfo user = UserInfo.getUserInfo(db);
+		its = user.getItineraries();
 		
 		ItineraryCustomAdapter adapter = new ItineraryCustomAdapter(this,its);
 		setListAdapter(adapter);
@@ -49,20 +50,20 @@ public class ItineraryListActivity extends ListActivity {
 	
 	@Override
 	protected void onListItemClick(ListView l,View v,int position,long id){
-		Itinerary itinerary=its.get(position);
-		Intent intent=new Intent(this, MainActivity.class);
-		intent.putExtra(CURRENT_ITINERARY, itinerary.getID());
+		Itinerary itinerary = its.get(position);
+		Intent intent = new Intent(this, MainActivity.class);
+		intent.putExtra("id", itinerary.getID());
 		startActivity(intent);
 	}
 
 	@Override
 	public void onBackPressed() {
-		this.finish();
+		this.moveTaskToBack(true);
 	}
 	
 	public void createNewIt(View view){
 		
-		Intent intent=new Intent(ctx, ItineraryCreationActivity.class);
+		Intent intent = new Intent(ctx, ItineraryCreationActivity.class);
     	startActivity(intent);
 	}
 

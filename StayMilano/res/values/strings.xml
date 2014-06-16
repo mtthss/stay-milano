@@ -49,5 +49,6 @@
     <string name="title_activity_wi_fi">WiFiActivity</string>
     <string name="title_activity_poilist_fragment">POIListFragment</string>
     <string name="create_msg">Hello! Create a new Itinerary</string>
+    <string name="title_activity_da_eliminare">DaEliminare</string>
 
 </resources>

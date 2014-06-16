@@ -96,7 +96,7 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
         mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
         
         intent=getIntent();
-        String itineraryid=intent.getStringExtra(ItineraryListActivity.CURRENT_ITINERARY);
+        String itineraryid=intent.getStringExtra("id");
 
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();
@@ -231,7 +231,7 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
             
             db = DBHelper.getInstance(ItineraryCreationActivity.ctx).getWritableDatabase();
             
-            String itinerary_id=intent.getStringExtra(ItineraryListActivity.CURRENT_ITINERARY);
+            String itinerary_id=intent.getStringExtra("id");
             if(itinerary_id!=null){
             	UserInfo ui=UserInfo.getUserInfo(db);
             	Itinerary it=ui.getItinerary(itinerary_id);

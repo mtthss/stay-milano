@@ -5,7 +5,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -17,7 +16,8 @@ public class Itinerary implements Serializable{
 	private Integer id;
 	private Calendar date;
 	private List<PointOfInterest> selectedPois=new ArrayList<PointOfInterest>();
-	private StartingPoint start;
+	private LatLng start;
+	
 	
 	public Itinerary(String id,String date){
 		this.id=Integer.parseInt(id);
@@ -32,6 +32,7 @@ public class Itinerary implements Serializable{
 	}
 
 	public Itinerary() {
+		
 	}
 
 	public Calendar getDate() {
@@ -46,11 +47,16 @@ public class Itinerary implements Serializable{
 		for(PointOfInterest poi:pois){
 			selectedPois.add(poi);
 		}
-		
 	}
 	
 	public List<PointOfInterest> getPois(){
-		return selectedPois;
+		List<PointOfInterest> poisPlusStart = new ArrayList<PointOfInterest>();
+		//TODO aggiungere start come primo poi, ah no problema perchè lo chiama anche prima di aver settato lo starting point
+		//poisPlusStart.add(start);
+		for(PointOfInterest p : selectedPois){
+			poisPlusStart.add(p);
+		}
+		return poisPlusStart;
 	}
 
 	public String getID() {
@@ -70,6 +76,18 @@ public class Itinerary implements Serializable{
 		}
 		
 		return listLatLng;
+	}
+
+	public void setStart(LatLng startCoord) {
+		
+		//TODO passo 3
+		start = startCoord;
+	}
+
+	public LatLng getStart() {
+		
+		// TODO passo 4
+		return start;
 	}
 
 }

@@ -8,7 +8,6 @@ import visualization.MapLook;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
-import android.app.ListFragment;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -43,17 +42,18 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	ViewPager mViewPager;
 	AppSectionsPagerAdapter mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
 	static List<PointOfInterest> points = new ArrayList<PointOfInterest>();
+	static LatLng startLatLng;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		
 		manager=getSupportFragmentManager();
 		
 		Intent intent = getIntent();
 		today = intent.getBooleanExtra("today", false);
-		String itineraryID = intent.getStringExtra(ItineraryListActivity.CURRENT_ITINERARY);
+		String itineraryID = intent.getStringExtra("id");
 		
 		Itinerary it = null;
 		
@@ -65,11 +65,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		}
 		else if (itineraryID != null) {
 			SQLiteDatabase db = DBHelper.getInstance(this).getWritableDatabase();
-			UserInfo ui = UserInfo.getUserInfo(db);
+			UserInfo ui = UserInfo.getRefreshedUserInfo(db);
 			it = ui.getItinerary(itineraryID);
 		}
 		if (it != null) {
 			points = it.getPois();
+			startLatLng = it.getStart();
 		}
 		
 		final ActionBar actionBar = getActionBar();
@@ -163,6 +164,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			
 			View rootView = inflater.inflate(R.layout.fragment_main, container,	false);
+			if(startLatLng!=null){
+				POIsequence.add(startLatLng);
+			}
 			POIsequence = Itinerary.coordinatesOfPoiList(points);
 			db = DBHelper.getInstance(ItineraryCreationActivity.ctx).getWritableDatabase();
 			

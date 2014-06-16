@@ -11,7 +11,6 @@ public class MyFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreateView(inflater, container, savedInstanceState);
 		View myFragmentView = inflater.inflate(R.layout.fragment_itinerary_list,
 				container, false);

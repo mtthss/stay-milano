@@ -5,20 +5,20 @@
 
     <LinearLayout 
         android:id="@+id/listwrapper"
-    	android:layout_width="match_parent"
-    	android:layout_height="match_parent"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
     	android:orientation="vertical" >
     	
     	<ListView
         	android:id="@+id/listViewPOI"
-        	android:layout_width="match_parent"
-        	android:layout_height="match_parent"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
         	android:listSelector="@drawable/list_selector" >
     	</ListView>
     
     	<TextView android:id="@+id/emptyList"
-    	android:layout_width="match_parent"
-    	android:layout_height="match_parent"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
 		android:layout_gravity="center"
 		android:padding="10dip"
         android:layout_marginTop="100dp"

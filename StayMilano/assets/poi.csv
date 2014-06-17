@@ -1,13 +1,13 @@
-duomo,questo è il duomo,church,duomo_brera_montenapoleone,45.463952, 9.192035
-museo del 900, arte e altro,museum,duomo_brera_montenapoleone,45.463260, 9.190232
-pinacoteca di brera,arte e altro,museum,duomo_brera_montenapoleone,45.472033, 9.187958
-piazza degli affari e palazzo mezzanotte,sede della borsa,palace,duomo_brera_montenapoleone,45.464780, 9.183237
-via monte napoleone,via dello shopping di lusso,other,duomo_brera_montenapoleone,45.468273, 9.195162
-galleria vittorio emanuele II,questa è la galleria,monument,duomo_brera_montenapoleone,45.465616,9.189932
-teatro alla scala, questo è il teatro alla scala,theater,duomo_brera_montenapoleone,45.467414, 9.189546
-parrocchia di san satiro, parrocchia,church,duomo_brera_montenapoleone,45.462842, 9.187733
-palazzo reale,royal palace,palace,duomo_brera_montenapoleone,45.463140, 9.191112
-via torino, via dello shopping,other,duomo_brera_montenapoleone,45.462470, 9.186753
+duomo,questo è il duomo,church,duomo,45.463952, 9.192035
+museo del 900, arte e altro,museum,duomo,45.463260, 9.190232
+pinacoteca di brera,arte e altro,museum,brera_montenapoleone,45.472033, 9.187958
+piazza degli affari e palazzo mezzanotte,sede della borsa,palace,duomo,45.464780, 9.183237
+via monte napoleone,via dello shopping di lusso,other,duomo,45.468273, 9.195162
+galleria vittorio emanuele II,questa è la galleria,monument,duomo,45.465616,9.189932
+teatro alla scala, questo è il teatro alla scala,theater,duomo,45.467414, 9.189546
+parrocchia di san satiro, parrocchia,church,duomo,45.462842, 9.187733
+palazzo reale,royal palace,palace,duomo,45.463140, 9.191112
+via torino, via dello shopping,other,duomo,45.462470, 9.186753
 castello sforzesco,questo è il castello sforzesco,archeological site,castello,45.470502, 9.179300
 arco della pace, questo è l arco,monument,castello,45.476238, 9.171730
 parco sempione,il parco dei milanesi,park,castello,45.473138, 9.176965
@@ -36,8 +36,9 @@ planetario,civico planetario ulrico hoepli, museum, porta_venezia_palestro,45.47
 pac,padiglione arte contemporanea, museum,porta_venezia_palestro,45.472824, 9.199290
 bastioni di porta venezia, porta, monument,porta_venezia_palestro,45.474355, 9.205175
 corso buenos aires,shopping, other,porta_venezia_palestro,45.474758, 9.205347
-basilica san simpliciano, basilica, church,moscova_garibaldi,45.473924, 9.184468
-chiesa santa maria incoronata, chiesa,church,moscova_garibaldi,45.479867, 9.186528
+pinacoteca di brera,arte e altro,museum,brera_montenapoleone,45.472033, 9.187958
+basilica san simpliciano, basilica, church,brera_montenapoleone,45.473924, 9.184468
+chiesa santa maria incoronata, chiesa,church,brera_montenapoleone,45.479867, 9.186528
 monumento di porta garibaldi, porta garibaldi, monument,moscova_garibaldi,45.480823, 9.186989
 eataly,food shopping,other,moscova_garibaldi,45.480454, 9.187698
 corso como,night life, other,moscova_garibaldi,45.481041, 9.187032

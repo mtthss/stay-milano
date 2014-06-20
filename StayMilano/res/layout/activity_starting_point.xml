@@ -1,72 +1,48 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#89b" >
+    android:layout_height="match_parent" >
 
-    <LinearLayout
-        android:id="@+id/explicitChoice"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:orientation="horizontal" >
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
+        android:text="@string/save" />
 
-        <EditText
-            android:id="@+id/edit_message"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="@string/startPointHint" />
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText1"
+        android:layout_margin="20dip" >
 
-        <Button
-            android:id="@+id/saveMap"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:onClick="takeCurrent"
-            android:text="@string/takeCurrent" />
+        <fragment
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            class="com.google.android.gms.maps.SupportMapFragment" />
+    </FrameLayout>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="setChosenAddress"
-            android:text="@string/setSP" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/textView1"
+    <EditText
+        android:id="@+id/editText1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="18dp"
-        android:text="@string/longitude" />
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
+        android:ems="10" >
+    </EditText>
 
-    <TextView
-        android:id="@+id/lng"
+    <Button
+        android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
-        android:layout_marginLeft="60dp"
-        android:layout_marginTop="14dp"
-        android:layout_toRightOf="@+id/textView1"
-        android:text=""
-        android:textSize="30sp" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/textView1"
-        android:layout_below="@+id/lng"
-        android:layout_marginTop="53dp"
-        android:text="@string/latitude" />
-
-    <TextView
-        android:id="@+id/lat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/lng"
-        android:layout_below="@+id/textView3"
-        android:text=""
-        android:textSize="30sp" />
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/editText1"
+        android:text="Button" />
 
 </RelativeLayout>

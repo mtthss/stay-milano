@@ -2,10 +2,8 @@ package com.staymilano;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.staymilano.database.DBHelper;
-import com.staymilano.database.ItineraryDAO;
 import com.staymilano.database.StartPointDAO;
 
-import communications.GoogleMapsUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.content.Context;
 import android.content.Intent;

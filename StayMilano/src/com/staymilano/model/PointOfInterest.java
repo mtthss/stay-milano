@@ -11,10 +11,12 @@ public class PointOfInterest implements Serializable{
 	
 	private static final long serialVersionUID = -6297551948085356909L;
 	static final String MONUMENT="monument";
-	static final String MUSEUM="museum";
 	static final String CHURCH="curch";
-	static final String THEATRE="theater";
-	static final String ARCHEOLOGICAL_SITE="archeological site";
+	static final String PARK="park";
+	static final String STATION="station";
+	static final String ARCHEOLOGICAL_SITE="archeological_site";
+	static final String SHOPPING="shopping";
+	static final String SKYSCRAPERS="skyscrapers";
 	
 	private String id;
 	private String name;
@@ -57,10 +59,16 @@ public class PointOfInterest implements Serializable{
 	public void setType(String type){
 		if(type.equalsIgnoreCase(MONUMENT)){
 			this.type=MONUMENT;
-		}else if(type.equalsIgnoreCase(MUSEUM)){
-			this.type=MUSEUM;
+		}else if(type.equalsIgnoreCase(PARK)){
+			this.type=PARK;
 		}else if(type.equalsIgnoreCase(CHURCH)){
 			this.type=CHURCH;
+		}else if(type.equalsIgnoreCase(STATION)){
+			this.type=STATION;
+		}else if(type.equalsIgnoreCase(SHOPPING)){
+			this.type=SHOPPING;
+		}else if(type.equalsIgnoreCase(SKYSCRAPERS)){
+			this.type=SKYSCRAPERS;
 		}else{
 			this.type=ARCHEOLOGICAL_SITE;
 		}

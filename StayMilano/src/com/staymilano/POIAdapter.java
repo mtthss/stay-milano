@@ -7,6 +7,7 @@ import com.staymilano.model.PointOfInterest;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -35,7 +36,8 @@ public class POIAdapter extends ArrayAdapter<PointOfInterest>{
 		
 		first.setText((values.get(position)).getName());
 		second.setText((values.get(position)).getType());
-
+		
+		ImageButton delete=(ImageButton) rowView.findViewById(R.id.imageButton);
 		return rowView;
 	}
 }

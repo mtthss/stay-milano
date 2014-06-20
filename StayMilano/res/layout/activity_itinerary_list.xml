@@ -3,27 +3,53 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-<LinearLayout
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
 
-	<fragment
-       class="com.staymilano.MyFragment"
-       android:id="@+id/myfragment"
-       android:layout_width="fill_parent"
-       android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#ff8800" >
 
-    <ListView
-        android:id="@android:id/list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:listSelector="@drawable/list_selector" >
-    </ListView>
-</LinearLayout>
-    
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="120dip"
+                android:layout_marginBottom="5dip"
+                android:layout_marginTop="5dip"
+                android:background="@drawable/alba"
+                android:orientation="horizontal" >
 
+                <TextView
+                    android:id="@+id/text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:padding="25dp"
+                    android:text="@string/create_msg"
+                    android:textSize="20sp"
+                    android:textStyle="italic" />
 
+                <ImageButton
+                    android:id="@+id/imageButton1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="20dip"
+                    android:background="#ff8800"
+                    android:onClick="createNewIt"
+                    android:src="@drawable/abc_ic_go" />
+            </LinearLayout>
+        </LinearLayout>
 
+        <ListView
+            android:id="@android:id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:listSelector="@drawable/list_selector" >
+        </ListView>
+    </LinearLayout>
 
 </FrameLayout>

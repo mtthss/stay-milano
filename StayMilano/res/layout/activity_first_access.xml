@@ -36,9 +36,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:shadowColor="#ff8800"
-        android:background="#ff8800"
+        android:background="#ffbb33"
         android:textStyle="bold"
+        android:textColor="#ffffff"
         android:text="@string/create_button"/>
 
 </RelativeLayout>

@@ -22,9 +22,17 @@ public class POIDetail extends Activity {
 		setContentView(R.layout.activity_poi_detail);
 		
 		SQLiteDatabase db = DBHelper.getInstance(this).getWritableDatabase();
+		Cursor cur;
+
 		String spoi=getIntent().getStringExtra(ItineraryCreationActivity.POI);
-		Cursor cur=PointOfInterestDAO.getPOIById(db,spoi);
+		if(spoi!=null){
+			cur=PointOfInterestDAO.getPOIById(db,spoi);
+		}else{
+			String poi=getIntent().getStringExtra(ItineraryCreationActivity.POI_NAME);
+			cur=PointOfInterestDAO.getPOIByName(db,poi);
+		}
 		PointOfInterest poi=new PointOfInterest(cur);
+		
 		
 		TextView title=(TextView) findViewById(R.id.title);
 		TextView type=(TextView) findViewById(R.id.type);

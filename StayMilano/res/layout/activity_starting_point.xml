@@ -11,38 +11,44 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_margin="10dp"
+        android:onClick="takeCurrent"
         android:text="@string/save" />
 
     <FrameLayout
         android:id="@+id/frame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editText1"
+        android:layout_below="@+id/address"
+        android:layout_above="@+id/button1"
         android:layout_margin="20dip" >
 
         <fragment
             android:id="@+id/map"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            class="com.google.android.gms.maps.SupportMapFragment" />
+            class="com.google.android.gms.maps.MapFragment" />
     </FrameLayout>
-
-    <EditText
-        android:id="@+id/editText1"
-        android:layout_width="wrap_content"
+    
+    <LinearLayout
+        android:id="@+id/address"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="15dp"
-        android:ems="10" >
-    </EditText>
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal" >
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@+id/editText1"
-        android:text="Button" />
+        <EditText
+            android:id="@+id/editText1"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" >
+        </EditText>
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="setChosenAddress"
+            android:text="ok" />
+    </LinearLayout>
 
 </RelativeLayout>

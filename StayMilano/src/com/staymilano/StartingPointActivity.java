@@ -1,6 +1,11 @@
 package com.staymilano;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.staymilano.database.DBHelper;
 import com.staymilano.database.StartPointDAO;
 
@@ -23,20 +28,18 @@ import android.widget.TextView;
 public class StartingPointActivity extends ActionBarActivity implements LocationListener{
 
 	  LocationManager lm;
-	  TextView lt, ln;
 	  String provider;
 	  Location l;
 	  LatLng latlng;
 	  String itineraryId;
   	  SQLiteDatabase db;
+  	  GoogleMap map;
 	  
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		   super.onCreate(savedInstanceState);
 		   setContentView(R.layout.activity_starting_point);
-		   ln = (TextView)findViewById(R.id.lng);
-		   lt = (TextView)findViewById(R.id.lat);
 		   
 	       Intent intent = getIntent();
 	       itineraryId = intent.getStringExtra("id");	       
@@ -49,21 +52,18 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 		   //bearing and monetary cost, set false to use best service 
 		   provider = lm.getBestProvider(c, false);
 		   l = lm.getLastKnownLocation(provider);
-		   if(l!=null)
-		   {
+		   if(l!=null){
 		       //get latitude and longitude of the location
 		       double lng = l.getLongitude();
 		       double lat = l.getLatitude();
 		       latlng = new LatLng(lat, lng);
 		       
-		       //display on text view
-		       ln.setText(""+lng);
-		       lt.setText(""+lat);
-		   }
-		   else
-		   {
-		      ln.setText("No Provider");
-		      lt.setText("No Provider");
+		       //display on map
+		       setUpMapIfIneed();
+		       map.addMarker(new MarkerOptions().position(latlng).title("Here you are"));
+			   map.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15));
+		       
+		       
 		   }
 	}
 
@@ -74,34 +74,16 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 		double lng = l.getLongitude();
 	    double lat = l.getLatitude();
 	    latlng = new LatLng(lat, lng);
-	    ln.setText(""+lng);
-	    lt.setText(""+lat);
+	    
+	    setUpMapIfIneed();
+	    map.addMarker(new MarkerOptions().position(latlng).title("Here you are"));
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15));
+
 	}
 	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.starting_point, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
 	public void onProviderDisabled(String arg0) {
-		//do nothing
+		//TODO
 	}
 	
 	@Override
@@ -112,6 +94,14 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 	@Override
 	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
 		//do nothing
+	}
+	
+	private void setUpMapIfIneed() {
+		
+		if (map == null) {
+			MapFragment smf = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+			map = smf.getMap();
+		}
 	}
 	
 	public void takeCurrent(View view){
@@ -125,7 +115,7 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 	
 	public void setChosenAddress(View view){
 		
-		EditText editText = (EditText) view.findViewById(R.id.edit_message);
+		EditText editText = (EditText) view.findViewById(R.id.editText1);
 		String message = editText.getText().toString();
 		//LatLng startCoord = GoogleMapsUtils.getGeoCode(message);
 		//saveCoordinates(startCoord);

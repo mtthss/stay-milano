@@ -32,8 +32,7 @@
     <Button
     	android:id="@+id/saveMap"
     	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:layout_below="@+id/listwrapper" 
+    	android:layout_height="wrap_content" 
     	android:layout_alignParentBottom="true"
     	android:onClick="showDatePickerDialog"
     	android:layout_gravity="bottom|left" />

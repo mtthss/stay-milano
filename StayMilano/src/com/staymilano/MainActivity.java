@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -31,6 +32,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.staymilano.database.DBHelper;
@@ -76,6 +78,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		if (it != null) {
 			points = it.getPois();
 			startLatLng = it.getStart();
+			if(startLatLng!=null){
+				PointOfInterest startPOI = new PointOfInterest();
+				startPOI.setName("start");
+				startPOI.setPosition(Double.toString(startLatLng.latitude), Double.toString(startLatLng.longitude));
+				points.add(0, startPOI);
+			}
 		}
 		
 		final ActionBar actionBar = getActionBar();
@@ -163,16 +171,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     	SQLiteDatabase db;
 		GoogleMap map;
 		static final LatLng MILAN = new LatLng(45.4773, 9.1815);
-		private List<LatLng> POIsequence;
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			
 			View rootView = inflater.inflate(R.layout.fragment_main, container,	false);
-			if(startLatLng!=null){
-				POIsequence.add(startLatLng);
-			}
-			POIsequence = Itinerary.coordinatesOfPoiList(points);
 			db = DBHelper.getInstance(ItineraryCreationActivity.ctx).getWritableDatabase();
 			
 			setUpMapIfIneed();
@@ -210,11 +213,25 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 		private void getDirections() {
 			
-			// fetch poi-sequence
-			POIsequence = Itinerary.coordinatesOfPoiList(points);
-			
 			// get directions for the specified itinerary
-			GoogleMapsUtils.getDirection(this, POIsequence,	GoogleMapsUtils.MODE_WALKING);
+			List<LatLng> poiSequence = Itinerary.coordinatesOfPoiList(points);
+			GoogleMapsUtils.getDirection(this, poiSequence,	GoogleMapsUtils.MODE_WALKING);
+			
+			// draw pois
+			List<MarkerOptions> markers = new ArrayList<MarkerOptions>();
+			for (PointOfInterest poi : points) {
+				MarkerOptions marker = new MarkerOptions();
+				marker.title(poi.getName());
+				marker.position(poi.getPosition());
+				if(points.indexOf(poi)==0){
+					marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.start_mini));
+				}else{
+					marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.select_mini));
+				}
+				markers.add(marker);	
+			}
+			MapLook.drawSelectedPois(markers, map);
+			
 		}
 
 		@Override

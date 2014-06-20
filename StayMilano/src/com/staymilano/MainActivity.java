@@ -8,11 +8,9 @@ import visualization.MapLook;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -34,6 +32,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.staymilano.database.DBHelper;
 import com.staymilano.model.Itinerary;
@@ -50,6 +49,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	static List<PointOfInterest> points = new ArrayList<PointOfInterest>();
 	static LatLng startLatLng;
 	static Intent intent;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -195,7 +195,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 		private void setupMap() {
 			
-			map.addMarker(new MarkerOptions().position(MILAN).title("Milan").snippet("Ciao"));
 			map.moveCamera(CameraUpdateFactory.newLatLngZoom(MILAN, 10));
 			map.setOnMapLoadedCallback(this);
 			map.getUiSettings().setZoomControlsEnabled(false);
@@ -203,12 +202,15 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 		@Override
 		public void onMapLoaded() {
-
-			// once map is loaded zoom on the city center
-			map.animateCamera(CameraUpdateFactory.zoomTo(12), 1000, null);
-
+			
+			LatLngBounds itBounds = new LatLngBounds(points.get(0).getPosition(), points.get(1).getPosition());
+			for(PointOfInterest p : points){
+				itBounds.including(p.getPosition());
+			}
+			// Set the camera to the greatest possible zoom level that includes the bounds
+			map.animateCamera(CameraUpdateFactory.newLatLngBounds(itBounds, 0));
 			// retrieve directions from google server
-			getDirections();
+			getDirections();		
 		}
 
 		private void getDirections() {
@@ -228,10 +230,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 				}else{
 					marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.select_mini));
 				}
-				markers.add(marker);	
+				markers.add(marker);
 			}
-			MapLook.drawSelectedPois(markers, map);
-			
+			MapLook.drawSelectedPois(markers, map);	
 		}
 
 		@Override

@@ -19,7 +19,7 @@ public class StartPointDAO {
 	public static void insertStartingPoint(SQLiteDatabase db, String itinerary_id, String startLat, String startLong){
 		
 		String insert_data = "INSERT INTO " + TABELLA
-				+ " VALUES ('" + itinerary_id+ "', '" + startLat+ "', '" + startLong + "')";
+				+ " VALUES ( '" + startLat+ "', '" + startLong + "','" + itinerary_id+ "')";
 		db.execSQL(insert_data);
 	}
 

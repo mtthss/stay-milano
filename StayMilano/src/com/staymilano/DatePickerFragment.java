@@ -23,9 +23,11 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
 	SQLiteDatabase db;
 	List<PointOfInterest> selectedPoi;
-	
+	ItineraryCreationActivity ica;
 	
 	public DatePickerFragment(ItineraryCreationActivity asa) {
+		
+		ica = asa;
 		selectedPoi = asa.getPoiList();
 	}
 
@@ -72,5 +74,6 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 		Intent intent=new Intent(getActivity(), StartingPointActivity.class);
 		intent.putExtra("id", id);
 		startActivity(intent);
+		ica.reset();
 	}
 }

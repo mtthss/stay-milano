@@ -212,7 +212,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 				itBounds.including(p.getPosition());
 			}
 			// Set the camera to the greatest possible zoom level that includes the bounds
-			map.animateCamera(CameraUpdateFactory.newLatLngBounds(itBounds, 10));
+			map.animateCamera(CameraUpdateFactory.newLatLngBounds(itBounds, 0));
 			// retrieve directions from google server
 			getDirections();		
 		}

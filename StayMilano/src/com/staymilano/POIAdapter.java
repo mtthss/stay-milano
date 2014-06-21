@@ -36,8 +36,6 @@ public class POIAdapter extends ArrayAdapter<PointOfInterest>{
 		
 		first.setText((values.get(position)).getName());
 		second.setText((values.get(position)).getType());
-		
-		ImageButton delete=(ImageButton) rowView.findViewById(R.id.imageButton);
 		return rowView;
 	}
 }

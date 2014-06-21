@@ -202,8 +202,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 		@Override
 		public void onMapLoaded() {
-			
-			LatLngBounds itBounds = new LatLngBounds(points.get(0).getPosition(), points.get(1).getPosition());
+			LatLngBounds itBounds = null;
+			if(points.get(1).getPosition().latitude<points.get(0).getPosition().latitude){
+				itBounds = new LatLngBounds(points.get(1).getPosition(), points.get(0).getPosition());
+			}else{
+				itBounds = new LatLngBounds(points.get(0).getPosition(), points.get(1).getPosition());
+			}
 			for(PointOfInterest p : points){
 				itBounds.including(p.getPosition());
 			}

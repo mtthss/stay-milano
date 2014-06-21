@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/list_selector"
-    android:padding="6dip" >
+    android:padding="5dip" >
     
     <LinearLayout
         android:id="@+id/icon_wrapper"
@@ -33,5 +33,14 @@
         android:typeface="sans"
         android:textStyle="bold"
         android:textSize="18sp"/>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dp"
+        android:src="@drawable/ic_action_next_item"/>
 
 </RelativeLayout>

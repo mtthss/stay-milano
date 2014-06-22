@@ -14,6 +14,7 @@ import com.staymilano.database.StartPointDAO;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.SeekBar;
 
 public class UserInfo implements Serializable{
 
@@ -131,6 +132,18 @@ public class UserInfo implements Serializable{
 			}
 		}
 		
+		return null;
+	}
+
+	public String updateItinerary(Itinerary it, SQLiteDatabase db) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		String stringDate = sdf.format(it.getDate().getTime());
+		if(ItineraryDAO.updateItinerary(db, it.getID(), stringDate)){
+			SelectedPOIDAO.deleteSelectedPOIByItinerary(db, it.getID());
+			for(PointOfInterest poi:it.getPois()){
+				SelectedPOIDAO.insertItinerary(db, poi.getId(), it.getID());
+			}
+		}
 		return null;
 	}
 

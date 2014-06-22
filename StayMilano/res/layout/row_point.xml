@@ -50,6 +50,6 @@
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="20dp"
-        android:src="@drawable/ic_action_next_item"/>
+        android:src="@drawable/ic_action_about"/>
 
 </RelativeLayout>

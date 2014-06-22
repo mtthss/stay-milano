@@ -67,13 +67,22 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 		}
 		it.setData(cal);
 		
-		// Save itinerary in database
-		String id = ui.saveItinerary(it, db);
-		
 		// Start next activity
-		Intent intent=new Intent(getActivity(), StartingPointActivity.class);
-		intent.putExtra("id", id);
-		startActivity(intent);
-		ica.reset();
+		if (ItineraryCreationActivity.MODIFICATION) {
+			// Update itinerary in database
+			String id= ui.updateItinerary(it,db);
+			Intent intent = new Intent(getActivity(),
+					MainActivity.class);
+			intent.putExtra("id", id);
+			startActivity(intent);
+		} else {
+			// Save itinerary in database
+			String id = ui.saveItinerary(it, db);
+			Intent intent = new Intent(getActivity(),
+					StartingPointActivity.class);
+			intent.putExtra("id", id);
+			startActivity(intent);
+		}
+	
 	}
 }

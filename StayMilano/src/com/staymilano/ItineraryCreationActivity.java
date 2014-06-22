@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.staymilano.database.DBHelper;
+import com.staymilano.database.ItineraryDAO;
 import com.staymilano.model.Area;
 import com.staymilano.model.City;
 import com.staymilano.model.Itinerary;
@@ -34,6 +35,7 @@ import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -42,6 +44,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -70,6 +74,8 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 	public static final String POI = "poi";
 	protected static String POI_NAME;
 	static final LatLng MILAN = new LatLng(45.4773, 9.1815);
+	
+	static boolean MODIFICATION; 
 
 	
 
@@ -84,8 +90,6 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 				getSupportFragmentManager());
 
 		//TODO
-		intent = getIntent();
-		String itineraryid = intent.getStringExtra("id");
 
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
@@ -109,6 +113,12 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 					.setText(mAppSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
+	}
+	
+	public boolean onCreateOptionsMenu(Menu menu){
+		MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.itinerary_creation, menu);
+	    return super.onCreateOptionsMenu(menu);
 	}
 	
 	public void showDatePickerDialog(View v) {
@@ -218,11 +228,14 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 
 			String itinerary_id = intent.getStringExtra("id");
 			if (itinerary_id != null) {
+				MODIFICATION=true;
 				UserInfo ui = UserInfo.getUserInfo(db);
 				Itinerary it = ui.getItinerary(itinerary_id);
 				if (it != null) {
 					selectedPOI = it.getPois();
 				}
+			}else{
+				MODIFICATION=false;
 			}
 
 			setUpMapIfIneed();
@@ -423,8 +436,4 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 
 	}
 
-	public void reset() {
-		// TODO Auto-generated method stub
-		selectedPOI=null;
-	}
 }

@@ -44,23 +44,17 @@ public class ItineraryDAO {
 	    return c;
 	}
 	
-	public static boolean updateItinerary(SQLiteDatabase db, long id, String data, String starttime){
+	public static boolean updateItinerary(SQLiteDatabase db, String id, String data){
         ContentValues v = new ContentValues();
         v.put(DATA, data);
  
-        return db.update(TABELLA, v, ID + "=" + "'"+id+"'", null) >0; 
+        return db.update(TABELLA, v, ID + "=" + "'"+id+"' and "+DATA+"='"+data+"'", null) >0; 
     }
 	
     public static boolean deleteItinerary(SQLiteDatabase db, String id) {
     	SelectedPOIDAO.deleteSelectedPOIByItinerary(db, id);
         return db.delete(TABELLA, ID + "=" + "'"+id+"'", null) > 0;
     }
-    
-    public static void setStartingPoint(LatLng startingCoord){
-    	
-    	//TODO CHIARA implementa salvataggio in db dello starting point
-    }
-    
     
 }
 

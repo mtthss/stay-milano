@@ -275,7 +275,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
-					intent=new Intent(getActivity(), POIDetail.class);
+					intent=new Intent(getActivity(), POIDetailActivity.class);
 					intent.putExtra(ItineraryCreationActivity.POI, points.get(position).getId());
 					startActivity(intent);
 					

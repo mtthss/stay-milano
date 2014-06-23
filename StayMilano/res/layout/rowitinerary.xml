@@ -12,14 +12,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginRight="5dip"
-        android:background="@drawable/image_bg"
-        android:padding="3dip" >
+        android:background="@drawable/image_bg" >
 
         <ImageView
             android:id="@+id/icon"
             android:layout_width="50dip"
             android:layout_height="50dip"
-            android:src="@drawable/ic_launcher" />
+            android:src="@drawable/logoarancio2" />
         
     </LinearLayout>
     
@@ -40,7 +39,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="10dp"
         android:src="@drawable/ic_action_next_item"/>
 
 </RelativeLayout>

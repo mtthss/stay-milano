@@ -6,50 +6,47 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical" 
+        android:background="@drawable/naviglisera">
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#ff8800" >
+            android:layout_height="wrap_content" >
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="120dip"
+                android:layout_height="180dip"
                 android:layout_marginBottom="5dip"
-                android:layout_marginTop="5dip"
-                android:background="@drawable/alba"
-                android:orientation="horizontal" >
+                android:layout_marginTop="5dip" >
 
-                <TextView
-                    android:id="@+id/text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:padding="25dp"
-                    android:text="@string/create_msg"
-                    android:textSize="20sp"
-                    android:textStyle="italic" />
-
-                <ImageButton
-                    android:id="@+id/imageButton1"
+                <ImageView
+                    android:id="@+id/logo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="20dip"
-                    android:background="#ff8800"
-                    android:onClick="createNewIt"
-                    android:src="@drawable/abc_ic_go" />
-            </LinearLayout>
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/logo_image"
+                    android:paddingBottom="20dip"
+                    android:paddingTop="3dip"
+                    android:src="@drawable/logobianco" />
+
+                <ImageView
+                    android:id="@+id/logo_image"
+                    android:layout_width="65dip"
+                    android:layout_height="65dip"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="18dp"
+                    android:src="@drawable/logoarancio2" />
+
+            </RelativeLayout>
         </LinearLayout>
 
-        <ListView
-            android:id="@android:id/list"
+        <fragment
+            android:id="@+id/fragment1"
+            android:name="com.staymilano.ItineraryListActivity$ItineraryListFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:listSelector="@drawable/list_selector" >
-        </ListView>
+            android:layout_height="match_parent" />
+        
     </LinearLayout>
 
 </FrameLayout>

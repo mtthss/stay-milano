@@ -33,6 +33,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
+import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -95,7 +96,7 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 		final ActionBar actionBar = getActionBar();
 
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		actionBar.setDisplayShowHomeEnabled(true);
+		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(false);
 
 		mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -113,12 +114,6 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 					.setText(mAppSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
-	}
-	
-	public boolean onCreateOptionsMenu(Menu menu){
-		MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.itinerary_creation, menu);
-	    return super.onCreateOptionsMenu(menu);
 	}
 	
 	public void showDatePickerDialog(View v) {
@@ -226,16 +221,18 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 			db = DBHelper.getInstance(ItineraryCreationActivity.ctx)
 					.getWritableDatabase();
 
-			String itinerary_id = intent.getStringExtra("id");
-			if (itinerary_id != null) {
-				MODIFICATION=true;
-				UserInfo ui = UserInfo.getUserInfo(db);
-				Itinerary it = ui.getItinerary(itinerary_id);
-				if (it != null) {
-					selectedPOI = it.getPois();
+			try {
+				String itinerary_id = intent.getStringExtra("id");
+				if (itinerary_id != null) {
+					MODIFICATION = true;
+					UserInfo ui = UserInfo.getUserInfo(db);
+					Itinerary it = ui.getItinerary(itinerary_id);
+					if (it != null) {
+						selectedPOI = it.getPois();
+					}
 				}
-			}else{
-				MODIFICATION=false;
+			} catch (NullPointerException e) {
+				MODIFICATION = false;
 			}
 
 			setUpMapIfIneed();
@@ -386,7 +383,7 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 			
 			@Override
 			public void onInfoWindowClick(Marker marker) {
-				intent = new Intent(ctx, POIDetail.class);
+				intent = new Intent(ctx, POIDetailActivity.class);
 				intent.putExtra(ItineraryCreationActivity.POI_NAME, marker.getTitle());
 				startActivity(intent);	
 			}
@@ -419,7 +416,7 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
-					intent = new Intent(ctx, POIDetail.class);
+					intent = new Intent(ctx, POIDetailActivity.class);
 					intent.putExtra(ItineraryCreationActivity.POI, selectedPOI
 							.get(position).getId());
 					startActivity(intent);

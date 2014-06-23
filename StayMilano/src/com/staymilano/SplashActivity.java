@@ -8,6 +8,7 @@ import com.staymilano.database.DBHelper;
 import com.staymilano.database.ItineraryDAO;
 
 import android.util.Log;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -65,6 +66,8 @@ public class SplashActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
 		mHandler=new UiHandler(this);
+		ActionBar actionBar=getActionBar();
+		actionBar.hide();
 		}
 	
 	@Override
@@ -81,7 +84,8 @@ public class SplashActivity extends Activity {
         SQLiteDatabase db = DBHelper.getInstance(this).getWritableDatabase();
         
         Date date= new Date();
-        Cursor cur=ItineraryDAO.getItineraryByDate(db,new SimpleDateFormat("yyyy-MM-dd").format(date));
+        String sdf=new SimpleDateFormat("dd-MM-yyyy").format(date);
+        Cursor cur=ItineraryDAO.getItineraryByDate(db,sdf);
         
         final Intent intent;
         

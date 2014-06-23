@@ -12,7 +12,7 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class POIDetail extends Activity {
+public class POIDetailActivity extends Activity {
 
 	static final String AREA_EXTRA="area_extra";
 
@@ -33,6 +33,7 @@ public class POIDetail extends Activity {
 		}
 		PointOfInterest poi=new PointOfInterest(cur);
 		
+		setTitle(poi.getName());
 		
 		TextView title=(TextView) findViewById(R.id.title);
 		TextView type=(TextView) findViewById(R.id.type);

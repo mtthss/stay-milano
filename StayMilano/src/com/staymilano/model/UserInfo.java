@@ -67,7 +67,6 @@ public class UserInfo implements Serializable{
 		}
 		if(pois.size()>0){
 			it.setPois(pois);
-			//TODO passo2
 			Cursor c_start = StartPointDAO.getStartPointById(readableDatabase, it.getID());
 			if(c_start.getCount()>0){
 				c_start.moveToFirst();

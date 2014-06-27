@@ -80,13 +80,11 @@ public class Itinerary implements Serializable{
 
 	public void setStart(LatLng startCoord) {
 		
-		//TODO passo 3
 		start = startCoord;
 	}
 
 	public LatLng getStart() {
 		
-		// TODO passo 4
 		return start;
 	}
 

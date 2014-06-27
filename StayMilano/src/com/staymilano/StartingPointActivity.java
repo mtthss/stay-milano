@@ -3,12 +3,14 @@ package com.staymilano;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.staymilano.database.DBHelper;
 import com.staymilano.database.StartPointDAO;
 
+import communications.GoogleMapsUtils;
+import communications.GeoCodeCallBack;
 import android.support.v7.app.ActionBarActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -18,14 +20,13 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 
-public class StartingPointActivity extends ActionBarActivity implements LocationListener{
+public class StartingPointActivity extends ActionBarActivity implements LocationListener, GeoCodeCallBack{
 
 	  LocationManager lm;
 	  String provider;
@@ -34,7 +35,7 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 	  String itineraryId;
   	  SQLiteDatabase db;
   	  GoogleMap map;
-  	  
+  	  Marker mMarker;  	  
   	  String mode;
 	  
 	@Override
@@ -63,7 +64,7 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 		       
 		       //display on map
 		       setUpMapIfIneed();
-		       map.addMarker(new MarkerOptions().position(latlng).title("Here you are"));
+		       mMarker = map.addMarker(new MarkerOptions().position(latlng).title("Here you are"));
 			   map.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15));
 		       
 		       
@@ -79,14 +80,15 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 	    latlng = new LatLng(lat, lng);
 	    
 	    setUpMapIfIneed();
-	    map.addMarker(new MarkerOptions().position(latlng).title("Here you are"));
+	    mMarker.remove();
+	    mMarker = map.addMarker(new MarkerOptions().position(latlng).title("Here you are"));
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15));
 
 	}
 	
 	@Override
 	public void onProviderDisabled(String arg0) {
-		//TODO
+		//TODO implementa dialog che dice di attivare il gps
 	}
 	
 	@Override
@@ -119,25 +121,35 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 	
 	public void setChosenAddress(View view){
 		
-		EditText editText = (EditText) view.findViewById(R.id.editText1);
+		LinearLayout layout = (LinearLayout)findViewById(R.id.address);
+		EditText editText = (EditText) layout.getChildAt(0);
 		String message = editText.getText().toString();
-		//LatLng startCoord = GoogleMapsUtils.getGeoCode(message);
-		//saveCoordinates(startCoord);
-		
-		Intent intent = new Intent(this, MainActivity.class);
-		intent.putExtra("id", itineraryId);
-		startActivity(intent);
+		GoogleMapsUtils.getGeoCode(this,message);
 	}
 	
 	private void saveCoordinates(LatLng startCoord){
 		
-		//TODO passo 1
 		db = DBHelper.getInstance(ItineraryCreationActivity.ctx).getWritableDatabase();
 		String startLat = "" + startCoord.latitude;
 		String startLong = "" + startCoord.longitude;
 		StartPointDAO.deleteStartPointPOI(db, itineraryId);
 		StartPointDAO.insertStartingPoint(db, itineraryId, startLat , startLong);
 		
+	}
+
+	@Override
+	public void onGeoCodeComputed(LatLng result) {
+		
+		if(result!=null){
+			latlng = result;
+		}else{
+			Toast.makeText(this, R.string.invalidAddr, Toast.LENGTH_SHORT).show();
+		}
+		
+		setUpMapIfIneed();
+	    mMarker.remove();
+		mMarker = map.addMarker(new MarkerOptions().position(latlng).title("ChosenAddress"));
+		map.animateCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15));
 	}
 	
 

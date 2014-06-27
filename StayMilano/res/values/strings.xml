@@ -15,6 +15,7 @@
     <string name="create_button">Create new itinerary</string>
     <string name="action_new">new</string>
     <string name="error">cannot save an empty itinerary</string>
+    <string name="invalidAddr">Error! Please type a valid address</string>
     <string name="noPoiMessage">Please insert the monuments you want to visit by selecting the markers on the map</string>
     <string name="save">Set the date</string>
     <string name="modify">Modify this itinerary</string>
@@ -23,6 +24,7 @@
     <string name="setSP">Set</string>
     <string name="longitude">Longitude:</string>
     <string name="latitude">Latitude:</string>
+    <string name="hintStart">Insert start address</string>
     <string name="newItineraryButton">Create New Itinerary</string>
     <string name="enable_p2p_button">P2P On/Off</string>
     <string name="discover_peers_button">Discover</string>

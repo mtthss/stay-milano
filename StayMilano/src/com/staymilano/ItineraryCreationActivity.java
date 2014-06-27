@@ -1,5 +1,7 @@
 package com.staymilano;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -29,6 +31,7 @@ import com.staymilano.model.PointOfInterest;
 import com.staymilano.model.UserInfo;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -44,10 +47,12 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.GetChars;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -73,7 +78,8 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 	static Intent intent;
 	
 	public static final String POI = "poi";
-	protected static String POI_NAME;
+	public static final String POI_NAME="poi_name";
+	public static final String ITINERARY_ID="id";
 	static final LatLng MILAN = new LatLng(45.4773, 9.1815);
 	
 	static boolean MODIFICATION; 
@@ -116,30 +122,45 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 		}
 	}
 	
-	public void showDatePickerDialog(View v) {
-		if (selectedPOI.size() > 0) {
-			DialogFragment newFragment = new DatePickerFragment(this);
-			newFragment.show(getFragmentManager(), "datePicker");
-			newFragment.setRetainInstance(true);
+	
+	public static void saveItinerary(String s){
+		SQLiteDatabase db = DBHelper.getInstance(ItineraryCreationActivity.ctx)
+				.getWritableDatabase();
+
+		UserInfo ui = UserInfo.getUserInfo(db);
+		Itinerary it = new Itinerary();
+		// Set point of interests
+		it.setPois(selectedPOI);
+		
+		// Set date
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		try {
+			cal.setTime(sdf.parse(s));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		it.setData(cal);
+		
+		// Start next activity
+		if (ItineraryCreationActivity.MODIFICATION) {
+			// Update itinerary in database
+			String id= ui.updateItinerary(it,db);
+			Intent intent = new Intent(ctx,
+					MainActivity.class);
+			intent.putExtra("id", id);
+			ctx.startActivity(intent);
+			((Activity) ctx).finish();
 		} else {
-			Toast.makeText(ctx, R.string.error, Toast.LENGTH_SHORT).show();
+			// Save itinerary in database
+			String id = ui.saveItinerary(it, db);
+			Intent intent = new Intent(ctx,
+					StartingPointActivity.class);
+			intent.putExtra("id", id);
+			ctx.startActivity(intent);
+			((Activity) ctx).finish();
 		}
 	}
-
-	protected Dialog onCreateDialog(int id) {
-		return new DatePickerDialog(this, mDateSetListener, Calendar.YEAR,
-				Calendar.MONTH, Calendar.DAY_OF_MONTH);
-	}
-
-	protected DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
-		public void onDateSet(DatePicker view, int year, int monthOfYear,
-				int dayOfMonth) {
-			Calendar c = Calendar.getInstance();
-			c.set(year, monthOfYear, dayOfMonth);
-			it.setData(c);
-		}
-
-	};
 
 	@Override
 	public void onTabUnselected(ActionBar.Tab tab,
@@ -204,13 +225,16 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 
 		}
 	}
+	
+	////////////////////////////////////////FRAGMENT MAP//////////////////////////////////////////////////
 
 	public static class MapPOIFragment extends Fragment implements
 			OnMapLoadedCallback {
 
 		GoogleMap map;
 		SQLiteDatabase db;
-		String a;
+		Area lastAreaClicked;
+		Marker lastMarkerClicked;
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -221,17 +245,19 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 			db = DBHelper.getInstance(ItineraryCreationActivity.ctx)
 					.getWritableDatabase();
 
-			try {
-				String itinerary_id = intent.getStringExtra("id");
-				if (itinerary_id != null) {
-					MODIFICATION = true;
-					UserInfo ui = UserInfo.getUserInfo(db);
-					Itinerary it = ui.getItinerary(itinerary_id);
-					if (it != null) {
-						selectedPOI = it.getPois();
-					}
+			intent = getActivity().getIntent();
+			String itinerary_id = intent.getStringExtra(ITINERARY_ID);
+			if (itinerary_id != null) {
+				MODIFICATION = true;
+				UserInfo ui = UserInfo.getUserInfo(db);
+				Itinerary it = ui.getItinerary(itinerary_id);
+				if (it != null) {
+					selectedPOI = it.getPois();
 				}
-			} catch (NullPointerException e) {
+				if(adapter!=null){
+					adapter.notifyDataSetChanged();
+				}
+			} else {
 				MODIFICATION = false;
 			}
 
@@ -287,19 +313,19 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 				List<Area> areas = City.getCity(db).getAllAreas();
 				Area a2 = PointInPolygon(point, areas);
 
-				if (a2 != null && a == null) {
+				if (a2 != null && lastAreaClicked == null) {
 					exploreArea(a2);
-					a = a2.getName();
-				} else if (a2 != null && !a.equals(a2.getName())) {
-					deleteMarkers();
+					lastAreaClicked = a2;
+				} else if (a2 != null && !lastAreaClicked.getName().equals(a2.getName())) {
+					deleteMarkers(lastAreaClicked);
 					exploreArea(a2);
-					a = a2.getName();
+					lastAreaClicked = a2;
 				} else {
-					deleteMarkers();
+					deleteMarkers(lastAreaClicked);
 					camup = CameraUpdateFactory.newLatLngZoom(MILAN,
 							(float) 12.5);
 					map.animateCamera(camup, 1000, null);
-					a=null;
+					lastAreaClicked=null;
 				}
 			}
 
@@ -308,12 +334,13 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 					MarkerOptions marker = new MarkerOptions();
 					marker.title(poi.getName());
 					marker.position(poi.getPosition());
-					if (selectedPOI.contains(poi)) {
+					List<PointOfInterest> prova=selectedPOI;
+					if (checkIfSelected(poi)) {
 						marker.icon(BitmapDescriptorFactory
 								.fromResource(R.drawable.check));
 					} else {
 						marker.icon(BitmapDescriptorFactory
-								.fromResource(R.drawable.ic_launcher));
+								.fromResource(poi.getIcon()));
 					}
 					markers.add(map.addMarker(marker));
 				}
@@ -323,10 +350,25 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 				map.setOnInfoWindowClickListener(infowinlistener);
 			}
 			
-			protected void deleteMarkers() {
+			private void deleteMarkers(Area a) {
 				for(Marker marker:markers){
-					marker.remove();
+					for(PointOfInterest poi:a.getPois()){
+						if(poi.getName().equals(marker.getTitle())){
+							if(!checkIfSelected(poi)){
+								marker.remove();
+							}
+						}
+					}
 				}
+			}
+
+			private boolean checkIfSelected(PointOfInterest poi){
+				for(PointOfInterest spoi:selectedPOI){
+					if(spoi.getName().equals(poi.getName())){
+						return true;
+					}
+				}
+				return false;
 			}
 
 			private Area PointInPolygon(LatLng point, List<Area> areas) {
@@ -365,7 +407,7 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 				if (selectedPOI.contains(poi)) {
 					selectedPOI.remove(poi);
 					marker.setIcon(BitmapDescriptorFactory
-							.fromResource(R.drawable.ic_launcher));
+							.fromResource(poi.getIcon()));
 					adapter.notifyDataSetChanged();
 				} else {
 					selectedPOI.add(poi);
@@ -383,13 +425,21 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 			
 			@Override
 			public void onInfoWindowClick(Marker marker) {
-				intent = new Intent(ctx, POIDetailActivity.class);
-				intent.putExtra(ItineraryCreationActivity.POI_NAME, marker.getTitle());
-				startActivity(intent);	
+				if (lastMarkerClicked != null && marker.equals(lastMarkerClicked)) {
+					marker.hideInfoWindow();
+				} else {
+					lastMarkerClicked = marker;
+					intent = new Intent(ctx, POIDetailActivity.class);
+					intent.putExtra(ItineraryCreationActivity.POI_NAME,
+							marker.getTitle());
+					startActivity(intent);
+				}
 			}
 		};
 
 	}
+	
+	////////////////////////////////////LIST FRAGMENT///////////////////////////////////////////
 
 	public static class ListFragment extends Fragment {
 
@@ -399,6 +449,13 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 			View rootView = inflater.inflate(R.layout.fragment_poilist,
 					container, false);
 			return rootView;
+		}
+		
+		@Override
+		public void onResume() {
+			super.onResume();
+			selectedPOI.clear();
+			adapter.notifyDataSetChanged();
 		}
 
 		@Override
@@ -411,6 +468,14 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 			listView.setEmptyView(empty);
 			Button button = (Button) getActivity().findViewById(R.id.saveMap);
 			button.setText(R.string.save);
+			button.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					showDatePickerDialog(v);
+					
+				}
+			});
 			listView.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
@@ -426,6 +491,16 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 			adapter = new POIAdapter(getActivity(), selectedPOI);
 			listView.setAdapter(adapter);
 
+		}
+		
+		public void showDatePickerDialog(View v) {
+			if (selectedPOI.size() > 0) {
+				DialogFragment newFragment = new DatePickerFragment();
+				newFragment.show(getActivity().getFragmentManager(), "datePicker");
+				newFragment.setRetainInstance(true);
+			} else {
+				Toast.makeText(ctx, R.string.error, Toast.LENGTH_SHORT).show();
+			}
 		}
 		
 		

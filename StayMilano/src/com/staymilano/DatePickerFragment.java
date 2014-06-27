@@ -20,15 +20,9 @@ import android.os.Bundle;
 import android.widget.DatePicker;
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
-
-	SQLiteDatabase db;
-	List<PointOfInterest> selectedPoi;
-	ItineraryCreationActivity ica;
 	
-	public DatePickerFragment(ItineraryCreationActivity asa) {
-		
-		ica = asa;
-		selectedPoi = asa.getPoiList();
+	public DatePickerFragment() {
+
 	}
 
 	@Override
@@ -39,50 +33,15 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 		int month = c.get(Calendar.MONTH);
 		int day = c.get(Calendar.DAY_OF_MONTH);
 
-		// Get database
-		db = DBHelper.getInstance(ItineraryCreationActivity.ctx).getWritableDatabase();
-		
 		// Create a new instance of DatePickerDialog and return it
 		return new DatePickerDialog(getActivity(), this, year, month, day);
 	}
 
 	@Override
 	public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-		// Create itinerary with given points of interest and date
-		UserInfo ui = UserInfo.getUserInfo(db);
-		Itinerary it = new Itinerary();
 		int correctMonth = monthOfYear+1;
-		
-		// Set point of interests
-		it.setPois(selectedPoi);
-		
-		// Set date
-		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		String s = dayOfMonth + "-" + correctMonth + "-" + year;
-		try {
-			cal.setTime(sdf.parse(s));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		it.setData(cal);
-		
-		// Start next activity
-		if (ItineraryCreationActivity.MODIFICATION) {
-			// Update itinerary in database
-			String id= ui.updateItinerary(it,db);
-			Intent intent = new Intent(getActivity(),
-					MainActivity.class);
-			intent.putExtra("id", id);
-			startActivity(intent);
-		} else {
-			// Save itinerary in database
-			String id = ui.saveItinerary(it, db);
-			Intent intent = new Intent(getActivity(),
-					StartingPointActivity.class);
-			intent.putExtra("id", id);
-			startActivity(intent);
-		}
+		ItineraryCreationActivity.saveItinerary(s);
 	
 	}
 }

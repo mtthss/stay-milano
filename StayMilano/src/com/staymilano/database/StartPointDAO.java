@@ -41,9 +41,8 @@ public class StartPointDAO {
 	    return c;
 	}
 	
-    public static boolean deleteStartPointPOI(SQLiteDatabase db, String itinerary_id, String poi_id) {
-        return db.delete(TABELLA, ITINERARY_ID + "=" + itinerary_id + " and "+
-        						ITINERARY_ID + "=" + poi_id, null) > 0;
+    public static boolean deleteStartPointPOI(SQLiteDatabase db, String itinerary_id) {
+        return db.delete(TABELLA, ITINERARY_ID + "=" + itinerary_id, null) > 0;
     }
 	
 }

@@ -34,6 +34,8 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 	  String itineraryId;
   	  SQLiteDatabase db;
   	  GoogleMap map;
+  	  
+  	  String mode;
 	  
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +44,8 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 		   setContentView(R.layout.activity_starting_point);
 		   
 	       Intent intent = getIntent();
-	       itineraryId = intent.getStringExtra("id");	       
+	       itineraryId = intent.getStringExtra("id");
+	       mode=intent.getStringExtra("mode");
 		   
 		   //get location service
 		   lm = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
@@ -111,6 +114,7 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 		Intent intent = new Intent(this, MainActivity.class);
 		intent.putExtra("id", itineraryId);
 		startActivity(intent);
+		finish();
 	}
 	
 	public void setChosenAddress(View view){
@@ -131,6 +135,7 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 		db = DBHelper.getInstance(ItineraryCreationActivity.ctx).getWritableDatabase();
 		String startLat = "" + startCoord.latitude;
 		String startLong = "" + startCoord.longitude;
+		StartPointDAO.deleteStartPointPOI(db, itineraryId);
 		StartPointDAO.insertStartingPoint(db, itineraryId, startLat , startLong);
 		
 	}

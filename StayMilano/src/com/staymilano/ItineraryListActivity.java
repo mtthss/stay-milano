@@ -4,8 +4,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import com.google.android.gms.internal.de;
 import com.staymilano.database.DBHelper;
 import com.staymilano.model.Itinerary;
+import com.staymilano.model.PointOfInterest;
 import com.staymilano.model.UserInfo;
 
 import android.app.ListActivity;
@@ -72,7 +74,7 @@ public class ItineraryListActivity extends ActionBarActivity {
 	
 	@Override
 	public void onBackPressed() {
-		this.moveTaskToBack(true);
+		this.finish();
 	}
 
 	public static class ItineraryListFragment extends ListFragment {
@@ -101,7 +103,7 @@ public class ItineraryListActivity extends ActionBarActivity {
 		public void onListItemClick(ListView l, View v, int position, long id) {
 			Itinerary itinerary = its.get(position);
 			Intent intent = new Intent(ctx, MainActivity.class);
-			intent.putExtra("id", itinerary.getID());
+			intent.putExtra(ItineraryCreationActivity.ITINERARY_ID, itinerary.getID());
 			startActivity(intent);
 		}
 
@@ -124,12 +126,22 @@ public class ItineraryListActivity extends ActionBarActivity {
 
 				ImageView imageView = (ImageView) convertView
 						.findViewById(R.id.icon);
-				TextView date = (TextView) convertView.findViewById(R.id.date);
+				TextView title = (TextView) convertView.findViewById(R.id.date);
+				TextView description= (TextView) convertView.findViewById(R.id.description);
 
 				Itinerary it = itineraries.get(position);
 				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 				String stringDate = sdf.format(it.getDate().getTime());
-				date.setText(stringDate);
+				title.setText(stringDate);
+				String subs = null;
+				for(PointOfInterest poi:it.getPois()){
+					if(subs==null){
+						subs=poi.getName();
+					}else{
+						subs=subs+","+poi.getName();
+					}
+				}
+				description.setText(subs);
 
 				return convertView;
 			}

@@ -27,6 +27,6 @@
     	android:layout_height="wrap_content"
     	android:text="@string/save" 
     	android:onClick="showDatePickerDialog"
-    	android:layout_gravity="bottom|left" />
+    	android:layout_gravity="bottom|left"/>
 
 </FrameLayout>

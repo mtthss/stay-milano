@@ -6,8 +6,8 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical" 
-        android:background="@drawable/naviglisera">
+        android:background="@drawable/naviglisera"
+        android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -15,38 +15,25 @@
 
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="180dip"
-                android:layout_marginBottom="5dip"
-                android:layout_marginTop="5dip" >
+                android:layout_height="fill_parent" >
 
                 <ImageView
                     android:id="@+id/logo"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_below="@+id/logo_image"
-                    android:paddingBottom="20dip"
-                    android:paddingTop="3dip"
+                    android:layout_height="160dip"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="40dp"
                     android:src="@drawable/logobianco" />
 
-                <ImageView
-                    android:id="@+id/logo_image"
-                    android:layout_width="65dip"
-                    android:layout_height="65dip"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="18dp"
-                    android:src="@drawable/logoarancio2" />
-
+                <fragment
+                    android:id="@+id/fragment"
+                    android:name="com.staymilano.ItineraryListActivity$ItineraryListFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/logo"/>
+                
             </RelativeLayout>
         </LinearLayout>
-
-        <fragment
-            android:id="@+id/fragment1"
-            android:name="com.staymilano.ItineraryListActivity$ItineraryListFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-        
     </LinearLayout>
 
 </FrameLayout>

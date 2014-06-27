@@ -29,9 +29,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/logoarancio2"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Example" >
+        android:theme="@style/Theme.Example">
         <activity android:name="com.staymilano.MainActivity" />
         <activity
             android:name="com.staymilano.SplashActivity"
@@ -71,12 +71,11 @@
             android:theme="@style/Theme.Example" >
         </activity>
         <activity
-            android:name="com.staymilano.POIDetail"
-            android:label="@string/title_activity_poilist" >
-        </activity>
-        <activity
             android:name="com.staymilano.StartingPointActivity"
             android:label="@string/title_activity_starting_point" >
+        </activity>
+        <activity
+            android:name="com.staymilano.POIDetailActivity">
         </activity>
         <activity
             android:name="com.staymilano.WiFiActivity"

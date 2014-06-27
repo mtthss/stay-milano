@@ -7,7 +7,10 @@ import java.util.List;
 import visualization.MapLook;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -18,6 +21,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -49,6 +53,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	static List<PointOfInterest> points = new ArrayList<PointOfInterest>();
 	static LatLng startLatLng;
 	static Intent intent;
+	static Itinerary it;
 	
 	
 	@Override
@@ -62,8 +67,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		today = intent.getBooleanExtra("today", false);
 		String itineraryID = intent.getStringExtra("id");
 		
-		Itinerary it = null;
-		
+
+		it=new Itinerary();
 		if(today){
 			SQLiteDatabase db = DBHelper.getInstance(this).getWritableDatabase();
 			UserInfo ui = UserInfo.getUserInfo(db);
@@ -230,9 +235,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 				marker.title(poi.getName());
 				marker.position(poi.getPosition());
 				if(points.indexOf(poi)==0){
-					marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.start_mini));
+					marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.start));
 				}else{
-					marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.select_mini));
+					marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.selected));
 				}
 				markers.add(marker);
 			}
@@ -269,17 +274,51 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			listView.setEmptyView(empty);
 			Button button=(Button) getActivity().findViewById(R.id.saveMap);
 			button.setText(R.string.modify);
+			button.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					intent=new Intent(getActivity(), ItineraryCreationActivity.class);
+					String s=it.getID();
+					intent.putExtra(ItineraryCreationActivity.ITINERARY_ID,s);
+					startActivity(intent);
+					
+				}
+			});
 			
 			listView.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
-					intent=new Intent(getActivity(), POIDetailActivity.class);
-					intent.putExtra(ItineraryCreationActivity.POI, points.get(position).getId());
-					startActivity(intent);
-					
-					
+					if (points.get(position).getName().equals("start")) {
+						new AlertDialog.Builder(getActivity())
+					    .setTitle("Change starting point")
+					    .setMessage("Are you sure you want to change this starting point?")
+					    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+					        public void onClick(DialogInterface dialog, int which) { 
+					        	intent = new Intent(getActivity(),
+										StartingPointActivity.class);
+					        	intent.putExtra("id", it.getID());
+					        	intent.putExtra("mode", "modify");
+								startActivity(intent);
+					        }
+					     })
+					    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+					        public void onClick(DialogInterface dialog, int which) { 
+					            // do nothing
+					        }
+					     })
+					    .setIcon(android.R.drawable.ic_dialog_alert)
+					     .show();
+					} else {
+						intent = new Intent(getActivity(),
+								POIDetailActivity.class);
+						intent.putExtra(ItineraryCreationActivity.POI, points
+								.get(position).getId());
+						startActivity(intent);
+					}
+
 				}
 			});
 			adapter = new POIAdapter(getActivity(), points);

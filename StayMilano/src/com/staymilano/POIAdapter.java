@@ -33,9 +33,16 @@ public class POIAdapter extends ArrayAdapter<PointOfInterest>{
 		
 		TextView first = (TextView) rowView.findViewById(R.id.firstLine);
 		TextView second = (TextView) rowView.findViewById(R.id.secondLine);
+		ImageView icon=(ImageView) rowView.findViewById(R.id.imageView1);
 		
 		first.setText((values.get(position)).getName());
 		second.setText((values.get(position)).getType());
+		if(values.get(position).getName().equals("start")){
+			icon.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_action_settings));
+		}else{
+			icon.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_action_about));
+
+		}
 		return rowView;
 	}
 }

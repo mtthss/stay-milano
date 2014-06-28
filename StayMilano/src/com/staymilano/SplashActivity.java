@@ -62,6 +62,11 @@ public class SplashActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
+		if (getIntent().getBooleanExtra("EXIT", false)) {
+		    finish();
+		}
+		
 		Log.w(TAG_LOG, "SONO IN Splash on create");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
@@ -73,11 +78,22 @@ public class SplashActivity extends Activity {
 	@Override
 	protected void onStart(){
 		super.onStart();
+		
+		if (getIntent().getBooleanExtra("EXIT", false)) {
+		    finish();
+		}
 		mStartTime= SystemClock.uptimeMillis();
 		final Message goAheadMessage= mHandler.obtainMessage(GO_AHEAD_WHAT);
 		mHandler.sendMessageAtTime(goAheadMessage, mStartTime+MAX_WAIT_INTERVAL);
 	}
 	
+	@Override
+	protected void onResume(){
+		super.onResume();
+		if (getIntent().getBooleanExtra("EXIT", false)) {
+		    finish();
+		}
+	}
 
 	protected void goAhead() {
         //apro il DB in lettura
@@ -98,19 +114,17 @@ public class SplashActivity extends Activity {
         		intent = new Intent(this,MainActivity.class);
         		intent.putExtra("today", true);
         		startActivity(intent);
-            	finish();
         	}else{
         		cur=ItineraryDAO.getAllItineraries(db);
         		if(cur.getCount()==0){
         			intent=new Intent(this,FirstAccessActivity.class);
         			startActivity(intent);
-                	finish();
         		}else{
         			intent=new Intent(this,ItineraryListActivity.class);
         			startActivity(intent);
-                	finish();
         		}
         	}
+        	//finish();
 
         }
 	}

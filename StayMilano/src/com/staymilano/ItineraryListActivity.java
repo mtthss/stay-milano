@@ -75,6 +75,10 @@ public class ItineraryListActivity extends ActionBarActivity {
 	@Override
 	public void onBackPressed() {
 		this.finish();
+		Intent intent = new Intent(this, SplashActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		intent.putExtra("EXIT", true);
+		startActivity(intent);
 	}
 
 	public static class ItineraryListFragment extends ListFragment {

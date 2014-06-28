@@ -35,6 +35,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -201,6 +202,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 		private void setupMap() {
 			
+			CameraPosition cameraPosition = new CameraPosition.Builder()
+		    .target(MILAN) 
+		    .tilt(40)
+		    .zoom(10)					// Sets the tilt of the camera to 30 degrees
+		    .build();                   // Creates a CameraPosition from the builder
+			map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 			map.moveCamera(CameraUpdateFactory.newLatLngZoom(MILAN, 10));
 			map.setOnMapLoadedCallback(this);
 			map.getUiSettings().setZoomControlsEnabled(false);
@@ -208,17 +215,18 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 		@Override
 		public void onMapLoaded() {
-			LatLngBounds itBounds = null;
-			if(points.get(1).getPosition().latitude<points.get(0).getPosition().latitude){
-				itBounds = new LatLngBounds(points.get(1).getPosition(), points.get(0).getPosition());
-			}else{
-				itBounds = new LatLngBounds(points.get(0).getPosition(), points.get(1).getPosition());
-			}
+			LatLngBounds.Builder itBounds = new LatLngBounds.Builder();  
 			for(PointOfInterest p : points){
-				itBounds.including(p.getPosition());
+				itBounds.include(p.getPosition());
 			}
-			// Set the camera to the greatest possible zoom level that includes the bounds
-			map.animateCamera(CameraUpdateFactory.newLatLngBounds(itBounds, 0));
+			// TODO sistemare zoom so bounds, meno scatti rimuovendo tilt
+			//CameraPosition cameraPosition = new CameraPosition.Builder()
+		    //.target(points.get(0).getPosition()) 
+		    //.tilt(40)                   // Sets the tilt of the camera to 30 degrees
+		    //.build();                   // Creates a CameraPosition from the builder
+			//map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+			map.animateCamera(CameraUpdateFactory.newLatLngBounds(itBounds.build(), 60), 1500, null);
+			//map.animateCamera(CameraUpdateFactory.newLatLngBounds(itBounds, 0));
 			// retrieve directions from google server
 			getDirections();		
 		}

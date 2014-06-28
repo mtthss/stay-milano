@@ -146,6 +146,8 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 		if (ItineraryCreationActivity.MODIFICATION) {
 			// Update itinerary in database
 			String id= ui.updateItinerary(it,db);
+			selectedPOI.clear();
+			adapter.notifyDataSetChanged();
 			Intent intent = new Intent(ctx,
 					MainActivity.class);
 			intent.putExtra("id", id);
@@ -154,6 +156,8 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 		} else {
 			// Save itinerary in database
 			String id = ui.saveItinerary(it, db);
+			selectedPOI.clear();
+			adapter.notifyDataSetChanged();
 			Intent intent = new Intent(ctx,
 					StartingPointActivity.class);
 			intent.putExtra("id", id);
@@ -451,12 +455,6 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 			return rootView;
 		}
 		
-		@Override
-		public void onResume() {
-			super.onResume();
-			selectedPOI.clear();
-			adapter.notifyDataSetChanged();
-		}
 
 		@Override
 		public void onActivityCreated(Bundle savedInstanceState) {

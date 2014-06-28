@@ -98,17 +98,20 @@ public class SplashActivity extends Activity {
         		intent = new Intent(this,MainActivity.class);
         		intent.putExtra("today", true);
         		startActivity(intent);
+            	finish();
         	}else{
         		cur=ItineraryDAO.getAllItineraries(db);
         		if(cur.getCount()==0){
         			intent=new Intent(this,FirstAccessActivity.class);
         			startActivity(intent);
+                	finish();
         		}else{
         			intent=new Intent(this,ItineraryListActivity.class);
         			startActivity(intent);
+                	finish();
         		}
         	}
-        	finish();
+
         }
 	}
 

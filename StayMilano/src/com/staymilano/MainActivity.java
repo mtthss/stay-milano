@@ -118,6 +118,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	public void onBackPressed() {
 		Intent intent=new Intent(this, ItineraryListActivity.class);
 		startActivity(intent);
+		finish();
 	}
 	
 	@Override

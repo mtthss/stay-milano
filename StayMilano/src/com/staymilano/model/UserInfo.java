@@ -6,22 +6,21 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.staymilano.database.ItineraryDAO;
 import com.staymilano.database.PointOfInterestDAO;
 import com.staymilano.database.SelectedPOIDAO;
 import com.staymilano.database.StartPointDAO;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.widget.SeekBar;
-
 public class UserInfo implements Serializable{
 
 	private static final long serialVersionUID = 8354095811783356274L;
 	private List<Itinerary> itineraries;
+	private static boolean updated;
 	private static UserInfo user;
-
 	
 	private UserInfo(SQLiteDatabase readableDatabase) {
 		
@@ -80,8 +79,9 @@ public class UserInfo implements Serializable{
 
 	public static UserInfo getUserInfo(SQLiteDatabase readableDatabase) {
 		
-		if(user==null){
+		if(user==null||isUpdated()){
 			user=new UserInfo(readableDatabase);
+			UserInfo.updated=false;
 		}
 		return user;
 	}
@@ -135,6 +135,7 @@ public class UserInfo implements Serializable{
 	}
 
 	public String updateItinerary(Itinerary it, SQLiteDatabase db) {
+		UserInfo.updated=true;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		String stringDate = sdf.format(it.getDate().getTime());
 		if(ItineraryDAO.updateItinerary(db, it.getID(), stringDate)){
@@ -144,6 +145,51 @@ public class UserInfo implements Serializable{
 			}
 		}
 		return null;
+	}
+
+	public static boolean isUpdated() {
+		return updated;
+	}
+	
+	public static String itineraryToString(Itinerary it){
+		//TODO riguardare
+		/* Crea Stringa:
+		 * data; starting point; nomePoi1, nomePoi2, ... ; idStallo1, lat1, long1, idStallo2, lat2, long2, ... ;  */
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		String stringDate = sdf.format(it.getDate().getTime());
+		
+		String s = stringDate+";";
+		s = s+it.getStart().latitude+","+it.getStart().longitude+";";
+		
+		List<PointOfInterest> stalli = new ArrayList<PointOfInterest>();
+		int length = it.getPois().size();
+		
+		for(int i=0; i<length;i++){
+			PointOfInterest poi = it.getPois().get(i);
+			if(poi.getType()!="stallo"){
+				s = s+poi.getName();
+				if(i!=length-1){
+					s = s+",";
+				}
+			}else{
+				stalli.add(poi);				
+			}
+		}
+		
+		for(int j=0; j<stalli.size(); j++){
+			s = s+stalli.get(j).getDescription()+","+stalli.get(j).getPosition().latitude+","+stalli.get(j).getPosition().longitude;
+		}
+		
+		return s;
+	}
+	
+	public static Itinerary saveStringToItinerary(String s){
+		//TODO FINIRE
+		Itinerary it = null;
+		
+		
+		return it;
 	}
 
 }

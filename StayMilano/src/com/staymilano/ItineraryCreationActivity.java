@@ -141,7 +141,8 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 	public void saveItinerary(String s){
 		UserInfo ui = UserInfo.getUserInfo(db);
 		// Set point of interests
-		it.setPois(selectedPOI);
+		Itinerary newIt=new Itinerary();
+		newIt.setPois(selectedPOI);
 		
 		// Set date
 		Calendar cal = Calendar.getInstance();
@@ -151,23 +152,19 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		it.setData(cal);
+		newIt.setData(cal);
 		
 		// Start next activity
 		if (ItineraryCreationActivity.MODIFICATION) {
 			// Update itinerary in database
-			it.setID(intent.getStringExtra(ITINERARY_ID));
-			String id= ui.updateItinerary(it,db);
-			//selectedPOI.clear();
-			//adapter.notifyDataSetChanged();
+			newIt.setID(intent.getStringExtra(ITINERARY_ID));
+			ui.updateItinerary(newIt,db);
 			Intent intent = new Intent(this, MainActivity.class);
-			intent.putExtra("id", it.getID());
+			intent.putExtra("id", newIt.getID());
 			startActivity(intent);
 		} else {
 			// Save itinerary in database
 			String id = ui.saveItinerary(it, db);
-			//selectedPOI.clear();
-			//adapter.notifyDataSetChanged();
 			Intent intent = new Intent(this, StartingPointActivity.class);
 			intent.putExtra("id", id);
 			startActivity(intent);

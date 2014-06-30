@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <item
+        android:id="@+id/action_show_bicycle"
+        android:title="Add Bike Sharing"
+        android:icon="@drawable/ic_action_about"/>
+    <item
+        android:id="@+id/action_share"
+        android:title="Share"
+        android:icon="@drawable/ic_action_share"/>
+    <item
+        android:id="@+id/action_starting_point"
+        android:title="Edit Itineraries"
+        android:icon="@drawable/start"/>
+    <item
+        android:id="@+id/action_settings"
+        android:title="Edit Starting Point"
+        android:icon="@drawable/ic_action_edit"/>
+    
+
+</menu>

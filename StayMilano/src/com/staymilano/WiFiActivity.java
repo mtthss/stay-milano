@@ -60,7 +60,7 @@ public class WiFiActivity extends ActionBarActivity  implements ChannelListener,
 	    mChannel = mManager.initialize(this, getMainLooper(), null);
 	    mReceiver = new WiFiDirectBroadcastReceiver(mManager, mChannel, this);
 	    
-	    ActionBar ab = getActionBar();
+	    //ActionBar ab = getActionBar();
 	}
 
 	@Override

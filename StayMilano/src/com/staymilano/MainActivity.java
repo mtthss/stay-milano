@@ -1,15 +1,19 @@
 package com.staymilano;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
+import model.Direction;
+import model.Stallo;
 import visualization.MapLook;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -20,29 +24,39 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
-import communications.*;
-import model.Direction;
+import visualization.BikeMiLook;
 
+import com.example.bikemiutils.BikeMiCallBack;
+import com.example.bikemiutils.BikeMiUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.staymilano.database.DBHelper;
 import com.staymilano.model.Itinerary;
 import com.staymilano.model.PointOfInterest;
 import com.staymilano.model.UserInfo;
+
+import communications.CallBack;
+import communications.GoogleMapsUtils;
 
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
@@ -115,6 +129,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 	}
 
+	
 	@Override
 	public void onBackPressed() {
 		Intent intent=new Intent(this, ItineraryListActivity.class);
@@ -172,8 +187,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			return "Section " + (position + 1);
 		}
 	}
+	
+	/////////////////////////////MAP FRAGMENT////////////////////////////////////////////////////////////////////////
 
-	public static class MapSectionFragment extends Fragment implements OnMapLoadedCallback, CallBack {
+	public static class MapSectionFragment extends Fragment implements OnMapLoadedCallback, CallBack, BikeMiCallBack{
 
     	SQLiteDatabase db;
 		GoogleMap map;
@@ -183,10 +200,58 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			
 			View rootView = inflater.inflate(R.layout.fragment_main, container,	false);
-			db = DBHelper.getInstance(ItineraryCreationActivity.ctx).getWritableDatabase();
+			db = DBHelper.getInstance(getActivity()).getWritableDatabase();
+			setHasOptionsMenu(true);
 			
 			setUpMapIfIneed();
 			return rootView;
+		}
+		
+		@Override
+		public void onResume() {
+			super.onResume();
+			setUpMapIfIneed();
+		}
+		
+		@Override
+		public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+			inflater.inflate(R.menu.option_menu, menu);
+			super.onCreateOptionsMenu(menu, inflater);
+		}
+		
+		@Override
+		public boolean onOptionsItemSelected(MenuItem item) {
+			if(item.getItemId()==R.id.action_show_bicycle){
+				//TODO inserire posizione attuale
+				BikeMiUtils.getBikeMiStations(this, points.get(0).getPosition());
+			}else if(item.getItemId()==R.id.action_share){
+				
+			}else if(item.getItemId()==R.id.action_starting_point){
+				intent = new Intent(getActivity(),StartingPointActivity.class);
+				new AlertDialog.Builder(getActivity())
+			    .setTitle("Change starting point")
+			    .setMessage("Are you sure you want to change this starting point?")
+			    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+			        public void onClick(DialogInterface dialog, int which) { 
+			        	intent.putExtra("id", it.getID());
+			        	intent.putExtra("mode", "modify");
+						startActivity(intent);
+			        }
+			     })
+			    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+			        public void onClick(DialogInterface dialog, int which) { 
+			            // do nothing
+			        }
+			     })
+			    .setIcon(android.R.drawable.ic_dialog_alert)
+			     .show();
+			}else if(item.getItemId()==R.id.action_settings){
+				intent=new Intent(getActivity(), ItineraryCreationActivity.class);
+				String s=it.getID();
+				intent.putExtra(ItineraryCreationActivity.ITINERARY_ID,s);
+				startActivity(intent);
+			}
+			return super.onOptionsItemSelected(item);
 		}
 
 		private void setUpMapIfIneed() {
@@ -255,13 +320,65 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 		@Override
 		public void onDirectionLoaded(List<Direction> directions) {
-
 			// once the google server provides the directions, draw them on the map
 			MapLook.drawDirection(directions, map);
 		}
 
+		@Override
+		public void onBikeMiStationsComputed(List<Stallo> result) {
+			List<MarkerOptions> markers=new ArrayList<MarkerOptions>();
+			for(Stallo st:result){
+				MarkerOptions marOp=new MarkerOptions();
+				marOp.position(st.getPosition());
+				marOp.icon(BitmapDescriptorFactory.fromResource(R.drawable.minipurplebicycle));
+				marOp.title(st.getName());
+				marOp.snippet(st.getEmptySlots()+" empy slots and "+st.getFreeBikes()+" free bikes");
+				markers.add(marOp);
+			}
+			
+			BikeMiLook.drawMarkers(map, markers);
+			map.setOnMarkerClickListener(listener);
+		}
+		
+		private OnMarkerClickListener listener= new OnMarkerClickListener() {
+			
+			@Override
+			public boolean onMarkerClick(Marker marker) {
+				if(!isPointMarker(marker)){
+					new AlertDialog.Builder(getActivity())
+					.setTitle("Add BikeMi Station")
+					.setMessage("This BikeMi Station has: \n"+marker.getSnippet()+"\nAre you sure you want to add this BikeMi station to your itinerary?")
+					.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+				        public void onClick(DialogInterface dialog, int which) { 
+				        	//TODO
+				        }
+				     })
+				    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+				        public void onClick(DialogInterface dialog, int which) { 
+				            // do nothing
+				        }
+				     })
+				    .setIcon(R.drawable.purplebicycle)
+				     .show();
+				}
+				return true;
+			}
+
+			private boolean isPointMarker(Marker marker) {
+				for(PointOfInterest poi:points){
+					if(poi.getName().equals(marker.getTitle())){
+						return true;
+					}
+				}
+				return false;
+			}
+			
+			
+		};
+
 	}
 
+	/////////////////////////LIST FRAGMENT/////////////////////////////////////////////////////////
 	public static class MyListFragment extends Fragment {
 
 		POIAdapter adapter;

@@ -48,7 +48,7 @@ public class ItineraryDAO {
         ContentValues v = new ContentValues();
         v.put(DATA, data);
  
-        return db.update(TABELLA, v, ID + "=" + "'"+id+"' and "+DATA+"='"+data+"'", null) >0; 
+        return db.update(TABELLA, v, ID + "=" + "'"+id+"'", null) >0; 
     }
 	
     public static boolean deleteItinerary(SQLiteDatabase db, String id) {

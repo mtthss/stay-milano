@@ -1,16 +1,15 @@
 package com.staymilano;
 
-import com.staymilano.database.DBHelper;
-import com.staymilano.database.PointOfInterestDAO;
-import com.staymilano.model.Itinerary;
-import com.staymilano.model.PointOfInterest;
-
 import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.staymilano.database.DBHelper;
+import com.staymilano.database.PointOfInterestDAO;
+import com.staymilano.model.PointOfInterest;
 
 public class POIDetailActivity extends Activity {
 
@@ -37,7 +36,6 @@ public class POIDetailActivity extends Activity {
 		
 		TextView title=(TextView) findViewById(R.id.title);
 		TextView type=(TextView) findViewById(R.id.type);
-		ImageView image=(ImageView) findViewById(R.id.image);
 		TextView description=(TextView) findViewById(R.id.description);
 		
 		title.setText(poi.getName());

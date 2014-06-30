@@ -110,7 +110,7 @@ public class SplashActivity extends Activity {
         	intent= new Intent(this,WiFiActivity.class);
         	startActivity(intent);
         }else{
-        	if(cur.getCount()!=0){
+        	if(cur.getCount()==1){
         		intent = new Intent(this,MainActivity.class);
         		intent.putExtra("today", true);
         		startActivity(intent);

@@ -129,7 +129,7 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 	
 	private void saveCoordinates(LatLng startCoord){
 		
-		db = DBHelper.getInstance(ItineraryCreationActivity.ctx).getWritableDatabase();
+		db = DBHelper.getInstance(this).getWritableDatabase();
 		String startLat = "" + startCoord.latitude;
 		String startLong = "" + startCoord.longitude;
 		StartPointDAO.deleteStartPointPOI(db, itineraryId);

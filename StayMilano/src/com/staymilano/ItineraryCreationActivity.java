@@ -5,41 +5,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import visualization.MapLook;
-
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
-import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
-import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
-import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.staymilano.database.DBHelper;
-import com.staymilano.database.ItineraryDAO;
-import com.staymilano.model.Area;
-import com.staymilano.model.City;
-import com.staymilano.model.Itinerary;
-import com.staymilano.model.PointOfInterest;
-import com.staymilano.model.UserInfo;
-
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
-import android.app.ListFragment;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -47,10 +19,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.GetChars;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -62,20 +31,40 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ItineraryCreationActivity extends FragmentActivity implements ActionBar.TabListener {
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.staymilano.database.DBHelper;
+import com.staymilano.model.Area;
+import com.staymilano.model.City;
+import com.staymilano.model.Itinerary;
+import com.staymilano.model.PointOfInterest;
+import com.staymilano.model.UserInfo;
+
+public class ItineraryCreationActivity extends FragmentActivity implements ActionBar.TabListener, DatePickerDialog.OnDateSetListener  {
 
     AppSectionsPagerAdapter mAppSectionsPagerAdapter;
     ViewPager mViewPager;
     
     public static FragmentManager manager;
-    public static Context ctx;
     public static POIAdapter adapter;
     
 	static ArrayList<Marker> markers = new ArrayList<Marker>();
     static List<PointOfInterest> selectedPOI=new ArrayList<PointOfInterest>();
-	Itinerary it;
+	static Itinerary it=new Itinerary();
 
 	static Intent intent;
+	static SQLiteDatabase db;
 	
 	public static final String POI = "poi";
 	public static final String POI_NAME="poi_name";
@@ -89,9 +78,28 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_itinerary_creation);
-
+		
+		db= DBHelper.getInstance(this).getWritableDatabase();
+		
 		manager = getSupportFragmentManager();
-		ctx = ItineraryCreationActivity.this;
+		
+		intent =getIntent();
+		String itinerary_id = intent.getStringExtra(ITINERARY_ID);
+		if (itinerary_id != null) {
+			MODIFICATION = true;
+			UserInfo ui = UserInfo.getUserInfo(db);
+			it = ui.getItinerary(itinerary_id);
+			if (it != null) {
+				selectedPOI.clear();
+				selectedPOI.addAll(it.getPois());
+			}
+		} else {
+			MODIFICATION = false;
+			selectedPOI.clear();
+		}
+
+		adapter=new POIAdapter(this, selectedPOI);
+		adapter.notifyDataSetChanged();
 
 		mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(
 				getSupportFragmentManager());
@@ -122,13 +130,16 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 		}
 	}
 	
+	@Override
+	public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+		int correctMonth = monthOfYear+1;
+		String s = dayOfMonth + "-" + correctMonth + "-" + year;
+		saveItinerary(s);
 	
-	public static void saveItinerary(String s){
-		SQLiteDatabase db = DBHelper.getInstance(ItineraryCreationActivity.ctx)
-				.getWritableDatabase();
-
+	}
+	
+	public void saveItinerary(String s){
 		UserInfo ui = UserInfo.getUserInfo(db);
-		Itinerary it = new Itinerary();
 		// Set point of interests
 		it.setPois(selectedPOI);
 		
@@ -145,24 +156,21 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 		// Start next activity
 		if (ItineraryCreationActivity.MODIFICATION) {
 			// Update itinerary in database
+			it.setID(intent.getStringExtra(ITINERARY_ID));
 			String id= ui.updateItinerary(it,db);
-			selectedPOI.clear();
-			adapter.notifyDataSetChanged();
-			Intent intent = new Intent(ctx,
-					MainActivity.class);
-			intent.putExtra("id", id);
-			ctx.startActivity(intent);
-			((Activity) ctx).finish();
+			//selectedPOI.clear();
+			//adapter.notifyDataSetChanged();
+			Intent intent = new Intent(this, MainActivity.class);
+			intent.putExtra("id", it.getID());
+			startActivity(intent);
 		} else {
 			// Save itinerary in database
 			String id = ui.saveItinerary(it, db);
-			selectedPOI.clear();
-			adapter.notifyDataSetChanged();
-			Intent intent = new Intent(ctx,
-					StartingPointActivity.class);
+			//selectedPOI.clear();
+			//adapter.notifyDataSetChanged();
+			Intent intent = new Intent(this, StartingPointActivity.class);
 			intent.putExtra("id", id);
-			ctx.startActivity(intent);
-			((Activity) ctx).finish();
+			startActivity(intent);
 		}
 	}
 
@@ -236,35 +244,13 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 			OnMapLoadedCallback {
 
 		GoogleMap map;
-		SQLiteDatabase db;
 		Area lastAreaClicked;
 		Marker lastMarkerClicked;
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_map, container,
-					false);
-
-			db = DBHelper.getInstance(ItineraryCreationActivity.ctx)
-					.getWritableDatabase();
-
-			intent = getActivity().getIntent();
-			String itinerary_id = intent.getStringExtra(ITINERARY_ID);
-			if (itinerary_id != null) {
-				MODIFICATION = true;
-				UserInfo ui = UserInfo.getUserInfo(db);
-				Itinerary it = ui.getItinerary(itinerary_id);
-				if (it != null) {
-					selectedPOI = it.getPois();
-				}
-				if(adapter!=null){
-					adapter.notifyDataSetChanged();
-				}
-			} else {
-				MODIFICATION = false;
-			}
-
+			View rootView = inflater.inflate(R.layout.fragment_map, container,false);
 			setUpMapIfIneed();
 			return rootView;
 		}
@@ -338,8 +324,7 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 					MarkerOptions marker = new MarkerOptions();
 					marker.title(poi.getName());
 					marker.position(poi.getPosition());
-					List<PointOfInterest> prova=selectedPOI;
-					if (checkIfSelected(poi)) {
+					if (checkIfSelected(poi.getName())) {
 						marker.icon(BitmapDescriptorFactory
 								.fromResource(R.drawable.check));
 					} else {
@@ -358,7 +343,7 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 				for(Marker marker:markers){
 					for(PointOfInterest poi:a.getPois()){
 						if(poi.getName().equals(marker.getTitle())){
-							if(!checkIfSelected(poi)){
+							if(!checkIfSelected(poi.getName())){
 								marker.remove();
 							}
 						}
@@ -366,14 +351,6 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 				}
 			}
 
-			private boolean checkIfSelected(PointOfInterest poi){
-				for(PointOfInterest spoi:selectedPOI){
-					if(spoi.getName().equals(poi.getName())){
-						return true;
-					}
-				}
-				return false;
-			}
 
 			private Area PointInPolygon(LatLng point, List<Area> areas) {
 				for (Area a : areas) {
@@ -406,24 +383,43 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 
 			@Override
 			public boolean onMarkerClick(Marker marker) {
-				PointOfInterest poi = new PointOfInterest();
-				poi = City.getCity(db).getPOIbyName(marker.getTitle());
-				if (selectedPOI.contains(poi)) {
-					selectedPOI.remove(poi);
-					marker.setIcon(BitmapDescriptorFactory
-							.fromResource(poi.getIcon()));
-					adapter.notifyDataSetChanged();
+				String title=marker.getTitle();
+				if (checkIfSelected(marker.getTitle())) {
+					PointOfInterest poi=getPoiFromSelected(marker.getTitle());
+					if (poi != null) {
+						selectedPOI.remove(poi);
+						marker.setIcon(BitmapDescriptorFactory.fromResource(poi
+								.getIcon()));
+					}
 				} else {
+					PointOfInterest poi=City.getCity(db).getPOIbyName(marker.getTitle());
 					selectedPOI.add(poi);
 					marker.setIcon(BitmapDescriptorFactory
 							.fromResource(R.drawable.check));
-					adapter.notifyDataSetChanged();
-
 				}
+				adapter.notifyDataSetChanged();
 				return false;
 			}
 
+			private PointOfInterest getPoiFromSelected(String title) {
+				for(PointOfInterest poi:selectedPOI){
+					if(poi.getName().equals(title)){
+						return poi;
+					}
+				}
+				return null;
+			}
+
 		};
+		
+		private boolean checkIfSelected(String string){
+			for(PointOfInterest spoi:selectedPOI){
+				if(spoi.getName().equals(string)){
+					return true;
+				}
+			}
+			return false;
+		}
 		
 		private OnInfoWindowClickListener infowinlistener = new OnInfoWindowClickListener() {
 			
@@ -433,7 +429,7 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 					marker.hideInfoWindow();
 				} else {
 					lastMarkerClicked = marker;
-					intent = new Intent(ctx, POIDetailActivity.class);
+					intent = new Intent(getActivity(), POIDetailActivity.class);
 					intent.putExtra(ItineraryCreationActivity.POI_NAME,
 							marker.getTitle());
 					startActivity(intent);
@@ -479,14 +475,13 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
-					intent = new Intent(ctx, POIDetailActivity.class);
+					intent = new Intent(getActivity(), POIDetailActivity.class);
 					intent.putExtra(ItineraryCreationActivity.POI, selectedPOI
 							.get(position).getId());
 					startActivity(intent);
 
 				}
 			});
-			adapter = new POIAdapter(getActivity(), selectedPOI);
 			listView.setAdapter(adapter);
 
 		}
@@ -497,7 +492,7 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 				newFragment.show(getActivity().getFragmentManager(), "datePicker");
 				newFragment.setRetainInstance(true);
 			} else {
-				Toast.makeText(ctx, R.string.error, Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), R.string.error, Toast.LENGTH_SHORT).show();
 			}
 		}
 		

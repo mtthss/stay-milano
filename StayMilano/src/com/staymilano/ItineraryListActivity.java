@@ -1,23 +1,13 @@
 package com.staymilano;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
-import com.google.android.gms.internal.de;
-import com.staymilano.database.DBHelper;
-import com.staymilano.model.Itinerary;
-import com.staymilano.model.PointOfInterest;
-import com.staymilano.model.UserInfo;
-
-import android.app.ListActivity;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,6 +19,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.staymilano.database.DBHelper;
+import com.staymilano.model.Itinerary;
+import com.staymilano.model.PointOfInterest;
+import com.staymilano.model.UserInfo;
 
 public class ItineraryListActivity extends ActionBarActivity {
 

@@ -52,6 +52,6 @@ public class SelectedPOIDAO {
     }
     
     public static boolean deleteSelectedPOIByItinerary(SQLiteDatabase db, String itinerary_id) {
-        return db.delete(TABELLA, ITINERARY_ID + "=" + itinerary_id, null) > 0;
+        return db.delete(TABELLA, ITINERARY_ID + "='" + itinerary_id+"'", null) > 0;
     }
 }

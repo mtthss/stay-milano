@@ -83,10 +83,8 @@
         </activity>
 
         <!-- Used for transferring files  after a successful connection -->
-        <service
-            android:name="com.staymilano.FileTransferService"
-            android:enabled="true" />
-
+        <service android:enabled="true" android:name="com.staymilano.wifidirect.FileTransferService" />
+        
         <activity
             android:name="com.staymilano.POIListFragment"
             android:label="@string/title_activity_poilist_fragment" >

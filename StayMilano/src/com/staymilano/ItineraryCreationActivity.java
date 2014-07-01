@@ -4,7 +4,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import visualization.MapLook;
 import android.app.ActionBar;
@@ -12,6 +15,7 @@ import android.app.DatePickerDialog;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -27,6 +31,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +47,7 @@ import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.staymilano.database.DBHelper;
@@ -49,6 +55,7 @@ import com.staymilano.model.Area;
 import com.staymilano.model.City;
 import com.staymilano.model.Itinerary;
 import com.staymilano.model.PointOfInterest;
+import com.staymilano.model.PointOfItinerary;
 import com.staymilano.model.UserInfo;
 
 public class ItineraryCreationActivity extends FragmentActivity implements ActionBar.TabListener, DatePickerDialog.OnDateSetListener  {
@@ -56,11 +63,10 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
     AppSectionsPagerAdapter mAppSectionsPagerAdapter;
     ViewPager mViewPager;
     
-    public static FragmentManager manager;
     public static POIAdapter adapter;
     
 	static ArrayList<Marker> markers = new ArrayList<Marker>();
-    static List<PointOfInterest> selectedPOI=new ArrayList<PointOfInterest>();
+    static List<PointOfItinerary> selectedPOI=new ArrayList<PointOfItinerary>();
 	static Itinerary it=new Itinerary();
 
 	static Intent intent;
@@ -80,8 +86,9 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 		setContentView(R.layout.activity_itinerary_creation);
 		
 		db= DBHelper.getInstance(this).getWritableDatabase();
-		
-		manager = getSupportFragmentManager();
+		List<PointOfItinerary> list=new ArrayList<PointOfItinerary>();
+		list.addAll(selectedPOI);
+		adapter=new POIAdapter(this, selectedPOI);
 		
 		intent =getIntent();
 		String itinerary_id = intent.getStringExtra(ITINERARY_ID);
@@ -92,13 +99,14 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 			if (it != null) {
 				selectedPOI.clear();
 				selectedPOI.addAll(it.getPois());
+				adapter.addAll(it.getPois());
 			}
 		} else {
 			MODIFICATION = false;
 			selectedPOI.clear();
+			adapter.clear();
 		}
-
-		adapter=new POIAdapter(this, selectedPOI);
+		
 		adapter.notifyDataSetChanged();
 
 		mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(
@@ -142,7 +150,15 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 		UserInfo ui = UserInfo.getUserInfo(db);
 		// Set point of interests
 		Itinerary newIt=new Itinerary();
-		newIt.setPois(selectedPOI);
+		if (selectedPOI.size() > 0) {
+			List<PointOfInterest> list = new ArrayList<PointOfInterest>();
+			for (PointOfItinerary poi : selectedPOI) {
+				list.add((PointOfInterest) poi);
+			}
+			if(list.size()>0){
+			newIt.setPois(list);
+			}
+		}
 		
 		// Set date
 		Calendar cal = Calendar.getInstance();
@@ -185,10 +201,6 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 	@Override
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
-	}
-
-	public List<PointOfInterest> getPoiList() {
-		return selectedPOI;
 	}
 	
 	public static void removePoi(String name){
@@ -254,8 +266,8 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 
 		private void setUpMapIfIneed() {
 			if (map == null) {
-				map = ((SupportMapFragment) ItineraryCreationActivity.manager
-						.findFragmentById(R.id.map)).getMap();
+				SupportMapFragment smf=(SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map);
+				map =smf.getMap();
 			}
 			if (map != null) {
 				setupMap();
@@ -317,6 +329,7 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 			}
 
 			private void exploreArea(Area a) {
+				LatLngBounds.Builder areaBounds = new LatLngBounds.Builder(); 
 				for (PointOfInterest poi : a.getPois()) {
 					MarkerOptions marker = new MarkerOptions();
 					marker.title(poi.getName());
@@ -329,8 +342,9 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 								.fromResource(poi.getIcon()));
 					}
 					markers.add(map.addMarker(marker));
+					areaBounds.include(poi.getPosition());
 				}
-				camup = CameraUpdateFactory.newLatLngZoom(a.getCenter(), 15f);
+				camup = CameraUpdateFactory.newLatLngBounds(areaBounds.build(), 60);
 				map.animateCamera(camup, 1000, null);
 				map.setOnMarkerClickListener(markerListener);
 				map.setOnInfoWindowClickListener(infowinlistener);
@@ -385,12 +399,14 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 					PointOfInterest poi=getPoiFromSelected(marker.getTitle());
 					if (poi != null) {
 						selectedPOI.remove(poi);
-						marker.setIcon(BitmapDescriptorFactory.fromResource(poi
+						adapter.remove(poi);
+						marker.setIcon(BitmapDescriptorFactory.fromResource(((PointOfInterest) poi)
 								.getIcon()));
 					}
 				} else {
 					PointOfInterest poi=City.getCity(db).getPOIbyName(marker.getTitle());
 					selectedPOI.add(poi);
+					adapter.add(poi);
 					marker.setIcon(BitmapDescriptorFactory
 							.fromResource(R.drawable.check));
 				}
@@ -399,9 +415,9 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 			}
 
 			private PointOfInterest getPoiFromSelected(String title) {
-				for(PointOfInterest poi:selectedPOI){
+				for(PointOfItinerary poi:selectedPOI){
 					if(poi.getName().equals(title)){
-						return poi;
+						return (PointOfInterest) poi;
 					}
 				}
 				return null;
@@ -410,7 +426,7 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 		};
 		
 		private boolean checkIfSelected(String string){
-			for(PointOfInterest spoi:selectedPOI){
+			for(PointOfItinerary spoi:selectedPOI){
 				if(spoi.getName().equals(string)){
 					return true;
 				}
@@ -473,8 +489,7 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
 					intent = new Intent(getActivity(), POIDetailActivity.class);
-					intent.putExtra(ItineraryCreationActivity.POI, selectedPOI
-							.get(position).getId());
+					intent.putExtra(ItineraryCreationActivity.POI, ((PointOfInterest)selectedPOI.get(position)).getId());
 					startActivity(intent);
 
 				}

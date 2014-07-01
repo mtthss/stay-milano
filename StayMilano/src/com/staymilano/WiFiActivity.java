@@ -158,7 +158,7 @@ public class WiFiActivity extends ActionBarActivity  implements ChannelListener,
             retryChannel = true;
             mManager.initialize(this, getMainLooper(), this);
         } else {
-            Toast.makeText(this, "Severe! Channel is lost premanently. Try Disable/Re-Enable P2P.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Severe! Channel is lost permanently. Try Disable/Re-Enable P2P.", Toast.LENGTH_LONG).show();
         }
     }
 

@@ -1,8 +1,34 @@
 package com.staymilano.model;
 
-public class StartingPoint {
+import com.google.android.gms.maps.model.LatLng;
+
+public class StartingPoint implements PointOfItinerary{
 	
-	//TODO CHIARA implementa classe starting point
-	// ma questa classe serve a qualcosa? deve contenere solo una posizione quindi io sostituirei il campo
-	// di tipo "StartingPoint" di "Itinerary" con un campo "LatLng" e eliminerei questa classe
+	public static String STARTING_POINT="starting_point";
+	
+	public String name;
+	public String type=STARTING_POINT;
+	public LatLng position;
+
+	@Override
+	public String getName() {
+		if(name==null){
+			name=STARTING_POINT;
+		}
+		return this.name;
+	}
+
+	@Override
+	public String getType() {
+		return this.type;
+	}
+
+	@Override
+	public LatLng getPosition() {
+		return this.position;
+	}
+	
+	public void setPosition(LatLng coord){
+		this.position=coord;
+	}
 }

@@ -3,12 +3,11 @@ package com.staymilano.model;
 import java.io.Serializable;
 
 import android.database.Cursor;
-import android.graphics.Bitmap;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.staymilano.R;
 
-public class PointOfInterest implements Serializable{
+public class PointOfInterest implements Serializable,PointOfItinerary{
 	
 	private static final long serialVersionUID = -6297551948085356909L;
 	static final String MONUMENT="monument";
@@ -61,25 +60,25 @@ public class PointOfInterest implements Serializable{
 	public void setType(String type){
 		if(type.equalsIgnoreCase(MONUMENT)){
 			this.type=MONUMENT;
-			this.setIcon(R.drawable.museumyellow);
+			this.setIcon(R.drawable.markermuseumyellowmini);
 		}else if(type.equalsIgnoreCase(PARK)){
 			this.type=PARK;
-			this.setIcon(R.drawable.parkgreen);
+			this.setIcon(R.drawable.markerparkgreenmini);
 		}else if(type.equalsIgnoreCase(CHURCH)){
 			this.type=CHURCH;
-			this.setIcon(R.drawable.churchorange);
+			this.setIcon(R.drawable.markerchurchorangemini);
 		}else if(type.equalsIgnoreCase(STATION)){
 			this.type=STATION;
-			this.setIcon(R.drawable.stazionered);
+			this.setIcon(R.drawable.markerstationredmini);
 		}else if(type.equalsIgnoreCase(SHOPPING)){
 			this.type=SHOPPING;
-			this.setIcon(R.drawable.bagpink);
+			this.setIcon(R.drawable.markerbagpinkmini);
 		}else if(type.equalsIgnoreCase(SKYSCRAPERS)){
 			this.type=SKYSCRAPERS;
-			this.setIcon(R.drawable.grattacielilightblue);
+			this.setIcon(R.drawable.markerskylightmini);
 		}else{
 			this.type=ARCHEOLOGICAL_SITE;
-			this.setIcon(R.drawable.museumyellow);
+			this.setIcon(R.drawable.markermuseumyellowmini);
 		}
 	}
 	

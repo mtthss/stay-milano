@@ -14,7 +14,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	private Context context;
 
 	private static final String DATABASE_NAME = "staymilano.db";
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 15;
 
 
 	// Lo statement SQL di creazione del database
@@ -41,11 +41,18 @@ public class DBHelper extends SQLiteOpenHelper {
 			+ " text not null," + AreaDAO.LATITUDE + " text not null, "
 			+ AreaDAO.LONGITUDE + " text not null);";
 	
-	private static final String START_POINTS = "create table " 
+	private static final String CREATE_START_POINTS = "create table " 
 			+ StartPointDAO.TABELLA
 			+ "(" + StartPointDAO.START_LAT + " text not null, " 
 			+ StartPointDAO.START_LONG + " text not null, "
 			+ SelectedPOIDAO.ITINERARY_ID + " integer );";
+	
+	private static final String CREATE_BIKE_STATIONS = "create table " 
+			+ BikeStationDAO.TABELLA
+			+ "(" + BikeStationDAO.ITINERARY_ID + " text not null, "
+			+ BikeStationDAO.STATION_NAME + " text not null, "
+			+ BikeStationDAO.START_LAT + " text not null, " 
+			+ BikeStationDAO.START_LONG + " text not null );";
 			
 
 	// Costruttore
@@ -68,7 +75,8 @@ public class DBHelper extends SQLiteOpenHelper {
 		database.execSQL(ITINERARY_CREATE);
 		database.execSQL(AREA_CREATE);
 		database.execSQL(SELECTED_POI);
-		database.execSQL(START_POINTS);
+		database.execSQL(CREATE_START_POINTS);
+		database.execSQL(CREATE_BIKE_STATIONS);
 
 		loadPOI(database);
 		loadAREA(database);
@@ -86,11 +94,13 @@ public class DBHelper extends SQLiteOpenHelper {
 		
 		database.execSQL("DROP TABLE IF EXISTS itinerary");
 		database.execSQL("DROP TABLE IF EXISTS selectedpoi");
+		database.execSQL("DROP TABLE IF EXISTS bike_stations");
 		database.execSQL(ITINERARY_CREATE);
 		database.execSQL(SELECTED_POI);
+		database.execSQL(CREATE_BIKE_STATIONS);
 		
 		database.execSQL("DROP TABLE IF EXISTS start_points");
-		database.execSQL(START_POINTS);
+		database.execSQL(CREATE_START_POINTS);
 		
 		loadPOI(database);
 		loadAREA(database);

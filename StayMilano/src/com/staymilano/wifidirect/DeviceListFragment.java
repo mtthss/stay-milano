@@ -48,9 +48,7 @@ public class DeviceListFragment extends ListFragment implements PeerListListener
         return mContentView;
     }
 
-    /**
-     * @return this device
-     */
+
     public WifiP2pDevice getDevice() {
         return device;
     }

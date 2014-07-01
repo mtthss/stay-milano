@@ -65,6 +65,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	public static boolean today;
 	ViewPager mViewPager;
 	AppSectionsPagerAdapter mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
+	public static final String WIFIITINERARY="wifi_itinerary";
 	static List<PointOfInterest> points = new ArrayList<PointOfInterest>();
 	static LatLng startLatLng;
 	static Intent intent;
@@ -225,7 +226,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 				//TODO inserire posizione attuale
 				BikeMiUtils.getBikeMiStations(this, points.get(0).getPosition());
 			}else if(item.getItemId()==R.id.action_share){
-				
+				Intent intent=new Intent(getActivity(), WiFiActivity.class);
+				UserInfo ui=UserInfo.getUserInfo(db);
+				intent.putExtra(WIFIITINERARY, ui.itineraryToString(it));
+				startActivity(intent);
 			}else if(item.getItemId()==R.id.action_starting_point){
 				intent = new Intent(getActivity(),StartingPointActivity.class);
 				new AlertDialog.Builder(getActivity())

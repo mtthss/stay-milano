@@ -46,12 +46,4 @@
         android:textSize="20sp"
         android:textStyle="italic" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="@string/create_button"
-        android:textStyle="bold" />
-
 </RelativeLayout>

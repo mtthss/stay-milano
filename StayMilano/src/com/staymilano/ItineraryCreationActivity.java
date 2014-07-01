@@ -164,7 +164,7 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 			startActivity(intent);
 		} else {
 			// Save itinerary in database
-			String id = ui.saveItinerary(it, db);
+			String id = ui.saveItinerary(newIt, db);
 			Intent intent = new Intent(this, StartingPointActivity.class);
 			intent.putExtra("id", id);
 			startActivity(intent);

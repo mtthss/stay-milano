@@ -50,28 +50,39 @@ public class WiFiActivity extends ActionBarActivity  implements ChannelListener,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_wi_fi);
 		
+		/* INSTANTIATE AN INTENT FILTER LISTENING FOR ALL THE FOLLOWING: */
+		/* THE FILTER WILL BE ASSOCIATED TO THE WI-FI-P2P-BROADCAST RECEIVER */
 		mIntentFilter = new IntentFilter();
-	    mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
-	    mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
+		/* indicates whether the wi-fi p2p is enabled */
+	    mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION); 
+	    /* indicates changes in the list of available peers */
+	    mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION); 
+	    /* indicates changes in the wi-fi p2p connectivity */
 	    mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
+	    /* indicates the wi-fi configuration of this device have changed */
 	    mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 	    
+	    /* THIS CLASS PROVIDES THE API FOR MANAGING WIFI P2P CONNECTIVITY */
 	    mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
+	    /*  you'll use later the channel returnd from the next method to connect your app to the Wi-Fi P2P framework */
 	    mChannel = mManager.initialize(this, getMainLooper(), null);
+	    
+	    /* INSTANTIATE BROADCAST RECEIVER */
 	    mReceiver = new WiFiDirectBroadcastReceiver(mManager, mChannel, this);
 	    
-	    //ActionBar ab = getActionBar();
 	}
 
 	@Override
 	protected void onResume() {
 	    super.onResume();
+	    /* the mReceiver will be called any-time an intent matches the mIntentFilter */
 	    registerReceiver(mReceiver, mIntentFilter);
 	}
 
 	@Override
 	protected void onPause() {
 	    super.onPause();
+	    /* when the activity is not active avoid the mReceiver collecting intents */
 	    unregisterReceiver(mReceiver);
 	}
 	
@@ -179,12 +190,10 @@ public class WiFiActivity extends ActionBarActivity  implements ChannelListener,
     }
     	
 	
-    
-    ///////////////////////
-    // MANAGE ACTION-BAR //
-    ///////////////////////
+    /////////////////////////////////////
+    // MANAGE BUTTONS ENABLE, DISCOVER //
+    /////////////////////////////////////
 
-    
     
     public void enableWFD(View view) {
         
@@ -197,7 +206,7 @@ public class WiFiActivity extends ActionBarActivity  implements ChannelListener,
         }
     }
     
-    
+    /* CALLED FROM THE BUTTON DISCOVER-PEERS */
     public void discoverP2P(View view){
     	
         if (!isWifiP2pEnabled) {
@@ -222,6 +231,10 @@ public class WiFiActivity extends ActionBarActivity  implements ChannelListener,
         });
     }
     
+
+    ///////////////////////
+    // MANAGE ACTION-BAR //
+    ///////////////////////
     
     
     @Override
@@ -231,9 +244,6 @@ public class WiFiActivity extends ActionBarActivity  implements ChannelListener,
         return true;
     }
 
-    
-    
-    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

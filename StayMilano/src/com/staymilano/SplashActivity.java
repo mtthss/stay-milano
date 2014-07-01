@@ -106,10 +106,6 @@ public class SplashActivity extends Activity {
         final Intent intent;
         
         //test wi-fi direct
-        if(false){
-        	intent= new Intent(this,WiFiActivity.class);
-        	startActivity(intent);
-        }else{
         	if(cur.getCount()==1){
         		intent = new Intent(this,MainActivity.class);
         		intent.putExtra("today", true);
@@ -123,7 +119,6 @@ public class SplashActivity extends Activity {
         			intent=new Intent(this,ItineraryListActivity.class);
         			startActivity(intent);
         		}
-        	}
         	//finish();
 
         }

@@ -9,7 +9,9 @@ import java.util.List;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.google.android.gms.internal.cb;
 import com.google.android.gms.maps.model.LatLng;
+import com.staymilano.database.BikeStationDAO;
 import com.staymilano.database.ItineraryDAO;
 import com.staymilano.database.PointOfInterestDAO;
 import com.staymilano.database.SelectedPOIDAO;
@@ -51,30 +53,52 @@ public class UserInfo implements Serializable{
 		*/
 	}
 
-	private void fillItinerary(Itinerary it,SQLiteDatabase readableDatabase) {
-		
-		List<PointOfInterest> pois= new ArrayList<PointOfInterest>();
-		Cursor cur = SelectedPOIDAO.getSelectedPOIByItineraryId(readableDatabase, it.getID());
+	private void fillItinerary(Itinerary it, SQLiteDatabase readableDatabase) {
+
+		List<PointOfInterest> pois = new ArrayList<PointOfInterest>();
+		Cursor cur = SelectedPOIDAO.getSelectedPOIByItineraryId(
+				readableDatabase, it.getID());
 		if (cur.getCount() > 0) {
 			do {
-				Cursor c= PointOfInterestDAO.getPOIById(readableDatabase, cur.getString(1));
-				if (cur.getCount() > 0){
-					PointOfInterest pointOfInterest=new PointOfInterest(c);
+				Cursor c = PointOfInterestDAO.getPOIById(readableDatabase,
+						cur.getString(1));
+				if (cur.getCount() > 0) {
+					PointOfInterest pointOfInterest = new PointOfInterest(c);
 					pois.add(pointOfInterest);
 				}
 			} while (cur.moveToNext());
 		}
-		if(pois.size()>0){
+		if (pois.size() > 0) {
 			it.setPois(pois);
-			Cursor c_start = StartPointDAO.getStartPointById(readableDatabase, it.getID());
-			if(c_start.getCount()>0){
+			Cursor c_start = StartPointDAO.getStartPointById(readableDatabase,
+					it.getID());
+			if (c_start.getCount() > 0) {
 				c_start.moveToFirst();
 				String lat = c_start.getString(1);
 				String lon = c_start.getString(2);
-				LatLng startCoord = new LatLng(Double.valueOf(lat),Double.valueOf(lon));
-				it.setStart(startCoord);
+				LatLng startCoord = new LatLng(Double.valueOf(lat),
+						Double.valueOf(lon));
+				it.setStartingPoint(startCoord);
 			}
-		}	
+			Cursor c_bike = BikeStationDAO.getBikeStationById(readableDatabase,
+					it.getID());
+			c_bike.moveToFirst();
+			if (c_bike.getCount() > 0) {
+				List<BikeStation> bikes = new ArrayList<BikeStation>();
+				do{
+					BikeStation bike = new BikeStation();
+					int i=c_start.getColumnIndex(BikeStationDAO.STATION_NAME);
+					bike.setName("Bike Station");
+					String lat = c_start.getString(c_start.getColumnIndex(BikeStationDAO.START_LAT));
+					String lon = c_start.getString(c_start.getColumnIndex(BikeStationDAO.START_LONG));
+					LatLng bikeCoord = new LatLng(Double.valueOf(lat),
+							Double.valueOf(lon));
+					bike.setPosition(bikeCoord);
+					bikes.add(bike);
+				}while(c_bike.moveToNext());
+				it.setSelectedBikeSt(bikes);
+			}
+		}
 	}
 
 	public static UserInfo getUserInfo(SQLiteDatabase readableDatabase) {
@@ -85,21 +109,15 @@ public class UserInfo implements Serializable{
 		}
 		return user;
 	}
-
-	public static UserInfo getRefreshedUserInfo(SQLiteDatabase readableDatabase) {
-		
-		user=new UserInfo(readableDatabase);
-		return user;
-	}
 	
 	public String saveItinerary(Itinerary it, SQLiteDatabase db){
-		
+		UserInfo.updated=true;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		String stringDate = sdf.format(it.getDate().getTime());
 		String id=ItineraryDAO.insertItinerary(db, stringDate);
 		it.setID(id);
-		for(PointOfInterest poi:it.getPois()){
-			SelectedPOIDAO.insertItinerary(db, poi.getId(), it.getID());
+		for(PointOfItinerary poi:it.getPois()){
+			SelectedPOIDAO.insertItinerary(db, ((PointOfInterest)poi).getId(), it.getID());
 		}
 		return id;
 	}
@@ -160,7 +178,7 @@ public class UserInfo implements Serializable{
 		String stringDate = sdf.format(it.getDate().getTime());
 		
 		String s = stringDate+";";
-		s = s+it.getStart().latitude+","+it.getStart().longitude+";";
+		s = s+it.getStartingPoint().getPosition().latitude+","+it.getStartingPoint().getPosition().longitude+";";
 		
 		List<PointOfInterest> stalli = new ArrayList<PointOfInterest>();
 		int length = it.getPois().size();
@@ -190,6 +208,12 @@ public class UserInfo implements Serializable{
 		
 		
 		return it;
+	}
+
+	public static BikeStation saveBikeStation(SQLiteDatabase db, Itinerary it, String title, LatLng position) {
+		UserInfo.updated=true;
+		BikeStationDAO.insertBikeStation(db, it.getID(), title, ((Double)position.latitude).toString(), ((Double)position.longitude).toString());
+		return it.saveBikeStation(title, position);
 	}
 
 }

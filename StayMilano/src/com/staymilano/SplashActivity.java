@@ -96,32 +96,17 @@ public class SplashActivity extends Activity {
 	}
 
 	protected void goAhead() {
-        //apro il DB in lettura
-        SQLiteDatabase db = DBHelper.getInstance(this).getWritableDatabase();
-        
-        Date date= new Date();
-        String sdf=new SimpleDateFormat("dd-MM-yyyy").format(date);
-        Cursor cur=ItineraryDAO.getItineraryByDate(db,sdf);
-        
-        final Intent intent;
-        
-        //test wi-fi direct
-        	if(cur.getCount()==1){
-        		intent = new Intent(this,MainActivity.class);
-        		intent.putExtra("today", true);
-        		startActivity(intent);
-        	}else{
-        		cur=ItineraryDAO.getAllItineraries(db);
-        		if(cur.getCount()==0){
-        			intent=new Intent(this,FirstAccessActivity.class);
-        			startActivity(intent);
-        		}else{
-        			intent=new Intent(this,ItineraryListActivity.class);
-        			startActivity(intent);
-        		}
-        	//finish();
+		// apro il DB in lettura
+		SQLiteDatabase db = DBHelper.getInstance(this).getWritableDatabase();
 
-        }
+		Cursor cur = ItineraryDAO.getAllItineraries(db);
+		if (cur.getCount() == 0) {
+			Intent intent = new Intent(this, FirstAccessActivity.class);
+			startActivity(intent);
+		} else {
+			Intent intent = new Intent(this, ItineraryListActivity.class);
+			startActivity(intent);
+		}
 	}
 
 }

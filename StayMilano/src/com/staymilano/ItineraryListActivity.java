@@ -9,12 +9,16 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -77,18 +81,23 @@ public class ItineraryListActivity extends ActionBarActivity {
 	}
 
 	public static class ItineraryListFragment extends ListFragment {
+		
+		ActionMode.Callback callback;
+		ActionMode mode;
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 			View view=inflater.inflate(R.layout.fragment_itinerary_list, container);
+			
 			return view;
 		}
 
 		@Override
 		public void onResume() {
 			super.onResume();
-
+			
+			db = DBHelper.getInstance(getActivity()).getWritableDatabase();
 			UserInfo user = UserInfo.getUserInfo(db);
 			its = user.getItineraries();
 
@@ -96,7 +105,56 @@ public class ItineraryListActivity extends ActionBarActivity {
 					its);
 			setListAdapter(adapter);
 			adapter.notifyDataSetChanged();
+			
+			callback = new ActionMode.Callback() {
+
+				@Override
+				public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+					return false;
+
+				}
+
+				@Override
+				public void onDestroyActionMode(ActionMode mode) {
+					mode = null;
+				}
+
+				@Override
+				public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+					MenuInflater inflater = mode.getMenuInflater();
+					inflater.inflate(R.menu.poilist, menu);
+					return true;
+				}
+
+				@Override
+				public boolean onActionItemClicked(ActionMode mode,
+						MenuItem item) {
+					switch (item.getItemId()) {
+					case R.id.action_delete:
+						adapter.remove();
+						mode.finish(); // Action picked, so close the CAB
+						return true;
+					default:
+						return false;
+					}
+				}
+			};
+			
+			getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
+
+				@Override
+				public boolean onItemLongClick(AdapterView<?> parent,
+						View view, int position, long id) {
+					if (mode != null)
+						return false;
+					else
+						mode = getActivity().startActionMode(callback);
+					return true;
+				}
+			});
+
 		}
+		
 
 		@Override
 		public void onListItemClick(ListView l, View v, int position, long id) {
@@ -147,5 +205,6 @@ public class ItineraryListActivity extends ActionBarActivity {
 
 		}
 	}
+
 
 }

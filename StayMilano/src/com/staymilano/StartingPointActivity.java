@@ -169,6 +169,8 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 								public void onClick(DialogInterface dialog,
 										int which) {
 									UserInfo.deleteItinerary(db, itineraryId);
+									//TODO
+									
 								}
 							})
 					.setNegativeButton(android.R.string.no,

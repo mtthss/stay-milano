@@ -3,6 +3,7 @@ package com.staymilano;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import model.Direction;
 import model.Stallo;
@@ -71,6 +72,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	
 	public static final String WIFIITINERARY="wifi_itinerary";
 	
+	int ICONS[]= new int[]{R.drawable.ic_action_map,R.drawable.ic_action_view_as_list};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -111,8 +113,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 		for (int i = 0; i < mAppSectionsPagerAdapter.getCount(); i++) {
 			actionBar.addTab(actionBar.newTab()
-					 .setText(mAppSectionsPagerAdapter.getPageTitle(i))
+					 .setIcon(getResources().getDrawable(ICONS[i]))
 					 .setTabListener(this));
+
 		}
 
 	}
@@ -182,7 +185,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
     	SQLiteDatabase db;
 		GoogleMap map;
-		boolean bikeAdded=false;
+		
+		//boolean bikeAdded=false;
 
 		
 		static final LatLng MILAN = new LatLng(45.4773, 9.1815);
@@ -214,7 +218,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		public boolean onOptionsItemSelected(MenuItem item) {
 			if(item.getItemId()==R.id.action_show_bicycle){
 				//TODO inserire posizione attuale
-				BikeMiUtils.getBikeMiStations(this, it.getStartingPoint().getPosition());
+					BikeMiUtils.getBikeMiStations(this, it.getStartingPoint().position);
 			}else if(item.getItemId()==R.id.action_remove_bicycle){
 				if (it.getSelectedBikeSt().size() != 0) {
 					new AlertDialog.Builder(getActivity())
@@ -267,7 +271,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			        public void onClick(DialogInterface dialog, int which) { 
 			        	Intent intent = new Intent(getActivity(),StartingPointActivity.class);
 			        	intent.putExtra("id", it.getID());
-			        	intent.putExtra("mode", "modify");
 						startActivity(intent);
 			        }
 			     })
@@ -403,7 +406,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 				        	points.add(bike);
 				        	adapter.add(bike);
 				        	adapter.notifyDataSetChanged();
-				        	BikeMiLook.removeMarkers();		
+				        	BikeMiLook.removeMarkers();	
 				        	setCamera();
 				        }
 				     })
@@ -478,7 +481,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 					        	Intent intent = new Intent(getActivity(),
 										StartingPointActivity.class);
 					        	intent.putExtra("id", it.getID());
-					        	intent.putExtra("mode", "modify");
 								startActivity(intent);
 					        }
 					     })
@@ -491,8 +493,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 					     .show();
 					} else {
 						Intent intent = new Intent(getActivity(), POIDetailActivity.class);
-						intent.putExtra(ItineraryCreationActivity.POI, it.getAllPointOfThisItinerary().get(position).getType());
-						intent.putExtra(ItineraryCreationActivity.POI, it.getAllPointOfThisItinerary().get(position).getName());
+						intent.putExtra(POIDetailActivity.TYPE, it.getAllPointOfThisItinerary().get(position).getType());
+						intent.putExtra(POIDetailActivity.NAME, it.getAllPointOfThisItinerary().get(position).getName());
+						Bundle bundle=new Bundle();
+						bundle.putParcelable(POIDetailActivity.POSITION, it.getAllPointOfThisItinerary().get(position).getPosition());
+						intent.putExtra("bundle", bundle);
 						startActivity(intent);
 						}
 					}

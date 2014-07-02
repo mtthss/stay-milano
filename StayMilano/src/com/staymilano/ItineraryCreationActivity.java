@@ -79,8 +79,8 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 	static final LatLng MILAN = new LatLng(45.4773, 9.1815);
 	
 	static boolean MODIFICATION; 
-
 	
+	int ICONS[]= new int[]{R.drawable.ic_action_map,R.drawable.ic_action_view_as_list};	
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -134,7 +134,7 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 
 		for (int i = 0; i < mAppSectionsPagerAdapter.getCount(); i++) {
 			actionBar.addTab(actionBar.newTab()
-					.setText(mAppSectionsPagerAdapter.getPageTitle(i))
+					.setIcon(getResources().getDrawable(ICONS[i]))
 					.setTabListener(this));
 		}
 	}

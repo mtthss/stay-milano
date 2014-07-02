@@ -1,107 +1,107 @@
-duomo,45.467838,9.190501
-duomo,45.471959,9.182925
-duomo,45.473313,9.190564
-duomo,45.472229,9.195242
-duomo,45.467023,9.20052
-duomo,45.465127,9.200263
-duomo,45.46323,9.198804
-duomo,45.457903,9.193739
-duomo,45.457843,9.186401
-duomo,45.460251,9.181337
-duomo,45.463893,9.179191
-duomo,45.467896,9.182367
-duomo,45.470183,9.183354
-castello,45.472817,9.175372
-castello,45.471793,9.18241
-castello,45.470198,9.183225
-castello,45.468483,9.182539
-castello,45.467881,9.18168
-castello,45.46767,9.179063
-castello,45.468483,9.177131
-castello,45.474051,9.169879
-castello,45.475796,9.168291
-castello,45.477662,9.168935
-castello,45.478339,9.170265
-castello,45.478505,9.172797
-castello,45.477437,9.1749
-castello,45.476549,9.176531
-castello,45.477136,9.178248
-castello,45.477602,9.181123
-sant_ambrogio,45.46354,9.173352
-sant_ambrogio,45.467909,9.18229
-sant_ambrogio,45.463921,9.179286
-sant_ambrogio,45.460249,9.181432
-sant_ambrogio,45.45897,9.177548
-sant_ambrogio,45.455192,9.172463
-sant_ambrogio,45.453642,9.17036
-sant_ambrogio,45.452122,9.169716
-sant_ambrogio,45.450391,9.167699
-sant_ambrogio,45.448419,9.158129
-sant_ambrogio,45.467052,9.14607
-sant_ambrogio,45.477435,9.142722
-sant_ambrogio,45.485048,9.143795
-sant_ambrogio,45.489922,9.151262
-sant_ambrogio,45.487725,9.156155
-sant_ambrogio,45.477947,9.169416
-sant_ambrogio,45.476923,9.168471
-sant_ambrogio,45.47578,9.168343
-sant_ambrogio,45.474997,9.168729
-sant_ambrogio,45.474997,9.168729
-sant_ambrogio,45.472709,9.172119
-sant_ambrogio,45.468201,9.177633
-sant_ambrogio,45.467674,9.17877
-sant_ambrogio,45.467607,9.180562
-sant_ambrogio,45.467975,9.18186
-colonne_navigli,45.45551,9.181098
-colonne_navigli,45.460214,9.18127
-colonne_navigli,45.458829,9.177837
-colonne_navigli,45.455171,9.172472
-colonne_navigli,45.453651,9.170327
-colonne_navigli,45.452327,9.169876
-colonne_navigli,45.451484,9.1692
-colonne_navigli,45.45046,9.167902
-colonne_navigli,45.44836,9.157881
-colonne_navigli,45.444822,9.163074
-colonne_navigli,45.443588,9.179939
-colonne_navigli,45.446162,9.189209
-colonne_navigli,45.457948,9.186355
-porta_romana,45.457828,9.199015
-porta_romana,45.457948,9.186312
-porta_romana,45.446162,9.189338
-porta_romana,45.447592,9.209765
-porta_romana,45.454833,9.216053
-porta_romana,45.458325,9.21719
-porta_romana,45.463472,9.197427
-porta_romana,45.463156,9.19702
-porta_romana,45.46296,9.194895
-porta_romana,45.460703,9.190861
-porta_venezia_palestro,45.473765,9.201032
-porta_venezia_palestro,45.462479,9.197985
-porta_venezia_palestro,45.46445,9.19983
-porta_venezia_palestro,45.46573,9.200474
-porta_venezia_palestro,45.467024,9.200624
-porta_venezia_palestro,45.46883,9.199229
-porta_venezia_palestro,45.472291,9.19511
-porta_venezia_palestro,45.475842,9.194659
-porta_venezia_palestro,45.480416,9.19865
-porta_venezia_palestro,45.489668,9.208735
-porta_venezia_palestro,45.485636,9.216825
-porta_venezia_palestro,45.45843,9.217211
-moscova_garibaldi,45.480822,9.184252
-moscova_garibaldi,45.472411,9.194938
-moscova_garibaldi,45.473313,9.190432
-moscova_garibaldi,45.471779,9.182621
-moscova_garibaldi,45.477677,9.181076
-moscova_garibaldi,45.476232,9.176527
-moscova_garibaldi,45.478098,9.173781
-moscova_garibaldi,45.478564,9.172494
-moscova_garibaldi,45.47858,9.17112
-moscova_garibaldi,45.478053,9.169403
-moscova_garibaldi,45.490119,9.151551
-moscova_garibaldi,45.498542,9.165627
-moscova_garibaldi,45.496436,9.170734
-moscova_garibaldi,45.497519,9.187085
-moscova_garibaldi,45.493895,9.200217
-moscova_garibaldi,45.489894,9.208714
-moscova_garibaldi,45.478204,9.196655
-moscova_garibaldi,45.475827,9.194466
+duomo,45.467838, 9.190501
+duomo,false,45.471959, 9.182925
+duomo,false,45.473313, 9.190564
+duomo,false,45.472229, 9.195242
+duomo,false,45.467023, 9.200520
+duomo,false,45.465127, 9.200263
+duomo,false,45.463230, 9.198804
+duomo,false,45.457903, 9.193739
+duomo,false,45.457843, 9.186401
+duomo,false,45.460251, 9.181337
+duomo,false,45.463893, 9.179191
+duomo,false,45.467896, 9.182367
+duomo,false,45.470183, 9.183354
+castello,true,45.472817, 9.175372
+castello,false,45.471793, 9.182410
+castello,false,45.470198, 9.183225
+castello,false,45.468483, 9.182539
+castello,false,45.467881, 9.181680
+castello,false,45.467670, 9.179063
+castello,false,45.468483, 9.177131
+castello,false,45.474051, 9.169879
+castello,false,45.475796, 9.168291
+castello,false,45.477662, 9.168935
+castello,false,45.478339, 9.170265
+castello,false,45.478505, 9.172797
+castello,false,45.477437, 9.174900
+castello,false,45.476549, 9.176531
+castello,false,45.477136, 9.178248
+castello,false,45.477602, 9.181123
+sant_ambrogio,true,45.463540, 9.173352
+sant_ambrogio,false,45.467909, 9.182290
+sant_ambrogio,false,45.463921, 9.179286
+sant_ambrogio,false,45.460249, 9.181432
+sant_ambrogio,false,45.458970, 9.177548
+sant_ambrogio,false,45.455192, 9.172463
+sant_ambrogio,false,45.453642, 9.170360
+sant_ambrogio,false,45.452122, 9.169716
+sant_ambrogio,false,45.450391, 9.167699
+sant_ambrogio,false,45.448419, 9.158129
+sant_ambrogio,false,45.467052, 9.146070
+sant_ambrogio,false,45.477435, 9.142722
+sant_ambrogio,false,45.485048, 9.143795
+sant_ambrogio,false,45.489922, 9.151262
+sant_ambrogio,false,45.487725, 9.156155
+sant_ambrogio,false,45.477947, 9.169416
+sant_ambrogio,false,45.476923, 9.168471
+sant_ambrogio,false,45.475780, 9.168343
+sant_ambrogio,false,45.474997, 9.168729
+sant_ambrogio,false,45.474997, 9.168729
+sant_ambrogio,false,45.472709, 9.172119
+sant_ambrogio,false,45.468201, 9.177633
+sant_ambrogio,false,45.467674, 9.178770
+sant_ambrogio,false,45.467607, 9.180562
+sant_ambrogio,false,45.467975, 9.181860
+colonne_navigli,true,45.455510, 9.181098
+colonne_navigli,false,45.460214, 9.181270
+colonne_navigli,false,45.458829, 9.177837
+colonne_navigli,false,45.455171, 9.172472
+colonne_navigli,false,45.453651, 9.170327
+colonne_navigli,false,45.452327, 9.169876
+colonne_navigli,false,45.451484, 9.169200
+colonne_navigli,false,45.450460, 9.167902
+colonne_navigli,false,45.448360, 9.157881
+colonne_navigli,false,45.444822, 9.163074
+colonne_navigli,false,45.443588, 9.179939
+colonne_navigli,false,45.446162, 9.189209
+colonne_navigli,false,45.457948, 9.186355
+porta_romana,true,45.457828, 9.199015
+porta_romana,false,45.457948, 9.186312
+porta_romana,false,45.446162, 9.189338
+porta_romana,false,45.447592, 9.209765
+porta_romana,false,45.454833, 9.216053
+porta_romana,false,45.458325, 9.217190
+porta_romana,false,45.463472, 9.197427
+porta_romana,false,45.463156, 9.197020
+porta_romana,false,45.462960, 9.194895
+porta_romana,false,45.460703, 9.190861
+porta_venezia_palestro,true,45.473765, 9.201032
+porta_venezia_palestro,false,45.462479, 9.197985
+porta_venezia_palestro,false,45.464450, 9.199830
+porta_venezia_palestro,false,45.465730, 9.200474
+porta_venezia_palestro,false,45.467024, 9.200624
+porta_venezia_palestro,false,45.468830, 9.199229
+porta_venezia_palestro,false,45.472291, 9.195110
+porta_venezia_palestro,false,45.475842, 9.194659
+porta_venezia_palestro,false,45.480416, 9.198650
+porta_venezia_palestro,false,45.489668, 9.208735
+porta_venezia_palestro,false,45.485636, 9.216825
+porta_venezia_palestro,false,45.458430, 9.217211
+moscova_garibaldi,true,45.480822, 9.184252
+moscova_garibaldi,false,45.472411, 9.194938
+moscova_garibaldi,false,45.473313, 9.190432
+moscova_garibaldi,false,45.471779, 9.182621
+moscova_garibaldi,false,45.477677, 9.181076
+moscova_garibaldi,false,45.476232, 9.176527
+moscova_garibaldi,false,45.478098, 9.173781
+moscova_garibaldi,false,45.478564, 9.172494
+moscova_garibaldi,false,45.478580, 9.171120
+moscova_garibaldi,false,45.478053, 9.169403
+moscova_garibaldi,false,45.490119, 9.151551
+moscova_garibaldi,false,45.498542, 9.165627
+moscova_garibaldi,false,45.496436, 9.170734
+moscova_garibaldi,false,45.497519, 9.187085
+moscova_garibaldi,false,45.493895, 9.200217
+moscova_garibaldi,false,45.489894, 9.208714
+moscova_garibaldi,false,45.478204, 9.196655
+moscova_garibaldi,false,45.475827, 9.194466

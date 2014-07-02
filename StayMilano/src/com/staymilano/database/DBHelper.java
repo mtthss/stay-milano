@@ -14,7 +14,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	private Context context;
 
 	private static final String DATABASE_NAME = "staymilano.db";
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 7;
 
 
 	// Lo statement SQL di creazione del database
@@ -33,23 +33,30 @@ public class DBHelper extends SQLiteOpenHelper {
 			+ " text not null);";
 
 	private static final String SELECTED_POI = "create table "
-			+ SelectedPOIDAO.TABELLA +" ("+SelectedPOIDAO.ITINERARY_ID+" integer , "+SelectedPOIDAO.POI_ID+" integer , "+SelectedPOIDAO.VISITED+" text);";
+			+ SelectedPOIDAO.TABELLA 
+			+" (_id integer primary key autoincrement,"
+			+SelectedPOIDAO.ITINERARY_ID+" integer , "
+			+SelectedPOIDAO.POI_ID+" integer , "
+			+SelectedPOIDAO.VISITED+" text);";
 
-	private static final String AREA_CREATE = "create table " + AreaDAO.TABELLA
+	private static final String AREA_CREATE = "create table " 
+			+ AreaDAO.TABELLA
 			+ "(" + AreaDAO.ID + " integer primary key autoincrement, "
-			+ AreaDAO.NAME + " text not null, " + AreaDAO.CENTER
-			+ " text not null," + AreaDAO.LATITUDE + " text not null, "
+			+ AreaDAO.NAME + " text not null, " 
+			+ AreaDAO.LATITUDE + " text not null, "
 			+ AreaDAO.LONGITUDE + " text not null);";
 	
 	private static final String CREATE_START_POINTS = "create table " 
 			+ StartPointDAO.TABELLA
-			+ "(" + StartPointDAO.START_LAT + " text not null, " 
+			+ "(_id integer primary key autoincrement,"
+			+ StartPointDAO.START_LAT + " text not null, " 
 			+ StartPointDAO.START_LONG + " text not null, "
 			+ SelectedPOIDAO.ITINERARY_ID + " integer );";
 	
 	private static final String CREATE_BIKE_STATIONS = "create table " 
 			+ BikeStationDAO.TABELLA
-			+ "(" + BikeStationDAO.ITINERARY_ID + " text not null, "
+			+ "(_id integer primary key autoincrement,"
+			+ BikeStationDAO.ITINERARY_ID + " text not null, "
 			+ BikeStationDAO.STATION_NAME + " text not null, "
 			+ BikeStationDAO.LAT + " text not null, " 
 			+ BikeStationDAO.LONG + " text not null );";
@@ -116,13 +123,12 @@ public class DBHelper extends SQLiteOpenHelper {
 			String line = null;
 
 			while ((line = reader.readLine()) != null) {
-				// id=database.insert(PointOfInterestDAO.TABELLA,
-				// null,PointOfInterestDAO.getContentValues(line));
-				String insert_data = "INSERT INTO "
+				PointOfInterestDAO.insertPOI(database, line);
+				/*String insert_data = "INSERT INTO "
 						+ PointOfInterestDAO.TABELLA + " VALUES(" + i + ","
 						+ PointOfInterestDAO.getInsertQuery(line) + ")";
 				i++;
-				database.execSQL(insert_data);
+				database.execSQL(insert_data);*/
 
 			}
 
@@ -146,14 +152,15 @@ public class DBHelper extends SQLiteOpenHelper {
 			reader = new BufferedReader(new InputStreamReader(context
 					.getAssets().open("areas_points.csv"), "UTF-8"));
 			String line = null;
-			int i = 0;
+
 
 			while ((line = reader.readLine()) != null) {
+				AreaDAO.insertArea(database, line);
 				// database.insert(AreaDAO.TABELLA,
 				// null,AreaDAO.getContentValues(line));
-				String insert_data = "INSERT INTO " + AreaDAO.TABELLA + " VALUES(" + i + "," + AreaDAO.getInsertQuery(line)	+ ")";
+				/*String insert_data = "INSERT INTO " + AreaDAO.TABELLA + " VALUES(" + i + "," + AreaDAO.getInsertQuery(line)	+ ")";
 				i++;
-				database.execSQL(insert_data);
+				database.execSQL(insert_data);*/
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

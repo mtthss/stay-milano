@@ -17,10 +17,11 @@ public class StartPointDAO {
 	
 	
 	public static void insertStartingPoint(SQLiteDatabase db, String itinerary_id, String startLat, String startLong){
-		
-		String insert_data = "INSERT INTO " + TABELLA
-				+ " VALUES ( '" + startLat+ "', '" + startLong + "','" + itinerary_id+ "')";
-		db.execSQL(insert_data);
+		ContentValues values=new ContentValues();
+		values.put(START_LAT, startLat);
+		values.put(START_LONG, startLong);
+		values.put(ITINERARY_ID, itinerary_id);
+		db.insert(TABELLA, null, values);
 	}
 
 	public static void updateItineraryStartPoint(SQLiteDatabase db, String itinerary_id, String startLat, String startLong){

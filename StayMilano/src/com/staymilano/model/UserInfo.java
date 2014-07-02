@@ -117,7 +117,7 @@ public class UserInfo implements Serializable{
 		long id=ItineraryDAO.insertItinerary(db, stringDate);
 		it.setID(String.valueOf(id));
 		for(PointOfItinerary poi:it.getPois()){
-			SelectedPOIDAO.insertItinerary(db, ((PointOfInterest)poi).getId(), it.getID());
+			SelectedPOIDAO.insertSelectedPOI(db, ((PointOfInterest)poi).getId(), it.getID());
 		}
 		return String.valueOf(id);
 	}
@@ -159,7 +159,7 @@ public class UserInfo implements Serializable{
 		if(ItineraryDAO.updateItinerary(db, it.getID(), stringDate)){
 			SelectedPOIDAO.deleteSelectedPOIByItinerary(db, it.getID());
 			for(PointOfInterest poi:it.getPois()){
-				SelectedPOIDAO.insertItinerary(db, poi.getId(), it.getID());
+				SelectedPOIDAO.insertSelectedPOI(db, poi.getId(), it.getID());
 			}
 		}
 		return null;

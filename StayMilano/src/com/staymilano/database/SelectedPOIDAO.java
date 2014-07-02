@@ -15,19 +15,13 @@ public class SelectedPOIDAO {
 	public static final String[] COLONNE = new String[]{ITINERARY_ID, POI_ID, VISITED};
 	
 	
-	public static void insertItinerary(SQLiteDatabase db, String poi_id, String itinerary_id){
-		String insert_data = "INSERT INTO " + TABELLA
-				+ " VALUES (" + itinerary_id+ ", " + poi_id+ ", 'false')";
-		db.execSQL(insert_data);
-	}
+	public static void insertSelectedPOI(SQLiteDatabase db, String poi_id, String itinerary_id){
+		ContentValues values=new ContentValues();
+		values.put(ITINERARY_ID, itinerary_id);
+		values.put(POI_ID, poi_id);
+		values.put(VISITED, false);
+		db.insert(TABELLA, null, values);
 
-	public static void updateSelectedPOIState(SQLiteDatabase db, String poi_id, String itinerary_id){
-		ContentValues v = new ContentValues();
-		v.put(ITINERARY_ID, itinerary_id);
-		v.put(POI_ID, poi_id);
-		v.put(VISITED, true);
-		
-		db.update(TABELLA, v, ITINERARY_ID+"='"+itinerary_id+"' and "+POI_ID+"='"+poi_id+"'",null);
 	}
 	
 	public static Cursor getSelectedPOIByPOIid(SQLiteDatabase db, String id) throws SQLException {

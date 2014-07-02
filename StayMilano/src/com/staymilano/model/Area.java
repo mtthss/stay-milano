@@ -28,39 +28,32 @@ public class Area implements Serializable {
 	private String name;
 	private List<PointOfInterest> pois;
 	private PolygonOptions pol;
-	private LatLng center;
 
 	public Area(SQLiteDatabase db, AreasName nm) {
 		this.name = nm.toString().toLowerCase();
 		pois = new ArrayList<PointOfInterest>();
 		this.pois = fillPois(db);
 		createPolygon(db);
-		//setCenter(db);
+		// setCenter(db);
 	}
 
-	/*private void setCenter(SQLiteDatabase db) {
-		Cursor cur=AreaDAO.getCenterByArea(db, name);
-		if(cur.getCount()!=0){
-			Double d1=Double.valueOf(cur.getString(2));
-			Double d2=Double.valueOf(cur.getString(3));
-			center=new LatLng(d1,d2);
-		}
-	}*/
+	/*
+	 * private void setCenter(SQLiteDatabase db) { Cursor
+	 * cur=AreaDAO.getCenterByArea(db, name); if(cur.getCount()!=0){ Double
+	 * d1=Double.valueOf(cur.getString(2)); Double
+	 * d2=Double.valueOf(cur.getString(3)); center=new LatLng(d1,d2); } }
+	 */
 
 	private void createPolygon(SQLiteDatabase db) {
 		pol = new PolygonOptions();
 		Cursor cur = AreaDAO.getPointsByArea(db, name);
 		if (cur.getCount() > 0) {
 			do {
-				Double d1 = Double.valueOf(cur.getString(2));
-				Double d2 = Double.valueOf(cur.getString(3));
+				Double d1 = Double.valueOf(cur.getString(cur.getColumnIndex(AreaDAO.LATITUDE)));
+				Double d2 = Double.valueOf(cur.getString(cur.getColumnIndex(AreaDAO.LONGITUDE)));
 
-				if (cur.getString(4).equalsIgnoreCase("false")) {
-					LatLng latlng = new LatLng(d1, d2);
-					pol.add(latlng);
-				} else {
-					center = new LatLng(d1, d2);
-				}
+				LatLng latlng = new LatLng(d1, d2);
+				pol.add(latlng);
 			} while (cur.moveToNext());
 		}
 	}
@@ -87,9 +80,4 @@ public class Area implements Serializable {
 	public PolygonOptions getPolygon() {
 		return pol;
 	}
-	
-	public LatLng getCenter(){
-		return center;
-	}
-
 }

@@ -19,11 +19,6 @@ public class ItineraryDAO {
 		ContentValues values=new ContentValues();
 		values.put(DATA	, data);
 		return db.insert(TABELLA, null, values);
-
-		/*String insert_data = "INSERT INTO " + TABELLA
-				+ " VALUES('" + data+ "')";
-		db.execSQL(insert_data);
-		return String.valueOf(i);*/
 	}
 	
 	public static Cursor getAllItineraries(SQLiteDatabase db){

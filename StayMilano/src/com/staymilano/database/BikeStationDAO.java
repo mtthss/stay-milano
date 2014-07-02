@@ -1,12 +1,13 @@
 package com.staymilano.database;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 public class BikeStationDAO {
 	
-	public static final String ITINERARY_ID = "_id";
+	public static final String ITINERARY_ID = "itinerary";
 	public static final String STATION_NAME = "name";
 	public static final String LAT = "lat";
 	public static final String LONG = "lng";
@@ -27,8 +28,12 @@ public class BikeStationDAO {
 
 	public static void insertBikeStation(SQLiteDatabase db, String id,
 			String name, String lat, String lng) {
-		String insert_data = "INSERT INTO " + TABELLA+ " VALUES(" + id + ",'" + name+ "','" + lat+ "','" + lng+ "')";
-		db.execSQL(insert_data);
+		ContentValues values= new ContentValues();
+		values.put(ITINERARY_ID, id);
+		values.put(STATION_NAME, name);
+		values.put(LAT, lat);
+		values.put(LONG, lng);
+		db.insert(TABELLA, null, values);
 	}
 
 

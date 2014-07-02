@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Stay Milano</string>
+    <string name="app_name">SeeMi</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_splash">SeeMe</string>
     <string name="title_activity_first_access">Welcome</string>
     <string name="new_button_label">Create new itinerary</string>
     <string name="title_activity_area_selection"></string>

@@ -84,6 +84,9 @@ public class ItineraryListActivity extends ActionBarActivity {
 		
 		ActionMode.Callback callback;
 		ActionMode mode;
+		
+		ItineraryCustomAdapter adapter;
+		int toDelete;
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -101,7 +104,7 @@ public class ItineraryListActivity extends ActionBarActivity {
 			UserInfo user = UserInfo.getUserInfo(db);
 			its = user.getItineraries();
 
-			ItineraryCustomAdapter adapter = new ItineraryCustomAdapter(ctx,
+			adapter = new ItineraryCustomAdapter(ctx,
 					its);
 			setListAdapter(adapter);
 			adapter.notifyDataSetChanged();
@@ -131,7 +134,8 @@ public class ItineraryListActivity extends ActionBarActivity {
 						MenuItem item) {
 					switch (item.getItemId()) {
 					case R.id.action_delete:
-						adapter.remove();
+						UserInfo.deleteItinerary(db, adapter.getItem(toDelete));
+						adapter.remove(adapter.getItem(toDelete));;
 						mode.finish(); // Action picked, so close the CAB
 						return true;
 					default:
@@ -140,18 +144,21 @@ public class ItineraryListActivity extends ActionBarActivity {
 				}
 			};
 			
-			getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
+			getListView().setOnItemLongClickListener(
+					new OnItemLongClickListener() {
 
-				@Override
-				public boolean onItemLongClick(AdapterView<?> parent,
-						View view, int position, long id) {
-					if (mode != null)
-						return false;
-					else
-						mode = getActivity().startActionMode(callback);
-					return true;
-				}
-			});
+						@Override
+						public boolean onItemLongClick(AdapterView<?> parent,
+								View view, int position, long id) {
+							if (mode != null){
+								toDelete=position;
+								return false;
+							}else{
+								mode = getActivity().startActionMode(callback);
+								toDelete=position;
+							}return true;
+						}
+					});
 
 		}
 		

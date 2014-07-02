@@ -14,7 +14,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	private Context context;
 
 	private static final String DATABASE_NAME = "staymilano.db";
-	private static final int DATABASE_VERSION = 15;
+	private static final int DATABASE_VERSION = 1;
 
 
 	// Lo statement SQL di creazione del database
@@ -51,8 +51,8 @@ public class DBHelper extends SQLiteOpenHelper {
 			+ BikeStationDAO.TABELLA
 			+ "(" + BikeStationDAO.ITINERARY_ID + " text not null, "
 			+ BikeStationDAO.STATION_NAME + " text not null, "
-			+ BikeStationDAO.START_LAT + " text not null, " 
-			+ BikeStationDAO.START_LONG + " text not null );";
+			+ BikeStationDAO.LAT + " text not null, " 
+			+ BikeStationDAO.LONG + " text not null );";
 			
 
 	// Costruttore
@@ -74,9 +74,10 @@ public class DBHelper extends SQLiteOpenHelper {
 		database.execSQL(POINTOFINTEREST_CREATE);
 		database.execSQL(ITINERARY_CREATE);
 		database.execSQL(AREA_CREATE);
+		database.execSQL(CREATE_BIKE_STATIONS);
 		database.execSQL(SELECTED_POI);
 		database.execSQL(CREATE_START_POINTS);
-		database.execSQL(CREATE_BIKE_STATIONS);
+
 
 		loadPOI(database);
 		loadAREA(database);

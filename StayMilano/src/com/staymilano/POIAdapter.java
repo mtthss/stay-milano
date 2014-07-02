@@ -36,13 +36,15 @@ public class POIAdapter extends ArrayAdapter<PointOfItinerary>{
 		TextView second = (TextView) rowView.findViewById(R.id.secondLine);
 		ImageView icon=(ImageView) rowView.findViewById(R.id.imageView1);
 		
-		String s=(values.get(position)).getName();
+		String s = (values.get(position)).getName();
 		first.setText((values.get(position)).getName());
 		second.setText((values.get(position)).getType());
-		if(values.get(position).getType().equals(StartingPoint.STARTING_POINT)){
-			icon.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_action_edit));
-		}else{
-			icon.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_action_about));
+		if (values.get(position).getType().equals(StartingPoint.STARTING_POINT)) {
+			icon.setImageDrawable(context.getResources().getDrawable(
+					R.drawable.ic_action_edit));
+		} else {
+			icon.setImageDrawable(context.getResources().getDrawable(
+					R.drawable.ic_action_about));
 
 		}
 		return rowView;

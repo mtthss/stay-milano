@@ -116,4 +116,13 @@ public class Itinerary implements Serializable{
 		return bikest;		
 	}
 
+	public boolean hasThisBikeStYet(String name) {
+		for(BikeStation bikeSt:selectedBikeSt){
+			if(bikeSt.getName().equals(name)){
+				return true;
+			}
+		}
+		return false;
+	}
+
 }

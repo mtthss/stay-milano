@@ -80,6 +80,7 @@ public class UserInfo implements Serializable{
 						Double.valueOf(lon));
 				it.setStartingPoint(startCoord);
 			}
+			c_start.close();
 			Cursor c_bike = BikeStationDAO.getBikeStationById(readableDatabase,
 					it.getID());
 			c_bike.moveToFirst();
@@ -87,10 +88,9 @@ public class UserInfo implements Serializable{
 				List<BikeStation> bikes = new ArrayList<BikeStation>();
 				do{
 					BikeStation bike = new BikeStation();
-					int i=c_start.getColumnIndex(BikeStationDAO.STATION_NAME);
-					bike.setName("Bike Station");
-					String lat = c_start.getString(c_start.getColumnIndex(BikeStationDAO.START_LAT));
-					String lon = c_start.getString(c_start.getColumnIndex(BikeStationDAO.START_LONG));
+					bike.setName(c_bike.getString(c_bike.getColumnIndex(BikeStationDAO.STATION_NAME)));
+					String lat = c_bike.getString(c_bike.getColumnIndex(BikeStationDAO.LAT));
+					String lon = c_bike.getString(c_bike.getColumnIndex(BikeStationDAO.LONG));
 					LatLng bikeCoord = new LatLng(Double.valueOf(lat),
 							Double.valueOf(lon));
 					bike.setPosition(bikeCoord);
@@ -214,6 +214,17 @@ public class UserInfo implements Serializable{
 		UserInfo.updated=true;
 		BikeStationDAO.insertBikeStation(db, it.getID(), title, ((Double)position.latitude).toString(), ((Double)position.longitude).toString());
 		return it.saveBikeStation(title, position);
+	}
+
+	public static void removeBikeStations(SQLiteDatabase db, Itinerary it) {
+		UserInfo.updated=true;
+		BikeStationDAO.deleteBikeStations(db, it.getID());
+		it.getSelectedBikeSt().clear();		
+	}
+
+	public static void deleteItinerary(SQLiteDatabase db, Itinerary it){
+		UserInfo.updated=true;
+		ItineraryDAO.deleteItinerary(db, it.getID());
 	}
 
 }

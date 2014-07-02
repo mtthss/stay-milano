@@ -32,9 +32,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.bikemiutils.BikeMiCallBack;
 import com.example.bikemiutils.BikeMiUtils;
+import com.google.android.gms.internal.ik;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
@@ -64,6 +66,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	AppSectionsPagerAdapter mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
 	static Itinerary it;
 	
+	static List<PointOfItinerary> points;
 	static POIAdapter adapter;
 	
 	public static final String WIFIITINERARY="wifi_itinerary";
@@ -85,7 +88,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			it = ui.getItinerary(itineraryID);
 		}
 		
-		List<PointOfItinerary> points=new ArrayList<PointOfItinerary>();
+		points=new ArrayList<PointOfItinerary>();
 		points=it.getAllPointOfThisItinerary();
 		adapter=new POIAdapter(this, points);
 		adapter.addAll(points);
@@ -179,6 +182,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
     	SQLiteDatabase db;
 		GoogleMap map;
+		boolean bikeAdded=false;
+
+		
 		static final LatLng MILAN = new LatLng(45.4773, 9.1815);
 
 		@Override
@@ -209,9 +215,48 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			if(item.getItemId()==R.id.action_show_bicycle){
 				//TODO inserire posizione attuale
 				BikeMiUtils.getBikeMiStations(this, it.getStartingPoint().getPosition());
+			}else if(item.getItemId()==R.id.action_remove_bicycle){
+				if (it.getSelectedBikeSt().size() != 0) {
+					new AlertDialog.Builder(getActivity())
+							.setTitle("Remove Bike Stations")
+							.setMessage(
+									"Are you sure you want to remove all bike stations?")
+							.setPositiveButton(android.R.string.yes,
+									new DialogInterface.OnClickListener() {
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+											BikeMiLook.removeMarkers();
+											UserInfo.removeBikeStations(db, it);
+											points = it
+													.getAllPointOfThisItinerary();
+											adapter.clear();
+											adapter.addAll(points);
+											adapter.notifyDataSetChanged();
+											map.clear();
+											getDirections();
+										}
+									})
+							.setNegativeButton(android.R.string.no,
+									new DialogInterface.OnClickListener() {
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+											// do nothing
+										}
+									})
+							.setIcon(android.R.drawable.ic_dialog_alert).show();
+				} else {
+					if (!BikeMiLook.removeMarkers()) {
+						Toast.makeText(getActivity(),
+								"No Bike Station to eliminate",
+								Toast.LENGTH_LONG);
+					}else{
+						setCamera();
+					}
+				}
 			}else if(item.getItemId()==R.id.action_share){
 				Intent intent=new Intent(getActivity(), WiFiActivity.class);
-				UserInfo ui=UserInfo.getUserInfo(db);
 				intent.putExtra(WIFIITINERARY, UserInfo.itineraryToString(it));
 				startActivity(intent);
 			}else if(item.getItemId()==R.id.action_starting_point){
@@ -268,13 +313,16 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 		@Override
 		public void onMapLoaded() {
+			setCamera();
+			getDirections();		
+		}
+		
+		private void setCamera(){
 			LatLngBounds.Builder itBounds = new LatLngBounds.Builder();  
 			for(LatLng p : it.getAllItineraryCoordinates()){
 				itBounds.include(p);
 			}
 			map.animateCamera(CameraUpdateFactory.newLatLngBounds(itBounds.build(), 60), 1500, null);
-
-			getDirections();		
 		}
 
 		private void getDirections() {
@@ -304,7 +352,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 				marker.title(bikeSt.getName());
 				marker.position(bikeSt.getPosition());
 				marker.icon(BitmapDescriptorFactory
-						.fromResource(R.drawable.selected));
+						.fromResource(R.drawable.purplebicycle));
 				markers.add(marker);
 			}
 			MapLook.drawPOI(markers, map);
@@ -319,19 +367,21 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 		@Override
 		public void onBikeMiStationsComputed(List<Stallo> result) {
-			List<MarkerOptions> markers=new ArrayList<MarkerOptions>();
+			List<MarkerOptions> bikeMarkers=new ArrayList<MarkerOptions>();
 			LatLngBounds.Builder itBounds = new LatLngBounds.Builder(); 
 			for(Stallo st:result){
+				if(!it.hasThisBikeStYet(st.getName())){
 				MarkerOptions marOp=new MarkerOptions();
 				marOp.position(st.getPosition());
 				marOp.icon(BitmapDescriptorFactory.fromResource(R.drawable.markerbikepurplemini));
 				marOp.title(st.getName());
 				marOp.snippet(st.getEmptySlots()+" empy slots and "+st.getFreeBikes()+" free bikes");
-				markers.add(marOp);
+				bikeMarkers.add(marOp);
 				itBounds.include(st.getPosition());
+				}
 			}
 			
-			BikeMiLook.drawMarkers(map, markers);
+			BikeMiLook.drawMarkers(map, bikeMarkers);
 			map.animateCamera(CameraUpdateFactory.newLatLngBounds(itBounds.build(), 60), 1500, null);
 
 			map.setOnMarkerClickListener(listener);
@@ -348,9 +398,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 					.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 				        public void onClick(DialogInterface dialog, int which) { 
 				        	BikeStation bike=UserInfo.saveBikeStation(db,it,marker.getTitle(),marker.getPosition());
+				        	map.clear();
 				        	getDirections();
+				        	points.add(bike);
 				        	adapter.add(bike);
 				        	adapter.notifyDataSetChanged();
+				        	BikeMiLook.removeMarkers();		
+				        	setCamera();
 				        }
 				     })
 				    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -385,8 +439,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			
-			View rootView = inflater.inflate(R.layout.fragment_poilist,
-					container, false);
+			View rootView = inflater.inflate(R.layout.fragment_poilist,container, false);
 			return rootView;
 		}
 

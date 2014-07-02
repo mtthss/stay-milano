@@ -53,6 +53,8 @@ public class ItineraryDAO {
 	
     public static boolean deleteItinerary(SQLiteDatabase db, String id) {
     	SelectedPOIDAO.deleteSelectedPOIByItinerary(db, id);
+    	StartPointDAO.deleteStartPointPOI(db, id);
+    	BikeStationDAO.deleteBikeStations(db, id);
         return db.delete(TABELLA, ID + "=" + "'"+id+"'", null) > 0;
     }
     

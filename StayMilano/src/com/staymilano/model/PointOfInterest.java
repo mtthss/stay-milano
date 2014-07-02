@@ -6,6 +6,7 @@ import android.database.Cursor;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.staymilano.R;
+import com.staymilano.database.PointOfInterestDAO;
 
 public class PointOfInterest implements Serializable,PointOfItinerary{
 	
@@ -27,11 +28,12 @@ public class PointOfInterest implements Serializable,PointOfItinerary{
 	
 	
 	public PointOfInterest(Cursor cur) {
-		this.id=cur.getString(0);
-		this.name=cur.getString(1);
-		this.description=cur.getString(2);
-		setType(cur.getString(3));
-		setPosition(cur.getString(5),cur.getString(6));
+		this.id=cur.getString(cur.getColumnIndex(PointOfInterestDAO.ID));
+		this.name=cur.getString(cur.getColumnIndex(PointOfInterestDAO.NAME));
+		this.description=cur.getString(cur.getColumnIndex(PointOfInterestDAO.DESCRIPTION));
+		setType(cur.getString(cur.getColumnIndex(PointOfInterestDAO.TYPE)));
+		setPosition(cur.getString(cur.getColumnIndex(PointOfInterestDAO.LATITUDE)),
+				cur.getString(cur.getColumnIndex(PointOfInterestDAO.LONGITUDE)));
 	}
 
 	public PointOfInterest() {

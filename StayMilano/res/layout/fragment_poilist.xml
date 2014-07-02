@@ -6,7 +6,8 @@
     <LinearLayout 
         android:id="@+id/listwrapper"
     	android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
+    	android:layout_height="match_parent"
+    	android:layout_above="@+id/saveMap"
     	android:orientation="vertical" >
     	
     	<ListView

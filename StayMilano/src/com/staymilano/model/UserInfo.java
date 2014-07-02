@@ -3,6 +3,9 @@ package com.staymilano.model;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -24,8 +27,15 @@ public class UserInfo implements Serializable{
 	private static boolean updated;
 	private static UserInfo user;
 	
+	public static UserInfo getUserInfo(SQLiteDatabase readableDatabase) {
+		if(user==null||isUpdated()){
+			user=new UserInfo(readableDatabase);
+			UserInfo.updated=false;
+		}
+		return user;
+	}
+	
 	private UserInfo(SQLiteDatabase readableDatabase) {
-		
 		Cursor cur = ItineraryDAO.getAllItineraries(readableDatabase);
 		int cont = cur.getCount();
 		cur.moveToFirst();
@@ -33,28 +43,72 @@ public class UserInfo implements Serializable{
 			itineraries = new ArrayList<Itinerary>();
 			do {
 				Itinerary it = new Itinerary(cur.getString(0),cur.getString(1));				
-				fillItinerary(it,readableDatabase);
+				setUpItinerary(it,readableDatabase);
 				itineraries.add(it);
 			} while (cur.moveToNext());
-			orderItByDate();
+			orderItinerariesByDate();
 		}
 
 	}
 	
-	private void orderItByDate() {
-		/*
-		for(int i=1;i<itineraries.size();i++){
-			Calendar c = itineraries.get(i).getDate();
-			
-			int j;
-			for(j=i-1; j>=0 && temp< )
-			
-		}
-		*/
+	private void orderItinerariesByDate() {
+		Collections.sort(itineraries, new Comparator<Itinerary>() {
+
+			@Override
+			public int compare(Itinerary lhs, Itinerary rhs) {
+				return lhs.getDate().compareTo(rhs.getDate());
+			}
+
+
+		});
 	}
 
-	private void fillItinerary(Itinerary it, SQLiteDatabase readableDatabase) {
+	private void setUpItinerary(Itinerary it, SQLiteDatabase readableDatabase) {
 
+		setUpPois(readableDatabase,it);
+		setUpStartingPoint(readableDatabase,it);
+		setUpBikeStation(readableDatabase,it);
+	}
+	
+	private void setUpBikeStation(SQLiteDatabase readableDatabase, Itinerary it) {
+		Cursor c_bike = BikeStationDAO.getBikeStationById(readableDatabase,
+				it.getID());
+		c_bike.moveToFirst();
+		if (c_bike.getCount() > 0) {
+			List<BikeStation> bikes = new ArrayList<BikeStation>();
+			do{
+				BikeStation bike = new BikeStation();
+				bike.setName(c_bike.getString(c_bike.getColumnIndex(BikeStationDAO.STATION_NAME)));
+				String lat = c_bike.getString(c_bike.getColumnIndex(BikeStationDAO.LAT));
+				String lon = c_bike.getString(c_bike.getColumnIndex(BikeStationDAO.LONG));
+				LatLng bikeCoord = new LatLng(Double.valueOf(lat),
+						Double.valueOf(lon));
+				bike.setPosition(bikeCoord);
+				bikes.add(bike);
+			}while(c_bike.moveToNext());
+			it.setSelectedBikeSt(bikes);
+		}
+		
+	}
+
+	private void setUpStartingPoint(SQLiteDatabase readableDatabase,
+			Itinerary it) {
+		Cursor c_start = StartPointDAO.getStartPointById(readableDatabase,
+				it.getID());
+		if (c_start.getCount() > 0) {
+			c_start.moveToFirst();
+			String lat = c_start.getString(1);
+			String lon = c_start.getString(2);
+			LatLng startCoord = new LatLng(Double.valueOf(lat),
+					Double.valueOf(lon));
+			it.setStartingPoint(startCoord);
+		}
+		c_start.close();
+		
+	}
+
+	
+	private void setUpPois(SQLiteDatabase readableDatabase, Itinerary it) {
 		List<PointOfInterest> pois = new ArrayList<PointOfInterest>();
 		Cursor cur = SelectedPOIDAO.getSelectedPOIByItineraryId(
 				readableDatabase, it.getID());
@@ -70,46 +124,10 @@ public class UserInfo implements Serializable{
 		}
 		if (pois.size() > 0) {
 			it.setPois(pois);
-			Cursor c_start = StartPointDAO.getStartPointById(readableDatabase,
-					it.getID());
-			if (c_start.getCount() > 0) {
-				c_start.moveToFirst();
-				String lat = c_start.getString(1);
-				String lon = c_start.getString(2);
-				LatLng startCoord = new LatLng(Double.valueOf(lat),
-						Double.valueOf(lon));
-				it.setStartingPoint(startCoord);
-			}
-			c_start.close();
-			Cursor c_bike = BikeStationDAO.getBikeStationById(readableDatabase,
-					it.getID());
-			c_bike.moveToFirst();
-			if (c_bike.getCount() > 0) {
-				List<BikeStation> bikes = new ArrayList<BikeStation>();
-				do{
-					BikeStation bike = new BikeStation();
-					bike.setName(c_bike.getString(c_bike.getColumnIndex(BikeStationDAO.STATION_NAME)));
-					String lat = c_bike.getString(c_bike.getColumnIndex(BikeStationDAO.LAT));
-					String lon = c_bike.getString(c_bike.getColumnIndex(BikeStationDAO.LONG));
-					LatLng bikeCoord = new LatLng(Double.valueOf(lat),
-							Double.valueOf(lon));
-					bike.setPosition(bikeCoord);
-					bikes.add(bike);
-				}while(c_bike.moveToNext());
-				it.setSelectedBikeSt(bikes);
-			}
 		}
+		
 	}
 
-	public static UserInfo getUserInfo(SQLiteDatabase readableDatabase) {
-		
-		if(user==null||isUpdated()){
-			user=new UserInfo(readableDatabase);
-			UserInfo.updated=false;
-		}
-		return user;
-	}
-	
 	public String saveItinerary(Itinerary it, SQLiteDatabase db){
 		UserInfo.updated=true;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -123,12 +141,10 @@ public class UserInfo implements Serializable{
 	}
 
 	public List<Itinerary> getItineraries() {
-		
 		return itineraries;
 	}
 
 	public Itinerary getItinerary(String itinerary_id) {
-		
 		Itinerary result = new Itinerary();
 		for(Itinerary it:itineraries){
 			if(itinerary_id.equals(it.getID())){
@@ -142,7 +158,6 @@ public class UserInfo implements Serializable{
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		String dateToFind = sdf.format(d);
-		
 		for(Itinerary it : itineraries){
 			if(sdf.format(it.getDate()).equals(dateToFind)){
 				return it;
@@ -205,8 +220,6 @@ public class UserInfo implements Serializable{
 	public static Itinerary saveStringToItinerary(String s){
 		//TODO FINIRE
 		Itinerary it = null;
-		
-		
 		return it;
 	}
 
@@ -225,6 +238,18 @@ public class UserInfo implements Serializable{
 	public static void deleteItinerary(SQLiteDatabase db, String id){
 		UserInfo.updated=true;
 		ItineraryDAO.deleteItinerary(db, id);
+	}
+
+	public static void updateStartingPoint(SQLiteDatabase db,
+			String itineraryId, String startLat, String startLong) {
+		UserInfo.updated=true;
+		StartPointDAO.updateItineraryStartPoint(db, itineraryId, startLat, startLong);
+	}
+
+	public static void saveStartingPoint(SQLiteDatabase db, String itineraryId,
+			String startLat, String startLong) {
+		UserInfo.updated=true;
+		StartPointDAO.insertStartingPoint(db, itineraryId, startLat, startLong);
 	}
 
 }

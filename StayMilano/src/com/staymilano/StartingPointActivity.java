@@ -39,7 +39,6 @@ public class StartingPointActivity extends ActionBarActivity implements Location
   	  SQLiteDatabase db;
   	  GoogleMap map;
   	  Marker mMarker;  	  
-  	  String mode;
   	  
   	  public static final String ORIGIN="origin";
 	  
@@ -51,7 +50,6 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 		   
 	       Intent intent = getIntent();
 	       itineraryId = intent.getStringExtra("id");
-	       mode=intent.getStringExtra("mode");
 	       db = DBHelper.getInstance(this).getWritableDatabase();
 		   
 		   //get location service
@@ -116,9 +114,8 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 	}
 	
 	public void takeCurrent(View view){
-		
 		saveCoordinates(latlng);
-		
+
 		Intent intent = new Intent(this, MainActivity.class);
 		intent.putExtra("id", itineraryId);
 		startActivity(intent);
@@ -136,8 +133,12 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 	private void saveCoordinates(LatLng startCoord){
 		String startLat = "" + startCoord.latitude;
 		String startLong = "" + startCoord.longitude;
-		StartPointDAO.deleteStartPointPOI(db, itineraryId);
-		StartPointDAO.insertStartingPoint(db, itineraryId, startLat , startLong);
+		
+		if (getIntent().getBooleanExtra(ORIGIN, false)){
+			UserInfo.saveStartingPoint(db,itineraryId, startLat , startLong);
+		}else{
+			UserInfo.updateStartingPoint(db, itineraryId, startLat , startLong);
+		}
 		
 	}
 

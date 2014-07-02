@@ -134,7 +134,7 @@ public class ItineraryListActivity extends ActionBarActivity {
 						MenuItem item) {
 					switch (item.getItemId()) {
 					case R.id.action_delete:
-						UserInfo.deleteItinerary(db, adapter.getItem(toDelete));
+						UserInfo.deleteItinerary(db, adapter.getItem(toDelete).getID());
 						adapter.remove(adapter.getItem(toDelete));;
 						mode.finish(); // Action picked, so close the CAB
 						return true;

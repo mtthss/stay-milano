@@ -60,9 +60,9 @@ import com.staymilano.model.UserInfo;
 
 public class ItineraryCreationActivity extends FragmentActivity implements ActionBar.TabListener, DatePickerDialog.OnDateSetListener  {
 
-    AppSectionsPagerAdapter mAppSectionsPagerAdapter;
-    ViewPager mViewPager;
-    
+    private AppSectionsPagerAdapter mAppSectionsPagerAdapter;
+    private ViewPager mViewPager;
+        
     public static POIAdapter adapter;
     
 	static ArrayList<Marker> markers = new ArrayList<Marker>();
@@ -75,6 +75,7 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 	public static final String POI = "poi";
 	public static final String POI_NAME="poi_name";
 	public static final String ITINERARY_ID="id";
+	public static final boolean FROM_CREATION=true;
 	static final LatLng MILAN = new LatLng(45.4773, 9.1815);
 	
 	static boolean MODIFICATION; 
@@ -182,6 +183,7 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 			// Save itinerary in database
 			String id = ui.saveItinerary(newIt, db);
 			Intent intent = new Intent(this, StartingPointActivity.class);
+			intent.putExtra(StartingPointActivity.ORIGIN, FROM_CREATION);
 			intent.putExtra("id", id);
 			startActivity(intent);
 		}

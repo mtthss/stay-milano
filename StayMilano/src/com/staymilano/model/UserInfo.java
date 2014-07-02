@@ -114,12 +114,12 @@ public class UserInfo implements Serializable{
 		UserInfo.updated=true;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		String stringDate = sdf.format(it.getDate().getTime());
-		String id=ItineraryDAO.insertItinerary(db, stringDate);
-		it.setID(id);
+		long id=ItineraryDAO.insertItinerary(db, stringDate);
+		it.setID(String.valueOf(id));
 		for(PointOfItinerary poi:it.getPois()){
 			SelectedPOIDAO.insertItinerary(db, ((PointOfInterest)poi).getId(), it.getID());
 		}
-		return id;
+		return String.valueOf(id);
 	}
 
 	public List<Itinerary> getItineraries() {
@@ -222,9 +222,9 @@ public class UserInfo implements Serializable{
 		it.getSelectedBikeSt().clear();		
 	}
 
-	public static void deleteItinerary(SQLiteDatabase db, Itinerary it){
+	public static void deleteItinerary(SQLiteDatabase db, String id){
 		UserInfo.updated=true;
-		ItineraryDAO.deleteItinerary(db, it.getID());
+		ItineraryDAO.deleteItinerary(db, id);
 	}
 
 }

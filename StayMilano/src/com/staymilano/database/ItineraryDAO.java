@@ -15,13 +15,15 @@ public class ItineraryDAO {
 	public static final String TABELLA = "itinerary";
 	public static final String[] COLONNE = new String[]{ID, DATA};
 	
-	public static String insertItinerary(SQLiteDatabase db, String data){
-		Cursor cur=getAllItineraries(db);
-		int i=cur.getCount();
-		String insert_data = "INSERT INTO " + TABELLA
-				+ " VALUES(" + i + ",'" + data+ "')";
+	public static long insertItinerary(SQLiteDatabase db, String data){
+		ContentValues values=new ContentValues();
+		values.put(DATA	, data);
+		return db.insert(TABELLA, null, values);
+
+		/*String insert_data = "INSERT INTO " + TABELLA
+				+ " VALUES('" + data+ "')";
 		db.execSQL(insert_data);
-		return String.valueOf(i);
+		return String.valueOf(i);*/
 	}
 	
 	public static Cursor getAllItineraries(SQLiteDatabase db){

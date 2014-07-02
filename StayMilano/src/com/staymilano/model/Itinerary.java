@@ -13,7 +13,7 @@ public class Itinerary implements Serializable{
 
 	private static final long serialVersionUID = -9024000010811787150L;
 	
-	private Integer id;
+	private String id;
 	private Calendar date;
 	private List<PointOfInterest> selectedPois=new ArrayList<PointOfInterest>();
 	private List<BikeStation> selectedBikeSt=new ArrayList<BikeStation>();
@@ -21,7 +21,7 @@ public class Itinerary implements Serializable{
 	
 	
 	public Itinerary(String id,String date){
-		this.id=Integer.parseInt(id);
+		this.id=id;
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		try {
@@ -63,7 +63,7 @@ public class Itinerary implements Serializable{
 	}
 
 	public void setID(String id) {
-		this.id = Integer.parseInt(id);
+		this.id = id;
 	}
 	
 	public List<LatLng> getAllItineraryCoordinates(){

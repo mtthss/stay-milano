@@ -8,11 +8,14 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.staymilano.database.DBHelper;
 import com.staymilano.database.StartPointDAO;
+import com.staymilano.model.UserInfo;
 
 import communications.GoogleMapsUtils;
 import communications.GeoCodeCallBack;
 import android.support.v7.app.ActionBarActivity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Criteria;
@@ -37,6 +40,8 @@ public class StartingPointActivity extends ActionBarActivity implements Location
   	  GoogleMap map;
   	  Marker mMarker;  	  
   	  String mode;
+  	  
+  	  public static final String ORIGIN="origin";
 	  
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +52,7 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 	       Intent intent = getIntent();
 	       itineraryId = intent.getStringExtra("id");
 	       mode=intent.getStringExtra("mode");
+	       db = DBHelper.getInstance(this).getWritableDatabase();
 		   
 		   //get location service
 		   lm = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
@@ -128,8 +134,6 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 	}
 	
 	private void saveCoordinates(LatLng startCoord){
-		
-		db = DBHelper.getInstance(this).getWritableDatabase();
 		String startLat = "" + startCoord.latitude;
 		String startLong = "" + startCoord.longitude;
 		StartPointDAO.deleteStartPointPOI(db, itineraryId);
@@ -152,5 +156,31 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 		map.animateCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15));
 	}
 	
+	@Override
+	public void onBackPressed() {
+		if (getIntent().getBooleanExtra(ORIGIN, false)) {
+			new AlertDialog.Builder(this)
+					.setTitle("Warning!")
+					.setMessage(
+							"Do you want to cancel the creation of this itinerary?\n"
+									+ "If you don't, set the starting point. You will be able to modify your itinerary later.")
+					.setPositiveButton(android.R.string.yes,
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int which) {
+									UserInfo.deleteItinerary(db, itineraryId);
+								}
+							})
+					.setNegativeButton(android.R.string.no,
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int which) {
+									// do nothing
+								}
+							}).setIcon(android.R.drawable.ic_dialog_alert)
+					.show();
+		}
+	}
+
 
 }

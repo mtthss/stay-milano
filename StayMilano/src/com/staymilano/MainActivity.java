@@ -636,25 +636,25 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 			@Override
 			public void onInfoWindowClick(Marker marker) {
-
-				PointOfItinerary point = null;
-				for (PointOfItinerary poi : it.getAllPointOfThisItinerary()) {
-					if (poi.getName().equals(marker.getTitle())) {
-						point = poi;
+				if (!marker.getTitle().equalsIgnoreCase("start")) {
+					PointOfItinerary point = null;
+					for (PointOfItinerary poi : it.getAllPointOfThisItinerary()) {
+						if (poi.getName().equals(marker.getTitle())) {
+							point = poi;
+						}
 					}
-				}
-				if(!point.getType().equals(StartingPoint.STARTING_POINT)){
-				Intent intent = new Intent(getActivity(),
-						POIDetailActivity.class);
-				intent.putExtra(POIDetailActivity.TYPE, point.getType());
-				intent.putExtra(POIDetailActivity.NAME, point.getName());
-				intent.putExtra(POIDetailActivity.POSITION_LAT,
-						point.getPosition().latitude);
-				intent.putExtra(POIDetailActivity.POSITION_LNG,
-						point.getPosition().longitude);
-				startActivity(intent);
-				marker.hideInfoWindow();
-				}else{
+
+					Intent intent = new Intent(getActivity(),
+							POIDetailActivity.class);
+					intent.putExtra(POIDetailActivity.TYPE, point.getType());
+					intent.putExtra(POIDetailActivity.NAME, point.getName());
+					intent.putExtra(POIDetailActivity.POSITION_LAT,
+							point.getPosition().latitude);
+					intent.putExtra(POIDetailActivity.POSITION_LNG,
+							point.getPosition().longitude);
+					startActivity(intent);
+					marker.hideInfoWindow();
+				} else {
 					marker.hideInfoWindow();
 				}
 

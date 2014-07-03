@@ -78,7 +78,7 @@ public class POIDetailActivity extends Activity implements BikeMiCallBack{
 		
 		for(Stallo st:result){
 			if(st.getName().equals(name)){
-				description=st.getEmptySlots()+" empty slots and "+st.getFreeBikes()+" free bikes";
+				description=st.getEmptySlots()+" empty slots \n"+st.getFreeBikes()+" free bikes";
 			}
 		}
 		
@@ -87,7 +87,7 @@ public class POIDetailActivity extends Activity implements BikeMiCallBack{
 		ImageView image=(ImageView) findViewById(R.id.image);
 		
 		v_type.setText(bike.getType());
-		v_description.setText("This Bike Station now has: "+description);
+		v_description.setText("This Bike Station now has:\n"+description);
 		image.setImageDrawable(getResources().getDrawable(R.drawable.markerbikepurple));
 	}
 	

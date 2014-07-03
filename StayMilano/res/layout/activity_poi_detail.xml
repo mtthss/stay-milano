@@ -7,7 +7,7 @@
     tools:context="com.staymilano.POIListFragment"
     tools:ignore="MergeRootFrame" >
 
-   <RelativeLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#f1f1f2" >
@@ -30,16 +30,16 @@
             android:id="@+id/image"
             android:layout_width="75dip"
             android:layout_height="75dip"
-            android:layout_margin="3dp"
-            android:layout_below="@+id/map_wrapper" />
-        
+            android:layout_below="@+id/map_wrapper"
+            android:layout_margin="3dp" />
+
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/image"
+            android:layout_below="@+id/map_wrapper"
             android:layout_margin="3dp"
-            android:layout_below="@+id/map_wrapper" 
+            android:layout_toRightOf="@+id/image"
             android:textSize="22sp"
             android:textStyle="bold" />
 
@@ -47,24 +47,36 @@
             android:id="@+id/type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/image"
-            android:layout_below="@+id/title" 
+            android:layout_below="@+id/title"
             android:layout_marginLeft="3dp"
+            android:layout_toRightOf="@+id/image"
             android:textSize="18sp"
             android:textStyle="italic" />
 
-        <TextView
-            android:id="@+id/description"
-            android:layout_width="wrap_content"
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/image"
-            android:layout_alignParentLeft="true"
             android:layout_margin="10dp"
-            android:padding="3dp"
-            android:textSize="16sp"
-            android:background="#ffffff"
-            android:textStyle="italic" />
+            android:layout_alignParentLeft="true">
 
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="#ffffff"
+                    android:padding="3dp"
+                    android:textSize="16sp"
+                    android:textStyle="italic" />
+            </LinearLayout>
+        </ScrollView>
     </RelativeLayout>
 
 </FrameLayout>

@@ -16,7 +16,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 		android:layout_toRightOf="@+id/imageView1"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="3dp"
         android:textAppearance="?android:attr/textAppearanceListItemSmall" />
 
 </RelativeLayout>

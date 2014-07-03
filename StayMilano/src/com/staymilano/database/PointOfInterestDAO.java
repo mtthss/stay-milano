@@ -53,7 +53,7 @@ public class PointOfInterestDAO {
 	}
 
 	public static long insertPOI(SQLiteDatabase db, String line) {
-		StringTokenizer stringTokenizer = new StringTokenizer(line, ",");
+		StringTokenizer stringTokenizer = new StringTokenizer(line, "#");
 		String name = stringTokenizer.nextToken(), description = stringTokenizer
 				.nextToken(), type = stringTokenizer.nextToken(), area = stringTokenizer
 				.nextToken(), lat = stringTokenizer.nextToken(), lng = stringTokenizer

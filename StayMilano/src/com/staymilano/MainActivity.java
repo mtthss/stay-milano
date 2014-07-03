@@ -82,6 +82,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	public static final String WIFIITINERARY="wifi_itinerary";
 	
 	int ICONS[]= new int[]{R.drawable.ic_action_map,R.drawable.ic_action_view_as_list};
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +130,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 	}
 
-	
 	@Override
 	public void onBackPressed() {
 		if(bikeAdding == true){
@@ -192,6 +192,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		}
 	}
 	
+	
+	
 	/////////////////////////////MAP FRAGMENT////////////////////////////////////////////////////////////////////////
 
 	public static class MapSectionFragment extends Fragment implements OnMapLoadedCallback, CallBack, BikeMiCallBack, LocationListener{
@@ -208,10 +210,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		Marker mMarker;
 		
 		ImageButton button;
-
 		
 		static final LatLng MILAN = new LatLng(45.4773, 9.1815);
-
 		
 		
 		/////////////////////////
@@ -354,7 +354,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		}
 
 		
-		
 		/////////////////////////////////
 		// LOCATION LISTENER INTERFACE //
 		/////////////////////////////////
@@ -387,7 +386,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
 			//do nothing
 		}
-		
 		
 		
 		////////////////////
@@ -483,24 +481,29 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		}
 
 
-		public void onDirectionLoaded(List<Direction> directions, List<LatLng> ordered) {
-			// once the google server provides the directions, draw them on the map
-			MapLook.drawDirection(directions, map);
+		//////////////////////
+		// CALLBACK METHODS //
+		//////////////////////
+		
+		public void setOrderedList(List<LatLng> reorderedCoords){
 			// order the pois in the list fragment
 			adapter.clear();
-			
-			for(int i=0; i<ordered.size(); i++){
-				LatLng temp = ordered.get(i);
-				for(int j=0; j<ordered.size(); j++){
+			for(int i=0; i<reorderedCoords.size(); i++){
+				LatLng temp = reorderedCoords.get(i);
+				for(int j=0; j<reorderedCoords.size(); j++){
 					PointOfItinerary p = points.get(j);
 					if(p.getPosition().latitude==temp.latitude && p.getPosition().longitude==temp.longitude){
 						Collections.swap(points, i, j);
 					}
 				}
 			}
-			
 			adapter.addAll(points);
 			adapter.notifyDataSetChanged();
+		}
+		
+		public void onDirectionLoaded(List<Direction> directions, List<LatLng> ordered) {
+			// once the google server provides the directions, draw them on the map
+			MapLook.drawDirection(directions, map);
 			
 		}
 
@@ -528,6 +531,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			map.animateCamera(CameraUpdateFactory.newLatLngBounds(itBounds.build(), 60), 1500, null);
 
 		}
+		
+		
+		///////////////
+		// LISTENERS //
+		///////////////		
 		
 		private OnClickListener buttonlistener=new OnClickListener() {
 			

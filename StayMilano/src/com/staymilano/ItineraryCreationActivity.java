@@ -113,7 +113,6 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 		mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(
 				getSupportFragmentManager());
 
-		//TODO
 
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();

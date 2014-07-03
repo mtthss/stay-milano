@@ -34,9 +34,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -202,6 +204,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		LatLng latlng;
 		Marker mMarker;
 		
+		ImageButton button;
+
+		
 		static final LatLng MILAN = new LatLng(45.4773, 9.1815);
 
 		
@@ -214,6 +219,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			
 			View rootView = inflater.inflate(R.layout.fragment_main, container,	false);
+			button=(ImageButton) rootView.findViewById(R.id.imageButton);
+			button.setVisibility(View.INVISIBLE);
+			button.setClickable(false);
+			
 			db = DBHelper.getInstance(getActivity()).getWritableDatabase();
 			setHasOptionsMenu(true);
 			
@@ -283,12 +292,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 									})
 							.setIcon(android.R.drawable.ic_dialog_alert).show();
 				} else {
-					if (!BikeMiLook.removeMarkers()) {
-						Toast.makeText(getActivity(),
-								"No Bike Station to eliminate",
-								Toast.LENGTH_LONG);
-					}else{
+					if (bikeAdding) {
+						BikeMiLook.removeMarkers();
+						button.setVisibility(View.INVISIBLE);
+						button.setClickable(false);
 						setCamera();
+						bikeAdding=false;
+					}else{
+						Toast.makeText(getActivity(), "No Bike Station to cancel", Toast.LENGTH_SHORT);
 					}
 				}
 			}else if(item.getItemId()==R.id.action_starting_point){
@@ -477,6 +488,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		@Override
 		public void onBikeMiStationsComputed(List<Stallo> result) {
 			bikeAdding = true;
+			button.setVisibility(View.VISIBLE);
+			button.setClickable(true);
+			button.setOnClickListener(buttonlistener);
 			List<MarkerOptions> bikeMarkers=new ArrayList<MarkerOptions>();
 			LatLngBounds.Builder itBounds = new LatLngBounds.Builder(); 
 			for(Stallo st:result){
@@ -495,6 +509,22 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			map.animateCamera(CameraUpdateFactory.newLatLngBounds(itBounds.build(), 60), 1500, null);
 
 		}
+		
+		private OnClickListener buttonlistener=new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				button.setVisibility(View.INVISIBLE);
+				button.setClickable(false);
+				
+				if(bikeAdding == true){
+					BikeMiLook.removeMarkers();	
+		        	bikeAdding = false;
+		        	setCamera();
+				}
+
+			}
+		};
 		
 		private OnMarkerClickListener listener= new OnMarkerClickListener() {
 			
@@ -530,14 +560,17 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 					.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 				        public void onClick(DialogInterface dialog, int which) { 
 				        	BikeStation bike=UserInfo.saveBikeStation(db,it,marker.getTitle(),marker.getPosition());
-				        	map.clear();
-				        	getDirections();
+				        	//TODO rimuovere solo il marker della bici appena selezionata non ridisegnare tutto verrà
+				        	//ridisegnato quando premo il tasto ok
 				        	points.add(bike);
 				        	adapter.add(bike);
 				        	adapter.notifyDataSetChanged();
-				        	BikeMiLook.removeMarkers();	
-				        	setCamera();
-				        	bikeAdding = false;
+							button.setVisibility(View.INVISIBLE);
+							button.setClickable(false);
+							map.clear();
+				        	BikeMiLook.removeMarkers();
+				        	bikeAdding=false;
+				        	getDirections();
 				        }
 				     })
 				    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

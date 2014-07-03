@@ -184,7 +184,6 @@ public class UserInfo implements Serializable{
 	}
 	
 	public static String itineraryToString(Itinerary it){
-		//TODO riguardare
 		/* Crea Stringa:
 		 * data; starting point; nomePoi1, nomePoi2, ... ; idStallo1, lat1, long1, idStallo2, lat2, long2, ... ;  */
 		

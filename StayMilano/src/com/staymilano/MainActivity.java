@@ -1,9 +1,9 @@
 package com.staymilano;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import model.Direction;
 import model.Stallo;
@@ -452,10 +452,26 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			mMarker = map.addMarker(new MarkerOptions().position(latlng).title("Here you are"));
 		}
 
-		@Override
-		public void onDirectionLoaded(List<Direction> directions) {
+
+		public void onDirectionLoaded(List<Direction> directions, List<LatLng> ordered) {
 			// once the google server provides the directions, draw them on the map
 			MapLook.drawDirection(directions, map);
+			// order the pois in the list fragment
+			adapter.clear();
+			
+			for(int i=0; i<ordered.size(); i++){
+				LatLng temp = ordered.get(i);
+				for(int j=0; j<ordered.size(); j++){
+					PointOfItinerary p = points.get(j);
+					if(p.getPosition().latitude==temp.latitude && p.getPosition().longitude==temp.longitude){
+						Collections.swap(points, i, j);
+					}
+				}
+			}
+			
+			adapter.addAll(points);
+			adapter.notifyDataSetChanged();
+			
 		}
 
 		@Override

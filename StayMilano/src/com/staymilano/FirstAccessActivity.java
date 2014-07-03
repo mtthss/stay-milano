@@ -31,10 +31,6 @@ public class FirstAccessActivity extends ActionBarActivity{
 			intent=new Intent(this, ItineraryCreationActivity.class);
 			startActivity(intent);
 			break;
-		case R.id.action_share:
-			intent=new Intent(this, WiFiActivity.class);
-			startActivity(intent);
-			break;
 		default:
 			break;
 		}

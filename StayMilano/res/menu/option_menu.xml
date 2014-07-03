@@ -8,14 +8,11 @@
         android:id="@+id/action_remove_bicycle"
         android:title="Remove Bike Stations"/>
     <item
-        android:id="@+id/action_share"
-        android:title="Share"/>
-    <item
         android:id="@+id/action_starting_point"
-        android:title="Edit Itineraries"/>
+        android:title="Edit Starting Point"/>
     <item
         android:id="@+id/action_settings"
-        android:title="Edit Starting Point"/>
+        android:title="Edit Itinerary"/>
     
 
 </menu>

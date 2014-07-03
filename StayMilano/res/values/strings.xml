@@ -19,6 +19,7 @@
     <string name="invalidAddr">Error! Please type a valid address</string>
     <string name="noPoiMessage">Please insert the monuments you want to visit by selecting the markers on the map</string>
     <string name="save">Set the date</string>
+    <string name="saveSP">Create!</string>
     <string name="modify">Modify this itinerary</string>
     <string name="takeCurrent">Set this start address</string>
     <string name="startPointHint">Preferred start address</string>

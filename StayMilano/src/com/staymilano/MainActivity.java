@@ -128,7 +128,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	@Override
 	public void onBackPressed() {
 		if(bikeAdding == true){
-			//TODO gestire l'uscita con back durante l'aggiunta di bici
+        	BikeMiLook.removeMarkers();	
+        	bikeAdding = false;
 		}
 		Intent intent=new Intent(this, ItineraryListActivity.class);
 		finish();

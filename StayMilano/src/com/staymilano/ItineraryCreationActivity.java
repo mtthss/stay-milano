@@ -286,6 +286,7 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 				@Override
 				public View getInfoWindow(Marker marker) {
 					return null;
+					
 				}
 
 				@Override
@@ -405,11 +406,15 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 								.getIcon()));
 					}
 				} else {
-					PointOfInterest poi=City.getCity(db).getPOIbyName(marker.getTitle());
-					selectedPOI.add(poi);
-					adapter.add(poi);
-					marker.setIcon(BitmapDescriptorFactory
-							.fromResource(R.drawable.check));
+					if(lastMarkerClicked!=null&&lastMarkerClicked.getTitle().equals(marker.getTitle())){
+						PointOfInterest poi = City.getCity(db).getPOIbyName(
+								marker.getTitle());
+						selectedPOI.add(poi);
+						adapter.add(poi);
+						marker.setIcon(BitmapDescriptorFactory
+								.fromResource(R.drawable.check));
+					}
+					lastMarkerClicked=marker;
 				}
 				adapter.notifyDataSetChanged();
 				return false;
@@ -439,23 +444,14 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 			
 			@Override
 			public void onInfoWindowClick(Marker marker) {
-				if (lastMarkerClicked != null && marker.equals(lastMarkerClicked)) {
-					marker.hideInfoWindow();
-				} else {
 					lastMarkerClicked = marker;
-					PointOfInterest point = null;
-					for(PointOfItinerary poi:selectedPOI){
-						if(poi.getName().equals(marker.getTitle())){
-							point=(PointOfInterest) poi;
-						}
-					}
+					PointOfInterest point = City.getCity(db).getPOIbyName(marker.getTitle());
 					Intent intent = new Intent(getActivity(), POIDetailActivity.class);
 					intent.putExtra(POIDetailActivity.TYPE, point.getType());
 					intent.putExtra(POIDetailActivity.NAME, point.getName());
 					intent.putExtra(POIDetailActivity.POSITION_LAT, point.getPosition().latitude);
 					intent.putExtra(POIDetailActivity.POSITION_LNG, point.getPosition().longitude);
 					startActivity(intent);
-				}
 			}
 		};
 

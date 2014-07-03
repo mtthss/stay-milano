@@ -40,12 +40,15 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bikemiutils.BikeMiCallBack;
 import com.example.bikemiutils.BikeMiUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -396,11 +399,26 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			if (map == null) {
 				SupportMapFragment smf = (SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.mapMain); 
 				map = smf.getMap();
-			}
-			if (map != null) {
 				setupMap();
 			}
 			map.setOnMarkerClickListener(listener);
+			map.setInfoWindowAdapter(new InfoWindowAdapter() {
+				
+				@Override
+				public View getInfoWindow(Marker marker) {
+					return null;					
+				}
+				
+				@Override
+				public View getInfoContents(Marker marker) {
+					View view = getLayoutInflater(getArguments()).inflate(
+							R.layout.infowindow, null);
+					TextView title = (TextView) view
+							.findViewById(R.id.textView1);
+					title.setText(marker.getTitle());
+					return view;
+				}
+			});
 		}
 
 		private void setupMap() {
@@ -414,6 +432,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			map.moveCamera(CameraUpdateFactory.newLatLngZoom(MILAN, 10));
 			map.setOnMapLoadedCallback(this);
 			map.getUiSettings().setZoomControlsEnabled(false);
+			map.setOnInfoWindowClickListener(infolistener);
 		}
 
 		@Override
@@ -611,6 +630,31 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			}
 			
 			
+		};
+		
+		private OnInfoWindowClickListener infolistener = new OnInfoWindowClickListener() {
+
+			@Override
+			public void onInfoWindowClick(Marker marker) {
+
+				PointOfItinerary point = null;
+				for (PointOfItinerary poi : it.getAllPointOfThisItinerary()) {
+					if (poi.getName().equals(marker.getTitle())) {
+						point = poi;
+					}
+				}
+				Intent intent = new Intent(getActivity(),
+						POIDetailActivity.class);
+				intent.putExtra(POIDetailActivity.TYPE, point.getType());
+				intent.putExtra(POIDetailActivity.NAME, point.getName());
+				intent.putExtra(POIDetailActivity.POSITION_LAT,
+						point.getPosition().latitude);
+				intent.putExtra(POIDetailActivity.POSITION_LNG,
+						point.getPosition().longitude);
+				startActivity(intent);
+				marker.hideInfoWindow();
+
+			}
 		};
 
 	}

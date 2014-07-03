@@ -570,6 +570,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 							map.clear();
 				        	BikeMiLook.removeMarkers();
 				        	bikeAdding=false;
+				        	setCamera();
 				        	getDirections();
 				        }
 				     })

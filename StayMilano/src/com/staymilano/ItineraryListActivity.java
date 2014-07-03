@@ -194,6 +194,12 @@ public class ItineraryListActivity extends ActionBarActivity {
 				TextView description= (TextView) convertView.findViewById(R.id.description);
 
 				Itinerary it = itineraries.get(position);
+				PointOfInterest p=it.getPois().get(0);
+				
+				String iconName=p.getName().replace(" ", "_");
+				int icon=getResources().getIdentifier("com.staymilano:drawable/"+iconName.toLowerCase(), null, null);
+				imageView.setImageResource(icon);
+				
 				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 				String stringDate = sdf.format(it.getDate().getTime());
 				title.setText(stringDate);

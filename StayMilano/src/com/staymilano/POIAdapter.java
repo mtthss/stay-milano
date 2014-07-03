@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.staymilano.model.BikeStation;
 import com.staymilano.model.PointOfInterest;
 import com.staymilano.model.PointOfItinerary;
 import com.staymilano.model.StartingPoint;
@@ -32,6 +33,7 @@ public class POIAdapter extends ArrayAdapter<PointOfItinerary>{
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View rowView = inflater.inflate(R.layout.row_point, parent, false);
 		
+		ImageView image = (ImageView) rowView.findViewById(R.id.icon);
 		TextView first = (TextView) rowView.findViewById(R.id.firstLine);
 		TextView second = (TextView) rowView.findViewById(R.id.secondLine);
 		ImageView icon=(ImageView) rowView.findViewById(R.id.imageView1);
@@ -40,9 +42,17 @@ public class POIAdapter extends ArrayAdapter<PointOfItinerary>{
 		first.setText((values.get(position)).getName());
 		second.setText((values.get(position)).getType());
 		if (values.get(position).getType().equals(StartingPoint.STARTING_POINT)) {
+			image.setImageDrawable(context.getResources().getDrawable(R.drawable.start));
 			icon.setImageDrawable(context.getResources().getDrawable(
 					R.drawable.ic_action_edit));
-		} else {
+		} else if(values.get(position).getType().equals(BikeStation.BIKE_STATION)){
+			image.setImageDrawable(context.getResources().getDrawable(R.drawable.markerbikepurple));
+			icon.setImageDrawable(context.getResources().getDrawable(
+					R.drawable.ic_action_about));
+		}else{
+			String iconName=s.replace(" ", "_");
+			int icon1=context.getResources().getIdentifier("com.staymilano:drawable/"+iconName.toLowerCase(), null, null);
+			image.setImageResource(icon1);
 			icon.setImageDrawable(context.getResources().getDrawable(
 					R.drawable.ic_action_about));
 

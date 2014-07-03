@@ -14,7 +14,7 @@ public class PointOfInterest implements Serializable,PointOfItinerary{
 	static final String MONUMENT="monument";
 	static final String CHURCH="church";
 	static final String PARK="park";
-	static final String STATION="station";
+	static final String CASTLE="castle";
 	static final String ARCHEOLOGICAL_SITE="archeological_site";
 	static final String SHOPPING="shopping";
 	static final String SKYSCRAPERS="skyscrapers";
@@ -69,8 +69,8 @@ public class PointOfInterest implements Serializable,PointOfItinerary{
 		}else if(type.equalsIgnoreCase(CHURCH)){
 			this.type=CHURCH;
 			this.setIcon(R.drawable.markerchurchorangemini);
-		}else if(type.equalsIgnoreCase(STATION)){
-			this.type=STATION;
+		}else if(type.equalsIgnoreCase(CASTLE)){
+			this.type=CASTLE;
 			this.setIcon(R.drawable.markerstationredmini);
 		}else if(type.equalsIgnoreCase(SHOPPING)){
 			this.type=SHOPPING;

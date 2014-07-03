@@ -437,8 +437,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 		@Override
 		public void onMapLoaded() {
-			setCamera();
 			getDirections();		
+			setCamera();
 		}
 		
 		private void setCamera(){
@@ -643,6 +643,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 						point = poi;
 					}
 				}
+				if(!point.getType().equals(StartingPoint.STARTING_POINT)){
 				Intent intent = new Intent(getActivity(),
 						POIDetailActivity.class);
 				intent.putExtra(POIDetailActivity.TYPE, point.getType());
@@ -653,6 +654,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 						point.getPosition().longitude);
 				startActivity(intent);
 				marker.hideInfoWindow();
+				}else{
+					marker.hideInfoWindow();
+				}
 
 			}
 		};

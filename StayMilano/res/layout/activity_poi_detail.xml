@@ -7,55 +7,62 @@
     tools:context="com.staymilano.POIListFragment"
     tools:ignore="MergeRootFrame" >
 
-    <RelativeLayout
+   <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:background="#f1f1f2" >
 
+        <LinearLayout
+            android:id="@+id/map_wrapper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#ff8800"
+            android:paddingBottom="5dp" >
+
+            <fragment
+                android:id="@+id/mapMain"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                class="com.google.android.gms.maps.MapFragment" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="75dip"
+            android:layout_height="75dip"
+            android:layout_margin="3dp"
+            android:layout_below="@+id/map_wrapper" />
+        
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:layout_marginLeft="5dip"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:typeface="sans"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-        
+            android:layout_toRightOf="@+id/image"
+            android:layout_margin="3dp"
+            android:layout_below="@+id/map_wrapper" 
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/title"
-            android:layout_marginTop="5dip"
-            android:layout_marginLeft="5dip"
-            android:textSize="12sp"
+            android:layout_toRightOf="@+id/image"
+            android:layout_below="@+id/title" 
+            android:layout_marginLeft="3dp"
+            android:textSize="18sp"
             android:textStyle="italic" />
-        
 
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="fill_parent"
-            android:layout_height="75dip"
-            android:layout_below="@+id/title"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="5dip"
-            android:layout_marginRight="5dip"
-            android:src="@drawable/image_bg" />
-        
-         <TextView
+        <TextView
             android:id="@+id/description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_below="@+id/image"
-            android:layout_marginTop="5dip"
-            android:layout_marginLeft="5dip"
-            android:layout_marginRight="5dip"
-            android:layout_centerInParent="true"
-            android:textSize="14sp"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="10dp"
+            android:padding="3dp"
+            android:textSize="16sp"
+            android:background="#ffffff"
             android:textStyle="italic" />
 
     </RelativeLayout>

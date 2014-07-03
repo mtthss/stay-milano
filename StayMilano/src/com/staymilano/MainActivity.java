@@ -492,12 +492,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 					    .setIcon(android.R.drawable.ic_dialog_alert)
 					     .show();
 					} else {
+						PointOfItinerary poi =it.getAllPointOfThisItinerary().get(position);
 						Intent intent = new Intent(getActivity(), POIDetailActivity.class);
 						intent.putExtra(POIDetailActivity.TYPE, it.getAllPointOfThisItinerary().get(position).getType());
 						intent.putExtra(POIDetailActivity.NAME, it.getAllPointOfThisItinerary().get(position).getName());
-						Bundle bundle=new Bundle();
-						bundle.putParcelable(POIDetailActivity.POSITION, it.getAllPointOfThisItinerary().get(position).getPosition());
-						intent.putExtra("bundle", bundle);
+						intent.putExtra(POIDetailActivity.POSITION_LAT, it.getAllPointOfThisItinerary().get(position).getPosition().latitude);
+						intent.putExtra(POIDetailActivity.POSITION_LNG, it.getAllPointOfThisItinerary().get(position).getPosition().longitude);
 						startActivity(intent);
 						}
 					}

@@ -71,7 +71,7 @@ public class PointOfInterest implements Serializable,PointOfItinerary{
 			this.setIcon(R.drawable.markerchurchorangemini);
 		}else if(type.equalsIgnoreCase(CASTLE)){
 			this.type=CASTLE;
-			this.setIcon(R.drawable.markerstationredmini);
+			this.setIcon(R.drawable.markercastleblumini);
 		}else if(type.equalsIgnoreCase(SHOPPING)){
 			this.type=SHOPPING;
 			this.setIcon(R.drawable.markerbagpinkmini);

@@ -1,46 +1,48 @@
-duomo,questo è il duomo,church,duomo,45.463952, 9.192035
-museo del 900, arte e altro,museum,duomo,45.463260, 9.190232
-pinacoteca di brera,arte e altro,museum,brera_montenapoleone,45.472033, 9.187958
-piazza degli affari e palazzo mezzanotte,sede della borsa,museum,duomo,45.464780, 9.183237
-via monte napoleone,via dello shopping di lusso,shopping,duomo,45.468273, 9.195162
-galleria vittorio emanuele II,questa è la galleria,monument,duomo,45.465616,9.189932
-teatro alla scala, questo è il teatro alla scala,museum,duomo,45.467414, 9.189546
-parrocchia di san satiro, parrocchia,church,duomo,45.462842, 9.187733
-palazzo reale,royal palace,castle,duomo,45.463140, 9.191112
-via torino, via dello shopping,shopping,duomo,45.462470, 9.186753
-castello sforzesco,questo è il castello sforzesco,castle,castello,45.470502, 9.179300
-arco della pace, questo è l arco,monument,castello,45.476238, 9.171730
-parco sempione,il parco dei milanesi,park,castello,45.473138, 9.176965
-la triennale di milano, triennale,museum,castello,45.472153, 9.174394
-arena civica,arena,monument,castello,45.475355, 9.178334
-santa maria delle grazie,viva,church,sant_ambrogio,45.465912, 9.171017
-basilica di sant ambrogio,santo patrono,church,sant_ambrogio,45.462233, 9.175609
-museo nazionale della scienza e della tecnica,museo,museum,sant_ambrogio,45.462865, 9.170781
-cenacolo vinciano, l ultima cena,museum,sant_ambrogio,45.466025, 9.170824
-san maurizio al monastero, monastero, church,sant_ambrogio,45.465592, 9.178946
-parco delle basiliche,parco,park,colonne_navigli,45.455865, 9.182231
-colonne di san lorenzo,colonne,museum,colonne_navigli,45.458273, 9.181072
-basilica san lorenzo maggiore, basilica, church,colonne_navigli,45.458207, 9.182088
-basilica sant eustorgio,basilica,church,colonne_navigli,45.453968, 9.181072
-porta ticinese,porta,monument,colonne_navigli,45.452504, 9.180197
-naviglio pavese,naviglio,shopping,colonne_navigli,45.452248, 9.178116
-naviglio grande,naviglio,shopping,colonne_navigli,45.452369, 9.176989
-san bernardino alle ossa, ossario, church,porta_romana,45.462771, 9.196398
-san nazaro maggiore, chiesa, church,porta_romana,45.458512, 9.192493
-università degli studi di milano,università,monument,porta_romana,45.460153, 9.194617
-rotonda della besana,via besana, monument,porta_romana,45.459743, 9.205186
-palazzo di giustizia, tribunale,monument,porta_romana,45.462160, 9.201253
-museo civico di storia naturale, museo,museum,porta_venezia_palestro,45.472689, 9.202380
-giardini pubblici indro montanelli, giardini, park,porta_venezia_palestro,45.474284, 9.200105
-planetario,civico planetario ulrico hoepli, museum, porta_venezia_palestro,45.473772, 9.203625
-pac,padiglione arte contemporanea, museum,porta_venezia_palestro,45.472824, 9.199290
-bastioni di porta venezia, porta, monument,porta_venezia_palestro,45.474355, 9.205175
-corso buenos aires,shopping, shopping,porta_venezia_palestro,45.480013, 9.210661
-pinacoteca di brera,arte e altro, museum,brera_montenapoleone,45.472033, 9.187958
-basilica san simpliciano, basilica, church,brera_montenapoleone,45.473924, 9.184468
-chiesa santa maria incoronata, chiesa,church,brera_montenapoleone,45.479867, 9.186528
-monumento di porta garibaldi, porta garibaldi, monument,moscova_garibaldi,45.480823, 9.186989
-eataly,food shopping,shopping,moscova_garibaldi,45.480454, 9.187698
-corso como, night life,shopping,moscova_garibaldi,45.482089, 9.187336
-piazza gae aulenti, sky line,skyscrapers,moscova_garibaldi,45.483553, 9.189436
-cimitero monumentale,cimitero,monument,moscova_garibaldi,45.485669, 9.179075
+Duomo#Milan Cathedral (Italian: Duomo di Milano; Lombard: Domm de Milan) is the cathedral church of Milan, Italy. Dedicated to Santa Maria Nascente (Saint Mary Nascent), it is the seat of the Archbishop of Milan, currently Cardinal Angelo Scola.The Gothic cathedral took nearly six centuries to complete. It is the fifth largest cathedral in the world and the largest in the Italian state territory.#church#duomo#45.463952#9.192035
+Museo del 900#The Museum of Twentieth Century (Museo del Novecento in Italian) is a modern and contemporary art museum located in the Arengario palace near Duomo square in the centre of Milan. Opened in December 2010, the museum features one of the largest collections of Italian and international Twentieth Century’s art in Italy, with particularly relevant sections dedicated to Futurism, Spatialism and Arte povera. The collection includes masterpieces by several Italian artists such as Amedeo Modigliani, Giorgio de Chirico, Giuseppe Pellizza da Volpedo, Umberto Boccioni, Giacomo Balla, Carlo Carrà, Lucio Fontana, Giorgio Morandi, Mario Sironi as well as international artists as Pablo Picasso, Wassily Kandinsky, Georges Braque, Piet Mondrian, Paul Klee and Henri Matisse. Pellizza da Volvedo's The Fourth Estate is exhibited i a free-access area on the ground floor. The museum facilities include a bookshop and a restaurant-bar located on the top floor overlooking the Duomo square.#museum#duomo#45.463260# 9.190232
+Pinacoteca di brera#The Pinacoteca di Brera ("Brera Art Gallery") is the main public gallery for paintings in Milan, Italy. It contains one of the foremost collections of Italian paintings, an outgrowth of the cultural program of the Brera Academy, which shares the site in the Palazzo Brera.#museum#brera_montenapoleone#45.472033# 9.187958
+Palazzo Mezzanotte (Piazza Affari)#Palazzo Mezzanotte ("Mezzanotte Palace"), also known as Palazzo delle Borse ("Stock Exchange Palace") is a 20th-century building of Milan, Italy, and the seat of the Italian stock exchange. It is located in Piazza Affari ("Business Square"), the city square after which the Italian stock exchange itself is nicknamed. The name "Palazzo Mezzanotte" is a reference to Paolo Mezzanotte, the architect who designed the building.#building#duomo#45.464780# 9.183237
+via Montenapoleone#Via Monte Napoleone, also spelled Via Montenapoleone, is an upscale shopping street in Milan, Italy, famous for its ready-to-wear fashion and jewelry shops. It is the most important street of the Milan fashion district known as the Quadrilatero della moda where many well-known fashion designers have high-end boutiques. The most exclusive Italian shoemakers maintain boutiques on this street.#shopping#duomo#45.468273# 9.195162
+galleria Vittorio Emanuele II#The Galleria Vittorio Emanuele II is one of the world's oldest shopping malls. Housed within a four-story double arcade in central Milan, [1] the Galleria is named after Vittorio Emanuele II, the first king of the Kingdom of Italy. It was designed in 1861 and built by Giuseppe Mengoni between 1865 and 1877.#monument#duomo#45.465616#9.189932
+Teatro alla Scala#La Scala (abbreviation in Italian language for the official name Teatro alla Scala) is a world-renowned opera house in Milan, Italy. The theatre was inaugurated on 3 August 1778 and was originally known as the New Royal-Ducal Theatre alla Scala (Nuovo Regio Ducale Teatro alla Scala). Most of Italy's greatest operatic artists, and many of the finest singers from around the world, have appeared at La Scala during the past 200 years. Today, the theatre is still recognised as one of the leading opera and ballet theatres in the world and is home to the La Scala Theatre Chorus, La Scala Theatre Ballet and La Scala Theatre Orchestra. The theatre also has an associate school, known as the La Scala Theatre Academy (Italian: Accademia Teatro alla Scala), which offers professional training in music, dance, stage craft and stage management.#museum#duomo#45.467414# 9.189546
+Santa Maria presso San Satiro#Santa Maria presso San Satiro is a church of Milan.The church lies on the site of a primitive worship place erected by the archbishop Anspertus in 879, dedicated to Saint Satyrus, confessor and brother of Saints Ambrose and Marcellina. The current church was instead built from 1472 to 1482 under commission from Duke Galeazzo Maria Sforza. According to some sources, the designer was Donato Bramante, who had recently moved from the Marche. However, recent documents prove that Bramante had a minor role, most of the work being attributable to Giovanni Antonio Amadeo, who designed the façade. Certainly from Bramante is the sacristy perspective.#church#duomo#45.462842# 9.187733
+Royal Palace of Milan#The Royal Palace of Milan (Italian: Palazzo Reale di Milano) was the seat of government of the Italian city of Milan for many centuries, but today is an important cultural centre, home to expositions and exhibitions. Originally designed with a system of two yards, then partially demolished to make way for the Duomo, the palace is located to the right of the facade of the cathedral in the opposite position with respect to Galleria Vittorio Emanuele II. The facade of the building, following the line of the ancient courtyard, forming a recess with respect to Piazza del Duomo, known as the Piazzetta Reale (English: Small Royal square). Of particular importance is to remember the Hall of Caryatids on the first floor of the building, which occupies the site of the old theatre burned in 1776 and is the only environment survived the heavy bombing of the 1943 when it lost the neoclassical interiors.#castle#duomo#45.463140# 9.191112
+via torino#Take the via Torino south from the Duomo and hit all the shops. Continue from via Torino to the via della Porta Ticinese and visit the Pagan ruins of San Lorenzo, and follow the boutiques all the way down to the Naviglie for restaurants and bars for the apero where the finger food buffet is unlimited with your drinks.#shopping#duomo#45.462470# 9.186753
+
+Sforza Castle#Sforza Castle (Italian: Castello Sforzesco) is a castle in Milan, northern Italy. It was built in the 15th century by Francesco Sforza, Duke of Milan, on the remains of a 14th-century fortification. Later renovated and enlarged, in the 16th and 17th centuries it was one of the largest citadels in Europe. Largely remade by Luca Beltrami in 1891-1905, it now houses several of the city's museums and art collections.#castle#castello#45.470502# 9.179300
+Arco della Pace# In 1801 Napoleon ordered the demolition of the fortifications for Milan's Castello Sforzesco. This left a large space for the piazza Sempione, now a suitable site for a monumental construction to serve as a triumphal entrance to the city. Begun in 1807 in honour of Napoleon, the arch was not finished until 1838 for the occasion of the coronation of Ferdinando I as King of Lombardy-Venetia. #monument#castello#45.476238# 9.171730
+parco sempione#il parco dei milanesi#park#castello#45.473138# 9.176965
+la triennale di milano# triennale#museum#castello#45.472153# 9.174394
+arena civica#arena#monument#castello#45.475355# 9.178334
+
+santa maria delle grazie#viva#church#sant_ambrogio#45.465912# 9.171017
+basilica di sant ambrogio#santo patrono#church#sant_ambrogio#45.462233# 9.175609
+museo nazionale della scienza e della tecnica#museo#museum#sant_ambrogio#45.462865# 9.170781
+cenacolo vinciano# l ultima cena#museum#sant_ambrogio#45.466025# 9.170824
+san maurizio al monastero# monastero# church#sant_ambrogio#45.465592# 9.178946
+parco delle basiliche#parco#park#colonne_navigli#45.455865# 9.182231
+colonne di san lorenzo#colonne#museum#colonne_navigli#45.458273# 9.181072
+basilica san lorenzo maggiore# basilica# church#colonne_navigli#45.458207# 9.182088
+basilica sant eustorgio#basilica#church#colonne_navigli#45.453968# 9.181072
+porta ticinese#porta#monument#colonne_navigli#45.452504# 9.180197
+naviglio pavese#naviglio#shopping#colonne_navigli#45.452248# 9.178116
+naviglio grande#naviglio#shopping#colonne_navigli#45.452369# 9.176989
+san bernardino alle ossa# ossario# church#porta_romana#45.462771# 9.196398
+san nazaro maggiore# chiesa# church#porta_romana#45.458512# 9.192493
+università degli studi di milano#università#monument#porta_romana#45.460153# 9.194617
+rotonda della besana#via besana# monument#porta_romana#45.459743# 9.205186
+palazzo di giustizia# tribunale#monument#porta_romana#45.462160# 9.201253
+museo civico di storia naturale# museo#museum#porta_venezia_palestro#45.472689# 9.202380
+giardini pubblici indro montanelli# giardini# park#porta_venezia_palestro#45.474284# 9.200105
+planetario#civico planetario ulrico hoepli# museum# porta_venezia_palestro#45.473772# 9.203625
+pac#padiglione arte contemporanea# museum#porta_venezia_palestro#45.472824# 9.199290
+bastioni di porta venezia# porta# monument#porta_venezia_palestro#45.474355# 9.205175
+corso buenos aires#shopping# shopping#porta_venezia_palestro#45.480013# 9.210661
+pinacoteca di brera#arte e altro# museum#brera_montenapoleone#45.472033# 9.187958
+basilica san simpliciano# basilica# church#brera_montenapoleone#45.473924# 9.184468
+chiesa santa maria incoronata# chiesa#church#brera_montenapoleone#45.479867# 9.186528
+monumento di porta garibaldi# porta garibaldi# monument#moscova_garibaldi#45.480823# 9.186989
+eataly#food shopping#shopping#moscova_garibaldi#45.480454# 9.187698
+corso como# night life#shopping#moscova_garibaldi#45.482089# 9.187336
+piazza gae aulenti# sky line#skyscrapers#moscova_garibaldi#45.483553# 9.189436
+cimitero monumentale#cimitero#monument#moscova_garibaldi#45.485669# 9.179075

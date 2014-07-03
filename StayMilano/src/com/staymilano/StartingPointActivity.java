@@ -39,6 +39,7 @@ public class StartingPointActivity extends ActionBarActivity implements Location
   	  SQLiteDatabase db;
   	  GoogleMap map;
   	  Marker mMarker;  	  
+  	  Context ctx;
   	  
   	  public static final String ORIGIN="origin";
 	  
@@ -47,6 +48,8 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 
 		   super.onCreate(savedInstanceState);
 		   setContentView(R.layout.activity_starting_point);
+		   
+		   ctx = this;
 		   
 	       Intent intent = getIntent();
 	       itineraryId = intent.getStringExtra("id");
@@ -166,11 +169,14 @@ public class StartingPointActivity extends ActionBarActivity implements Location
 							"Do you want to cancel the creation of this itinerary?\n"
 									+ "If you don't, set the starting point. You will be able to modify your itinerary later.")
 					.setPositiveButton(android.R.string.yes,
+							
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int which) {
 									UserInfo.deleteItinerary(db, itineraryId);
-									//TODO
+									finish();
+									Intent intent = new Intent(ctx, ItineraryListActivity.class);
+									startActivity(intent);
 									
 								}
 							})

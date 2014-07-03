@@ -13,9 +13,14 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -37,7 +42,6 @@ import android.widget.Toast;
 
 import com.example.bikemiutils.BikeMiCallBack;
 import com.example.bikemiutils.BikeMiUtils;
-import com.google.android.gms.internal.ik;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
@@ -65,10 +69,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 	ViewPager mViewPager;
 	AppSectionsPagerAdapter mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
-	static Itinerary it;
-	
+	static Itinerary it;	
 	static List<PointOfItinerary> points;
 	static POIAdapter adapter;
+	static boolean bikeAdding;
 	
 	public static final String WIFIITINERARY="wifi_itinerary";
 	
@@ -82,7 +86,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		Intent intent = getIntent();
 		String itineraryID = intent.getStringExtra("id");
 
-		
+		bikeAdding = false;
 		it=new Itinerary();
 		if (itineraryID != null) {
 			SQLiteDatabase db = DBHelper.getInstance(this).getWritableDatabase();
@@ -123,9 +127,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	
 	@Override
 	public void onBackPressed() {
+		if(bikeAdding == true){
+			//TODO gestire l'uscita con back durante l'aggiunta di bici
+		}
 		Intent intent=new Intent(this, ItineraryListActivity.class);
-		startActivity(intent);
 		finish();
+		startActivity(intent);
 	}
 	
 	@Override
@@ -181,16 +188,27 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	
 	/////////////////////////////MAP FRAGMENT////////////////////////////////////////////////////////////////////////
 
-	public static class MapSectionFragment extends Fragment implements OnMapLoadedCallback, CallBack, BikeMiCallBack{
+	public static class MapSectionFragment extends Fragment implements OnMapLoadedCallback, CallBack, BikeMiCallBack, LocationListener{
 
     	SQLiteDatabase db;
 		GoogleMap map;
 		
 		//boolean bikeAdded=false;
 
+		LocationManager lm;
+		String provider;
+		Location l;
+		LatLng latlng;
+		Marker mMarker;
 		
 		static final LatLng MILAN = new LatLng(45.4773, 9.1815);
 
+		
+		
+		/////////////////////////
+		// FRAGMENT LIFE-CYCLE //
+		/////////////////////////
+		
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			
@@ -199,6 +217,20 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			setHasOptionsMenu(true);
 			
 			setUpMapIfIneed();
+			
+			   // GET LOCATION SERVICE
+			   lm = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+			   Criteria c = new Criteria();
+			   provider = lm.getBestProvider(c, false);
+			   l = lm.getLastKnownLocation(provider);
+			   if(l!=null){
+			       double lng = l.getLongitude();
+			       double lat = l.getLatitude();
+			       latlng = new LatLng(lat, lng);
+			       mMarker = map.addMarker(new MarkerOptions().position(latlng).title("Here you are"));
+			       
+			   }
+			
 			return rootView;
 		}
 		
@@ -217,8 +249,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		@Override
 		public boolean onOptionsItemSelected(MenuItem item) {
 			if(item.getItemId()==R.id.action_show_bicycle){
-				//TODO inserire posizione attuale
-					BikeMiUtils.getBikeMiStations(this, it.getStartingPoint().position);
+				BikeMiUtils.getBikeMiStations(this, latlng);
 			}else if(item.getItemId()==R.id.action_remove_bicycle){
 				if (it.getSelectedBikeSt().size() != 0) {
 					new AlertDialog.Builder(getActivity())
@@ -259,10 +290,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 						setCamera();
 					}
 				}
-			}else if(item.getItemId()==R.id.action_share){
-				Intent intent=new Intent(getActivity(), WiFiActivity.class);
-				intent.putExtra(WIFIITINERARY, UserInfo.itineraryToString(it));
-				startActivity(intent);
 			}else if(item.getItemId()==R.id.action_starting_point){
 				new AlertDialog.Builder(getActivity())
 			    .setTitle("Change starting point")
@@ -282,14 +309,76 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			    .setIcon(android.R.drawable.ic_dialog_alert)
 			     .show();
 			}else if(item.getItemId()==R.id.action_settings){
-				Intent intent=new Intent(getActivity(), ItineraryCreationActivity.class);
-				String s=it.getID();
-				intent.putExtra(ItineraryCreationActivity.ITINERARY_ID,s);
-				startActivity(intent);
+				
+				new AlertDialog.Builder(getActivity())
+				.setTitle("Edit Itinerary")
+				.setMessage(
+						"Are you sure you want to modify the current itinerary?")
+				.setPositiveButton(android.R.string.yes,
+						new DialogInterface.OnClickListener() {
+							public void onClick(
+									DialogInterface dialog,
+									int which) {
+								Intent intent=new Intent(getActivity(), ItineraryCreationActivity.class);
+								String s=it.getID();
+								intent.putExtra(ItineraryCreationActivity.ITINERARY_ID,s);
+								startActivity(intent);
+							}
+						})
+				.setNegativeButton(android.R.string.no,
+						new DialogInterface.OnClickListener() {
+							public void onClick(
+									DialogInterface dialog,
+									int which) {
+								// do nothing
+							}
+						})
+				.setIcon(android.R.drawable.ic_dialog_alert).show();
 			}
 			return super.onOptionsItemSelected(item);
 		}
 
+		
+		
+		/////////////////////////////////
+		// LOCATION LISTENER INTERFACE //
+		/////////////////////////////////
+		
+		@Override
+		public void onLocationChanged(Location arg0)
+		{
+			
+			double lng = l.getLongitude();
+		    double lat = l.getLatitude();
+		    latlng = new LatLng(lat, lng);
+		    
+		    setUpMapIfIneed();
+		    mMarker.remove();
+		    mMarker = map.addMarker(new MarkerOptions().position(latlng).title("Here you are"));
+
+		}
+		
+		@Override
+		public void onProviderDisabled(String arg0) {
+			//TODO implementa dialog che dice di attivare il gps
+		}
+		
+		@Override
+		public void onProviderEnabled(String arg0) {
+			//do nothing
+		}
+
+		@Override
+		public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+			//do nothing
+		}
+		
+		
+		
+		////////////////////
+		// MAP MANAGEMENT //
+		////////////////////
+		
 		private void setUpMapIfIneed() {
 			
 			if (map == null) {
@@ -299,6 +388,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			if (map != null) {
 				setupMap();
 			}
+			map.setOnMarkerClickListener(listener);
 		}
 
 		private void setupMap() {
@@ -332,13 +422,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 			// get directions for the specified itinerary
 			List<LatLng> poiSequence = it.getAllItineraryCoordinates();
-			GoogleMapsUtils.getDirection(this, poiSequence,
-					GoogleMapsUtils.MODE_WALKING);
+			GoogleMapsUtils.getDirection(this, poiSequence,	GoogleMapsUtils.MODE_WALKING);
 
 			// draw pois
 			List<MarkerOptions> markers = new ArrayList<MarkerOptions>();
 			MarkerOptions marker = new MarkerOptions();
-			marker.title("start");
+			marker.title("Start");
+			marker.snippet("enjoy your visit!");
 			marker.position(it.getStartingPoint().getPosition());
 			marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.start));
 			markers.add(marker);
@@ -354,14 +444,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 				marker = new MarkerOptions();
 				marker.title(bikeSt.getName());
 				marker.position(bikeSt.getPosition());
-				marker.icon(BitmapDescriptorFactory
-						.fromResource(R.drawable.purplebicycle));
+				marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.purplebicycle));
 				markers.add(marker);
 			}
 			MapLook.drawPOI(markers, map);
+			mMarker = map.addMarker(new MarkerOptions().position(latlng).title("Here you are"));
 		}
 
-			
 		@Override
 		public void onDirectionLoaded(List<Direction> directions) {
 			// once the google server provides the directions, draw them on the map
@@ -370,6 +459,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 		@Override
 		public void onBikeMiStationsComputed(List<Stallo> result) {
+			bikeAdding = true;
 			List<MarkerOptions> bikeMarkers=new ArrayList<MarkerOptions>();
 			LatLngBounds.Builder itBounds = new LatLngBounds.Builder(); 
 			for(Stallo st:result){
@@ -387,14 +477,36 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			BikeMiLook.drawMarkers(map, bikeMarkers);
 			map.animateCamera(CameraUpdateFactory.newLatLngBounds(itBounds.build(), 60), 1500, null);
 
-			map.setOnMarkerClickListener(listener);
 		}
 		
 		private OnMarkerClickListener listener= new OnMarkerClickListener() {
 			
 			@Override
 			public boolean onMarkerClick(final Marker marker) {
-				if(!isPointMarker(marker)){
+				// SE IL MARKER INDICA LA POSIZIONE ATTUALE
+				if(!isPointMarker(marker) && marker.getTitle().equals(mMarker.getTitle())){
+					if(map.getCameraPosition().zoom!=15){
+						CameraPosition cameraPosition = new CameraPosition.Builder()
+					    .target(marker.getPosition()) 
+					    .tilt(40)
+					    .zoom(15)					// Sets the tilt of the camera to 30 degrees
+					    .build();                   // Creates a CameraPosition from the builder
+						map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+					}else{
+						setCamera();
+					}
+				}
+				// SE IL MARKER INDICA L'INIZIO DELL'ITINERARIO
+				else if(isStartingPointMarker(marker)){
+					boolean open = marker.isInfoWindowShown();
+					if(open){
+						marker.hideInfoWindow();
+					}else{
+						marker.showInfoWindow();
+					}
+				}
+				// SE IL MARKER E' UNA DELLE 5 OPZIONI TRA CUI SCEGLIERE NELLA FASE DI "ADD_BIKE_SHARING"
+				else if(!isPointMarker(marker) && bikeAdding){
 					new AlertDialog.Builder(getActivity())
 					.setTitle(marker.getTitle()+" BikeMi Station")
 					.setMessage("This bike station has: \n"+marker.getSnippet()+"\nAre you sure you want to add this BikeMi station to your itinerary?")
@@ -408,6 +520,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 				        	adapter.notifyDataSetChanged();
 				        	BikeMiLook.removeMarkers();	
 				        	setCamera();
+				        	bikeAdding = false;
 				        }
 				     })
 				    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -418,6 +531,15 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 				    .setIcon(R.drawable.purplebicycle)
 				     .show();
 				}
+				// SE E' UNO DEI POI, OPPURE UNA DELLE BICI PRECEDENTEMENTE AGGIUNTE ALL'ITINERARIO
+				else{
+					boolean open = marker.isInfoWindowShown();
+					if(open){
+						marker.hideInfoWindow();
+					}else{
+						marker.showInfoWindow();
+					}
+				}
 				return true;
 			}
 
@@ -426,6 +548,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 					if(poi.getName().equals(marker.getTitle())){
 						return true;
 					}
+				}
+				return false;
+			}
+			
+			private boolean isStartingPointMarker(Marker marker) {
+				if(marker.getTitle().equals("Start")){
+					return true;
 				}
 				return false;
 			}

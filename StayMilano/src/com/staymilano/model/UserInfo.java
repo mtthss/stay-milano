@@ -12,7 +12,6 @@ import java.util.List;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.google.android.gms.internal.cb;
 import com.google.android.gms.maps.model.LatLng;
 import com.staymilano.database.BikeStationDAO;
 import com.staymilano.database.ItineraryDAO;

@@ -14,7 +14,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	private Context context;
 
 	private static final String DATABASE_NAME = "staymilano.db";
-	private static final int DATABASE_VERSION = 9;
+	private static final int DATABASE_VERSION = 13;
 
 
 	// Lo statement SQL di creazione del database

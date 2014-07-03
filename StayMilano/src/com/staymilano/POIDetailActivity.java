@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.bikemiutils.BikeMiCallBack;
@@ -23,7 +24,8 @@ public class POIDetailActivity extends Activity implements BikeMiCallBack{
 	
 	public static final String TYPE="type";
 	public static final String NAME="name";
-	public static final String POSITION = "position";
+	public static final String POSITION_LAT = "position_lat";
+	public static final String POSITION_LNG = "position_lng";
 	
 	String name;
 
@@ -35,11 +37,18 @@ public class POIDetailActivity extends Activity implements BikeMiCallBack{
 		
 		SQLiteDatabase db = DBHelper.getInstance(this).getWritableDatabase();
 		Cursor cur;
+		
 
 		String type=getIntent().getStringExtra(TYPE);
 		name=getIntent().getStringExtra(NAME);
-		Bundle bundle=getIntent().getParcelableExtra("bundle");
-		LatLng myposition=bundle.getParcelable(POSITION);
+		Double lat=getIntent().getDoubleExtra(POSITION_LAT, 0);
+		Double lng=getIntent().getDoubleExtra(POSITION_LNG, 0);
+		
+		LatLng myposition=new LatLng(lat, lng);
+		
+		setTitle(name);
+		TextView v_title=(TextView) findViewById(R.id.title);
+		v_title.setText(name);
 		
 		if(type.equals(BikeStation.BIKE_STATION)){
 			BikeMiUtils.getBikeMiStations(this, myposition);
@@ -47,15 +56,13 @@ public class POIDetailActivity extends Activity implements BikeMiCallBack{
 			cur=PointOfInterestDAO.getPOIByName(db,name);
 			PointOfInterest poi=new PointOfInterest(cur);
 			
-			setTitle(poi.getName());
-			
-			TextView v_title=(TextView) findViewById(R.id.title);
 			TextView v_type=(TextView) findViewById(R.id.type);
 			TextView v_description=(TextView) findViewById(R.id.description);
+			ImageView image=(ImageView) findViewById(R.id.image);
 			
-			v_title.setText(poi.getName());
 			v_type.setText(poi.getType());
 			v_description.setText(poi.getDescription());
+			image.setImageDrawable(getResources().getDrawable(R.drawable.markermuseumyellow));
 		}
 
 	}
@@ -63,7 +70,25 @@ public class POIDetailActivity extends Activity implements BikeMiCallBack{
 
 	@Override
 	public void onBikeMiStationsComputed(List<Stallo> result) {
-
+		BikeStation bike = new BikeStation();
+		bike.setName(name);
+		bike.getPosition();
+		
+		String description="not available";
+		
+		for(Stallo st:result){
+			if(st.getName().equals(name)){
+				description=st.getEmptySlots()+" empty slots and "+st.getFreeBikes()+" free bikes";
+			}
+		}
+		
+		TextView v_type=(TextView) findViewById(R.id.type);
+		TextView v_description=(TextView) findViewById(R.id.description);
+		ImageView image=(ImageView) findViewById(R.id.image);
+		
+		v_type.setText(bike.getType());
+		v_description.setText("This Bike Station now has: "+description);
+		image.setImageDrawable(getResources().getDrawable(R.drawable.markerbikepurple));
 	}
 	
 }

@@ -444,9 +444,17 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 					marker.hideInfoWindow();
 				} else {
 					lastMarkerClicked = marker;
-					intent = new Intent(getActivity(), POIDetailActivity.class);
-					intent.putExtra(ItineraryCreationActivity.POI_NAME,
-							marker.getTitle());
+					PointOfInterest point = null;
+					for(PointOfItinerary poi:selectedPOI){
+						if(poi.getName().equals(marker.getTitle())){
+							point=(PointOfInterest) poi;
+						}
+					}
+					Intent intent = new Intent(getActivity(), POIDetailActivity.class);
+					intent.putExtra(POIDetailActivity.TYPE, point.getType());
+					intent.putExtra(POIDetailActivity.NAME, point.getName());
+					intent.putExtra(POIDetailActivity.POSITION_LAT, point.getPosition().latitude);
+					intent.putExtra(POIDetailActivity.POSITION_LNG, point.getPosition().longitude);
 					startActivity(intent);
 				}
 			}
@@ -490,8 +498,11 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
-					intent = new Intent(getActivity(), POIDetailActivity.class);
-					intent.putExtra(ItineraryCreationActivity.POI, ((PointOfInterest)selectedPOI.get(position)).getId());
+					Intent intent = new Intent(getActivity(), POIDetailActivity.class);
+					intent.putExtra(POIDetailActivity.TYPE, selectedPOI.get(position).getType());
+					intent.putExtra(POIDetailActivity.NAME, selectedPOI.get(position).getName());
+					intent.putExtra(POIDetailActivity.POSITION_LAT, selectedPOI.get(position).getPosition().latitude);
+					intent.putExtra(POIDetailActivity.POSITION_LNG, selectedPOI.get(position).getPosition().longitude);
 					startActivity(intent);
 
 				}

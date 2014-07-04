@@ -39,6 +39,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -411,6 +412,28 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 				public View getInfoContents(Marker marker) {
 					View view = getLayoutInflater(getArguments()).inflate(
 							R.layout.infowindow, null);
+					
+					ImageView image=(ImageView) view.findViewById(R.id.image);
+					
+					boolean bike=true;
+					for(PointOfInterest poi:it.getPois()){
+						if(poi.getName().equals(marker.getTitle())){
+							bike=false;
+							break;
+						}
+					}
+					if(marker.getTitle().equalsIgnoreCase("start")&&!bike){
+						String iconName=marker.getTitle().replace(" ", "_");
+						String iconName2=iconName.replace(")", "");
+						String iconName3=iconName2.replace("(", "");
+						int icon1=getResources().getIdentifier("com.staymilano:drawable/"+iconName3.toLowerCase(), null, null);
+						image.setImageResource(icon1);
+					}else if(bike){
+						image.setImageDrawable(getResources().getDrawable(R.drawable.markerbikepurplemini));
+					}else{
+						image.setImageDrawable(getResources().getDrawable(R.drawable.start));
+					}
+					
 					TextView title = (TextView) view
 							.findViewById(R.id.textView1);
 					title.setText(marker.getTitle());

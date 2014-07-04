@@ -72,7 +72,9 @@ public class POIDetailActivity extends Activity implements BikeMiCallBack{
 			ImageView image=(ImageView) findViewById(R.id.image);
 			
 			String iconName=name.replace(" ", "_");
-			int icon=getResources().getIdentifier("com.staymilano:drawable/"+iconName.toLowerCase(), null, null);
+			String iconName2=iconName.replace(")", "");
+			String iconName3=iconName2.replace("(", "");
+			int icon=getResources().getIdentifier("com.staymilano:drawable/"+iconName3.toLowerCase(), null, null);
 			v_type.setText(poi.getType());
 			v_description.setText(poi.getDescription());
 			image.setImageResource(icon);

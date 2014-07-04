@@ -197,7 +197,9 @@ public class ItineraryListActivity extends ActionBarActivity {
 				PointOfInterest p=it.getPois().get(0);
 				
 				String iconName=p.getName().replace(" ", "_");
-				int icon=getResources().getIdentifier("com.staymilano:drawable/"+iconName.toLowerCase(), null, null);
+				String iconName2=iconName.replace(")", "");
+				String iconName3=iconName2.replace("(", "");
+				int icon=getResources().getIdentifier("com.staymilano:drawable/"+iconName3.toLowerCase(), null, null);
 				imageView.setImageResource(icon);
 				
 				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");

@@ -11,8 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_marginRight="3dip"
-        android:background="@drawable/image_bg" >
+        android:background="#FFFFFF" >
 
         <ImageView
             android:id="@+id/icon"
@@ -28,6 +27,7 @@
         android:layout_toRightOf="@id/icon_wrapper"
         android:textColor="#040404"
         android:typeface="sans"
+        android:layout_marginLeft="5dp"
         android:textStyle="bold"
         android:textSize="16sp"/>
 
@@ -37,6 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
         android:src="@drawable/ic_action_next_item"/>
 
     <TextView
@@ -46,7 +47,7 @@
         android:layout_below="@+id/date"
         android:layout_toRightOf="@+id/icon_wrapper"
         android:layout_toLeftOf="@+id/go"
-        android:text="Small Text"
+        android:layout_marginLeft="5dp"
         android:maxLines="2"
         android:ellipsize="end"
         android:textAppearance="?android:attr/textAppearanceSmall" />

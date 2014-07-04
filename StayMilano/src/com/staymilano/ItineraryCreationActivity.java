@@ -31,6 +31,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -293,6 +294,14 @@ public class ItineraryCreationActivity extends FragmentActivity implements Actio
 				public View getInfoContents(Marker marker) {
 					View view = getLayoutInflater(getArguments()).inflate(
 							R.layout.infowindow, null);
+					
+					String iconName=marker.getTitle().replace(" ", "_");
+					String iconName2=iconName.replace(")", "");
+					String iconName3=iconName2.replace("(", "");
+					int icon1=getResources().getIdentifier("com.staymilano:drawable/"+iconName3.toLowerCase(), null, null);
+					ImageView image=(ImageView) view.findViewById(R.id.image);
+					image.setImageResource(icon1);
+					
 					TextView title = (TextView) view
 							.findViewById(R.id.textView1);
 					title.setText(marker.getTitle());

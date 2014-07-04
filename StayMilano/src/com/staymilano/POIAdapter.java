@@ -51,7 +51,9 @@ public class POIAdapter extends ArrayAdapter<PointOfItinerary>{
 					R.drawable.ic_action_about));
 		}else{
 			String iconName=s.replace(" ", "_");
-			int icon1=context.getResources().getIdentifier("com.staymilano:drawable/"+iconName.toLowerCase(), null, null);
+			String iconName2=iconName.replace(")", "");
+			String iconName3=iconName2.replace("(", "");
+			int icon1=context.getResources().getIdentifier("com.staymilano:drawable/"+iconName3.toLowerCase(), null, null);
 			image.setImageResource(icon1);
 			icon.setImageDrawable(context.getResources().getDrawable(
 					R.drawable.ic_action_about));
